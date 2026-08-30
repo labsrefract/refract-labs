@@ -234,7 +234,7 @@ function Hero() {
               that ships.
             </h1>
             <p className="text-base lg:text-lg leading-relaxed mb-8 max-w-lg" style={{ color: "var(--muted)" }}>
-              Sintrix Technologies designs and builds web apps, mobile apps, and
+              Refract Labs designs and builds web apps, mobile apps, and
               MVPs for startups and growing businesses who need to move fast
               without cutting corners.
             </p>

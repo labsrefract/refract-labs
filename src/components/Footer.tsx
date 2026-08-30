@@ -43,7 +43,7 @@ export default function Footer() {
           <div>
             <Link to="/" className="block mb-4">
               <div className="text-base font-bold mb-1" style={{ color: "var(--text)" }}>
-                Sintrix Technologies
+                Refract Labs
               </div>
               <div className="text-xs font-mono" style={{ color: "var(--accent)", ...mono }}>
                 // software engineering studio
@@ -135,7 +135,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 py-5">
           <p className="text-xs font-mono" style={{ color: "var(--subtle)", ...mono }}>
-            © 2026 Sintrix Technologies. All rights reserved.
+            © 2026 Refract Labs. All rights reserved.
           </p>
           <p className="text-xs font-mono" style={{ color: "var(--subtle)", ...mono }}>
             BUILT WITH ♥ AND CODE

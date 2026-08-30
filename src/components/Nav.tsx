@@ -44,7 +44,7 @@ export default function Nav() {
         {/* Logo */}
         <Link to="/" className="block" onClick={() => setOpen(false)}>
           <span className="text-base font-bold tracking-tight" style={{ color: "var(--text)" }}>
-            Sintrix Technologies
+            Refract Labs
           </span>
           <div className="hidden lg:block text-xs mt-0.5 font-mono" style={{ color: "var(--accent)", fontFamily: "JetBrains Mono, monospace" }}>
             // software engineering studio
