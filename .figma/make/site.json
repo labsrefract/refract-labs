@@ -1,0 +1,10 @@
+{
+  "description": "Streamline task management by organizing, tracking, and prioritizing work efficiently to boost productivity for individuals and teams.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
