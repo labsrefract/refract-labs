@@ -5,10 +5,10 @@
     "index": true
   },
   "icons": {
-    "icon": "/logo.jpg"
+    "icon": "https://res.cloudinary.com/vcrqvhjf/image/upload/f_auto,q_auto/WhatsApp_Image_2026-08-27_at_13.32.12"
   },
   "openGraph": {
-    "image": "/logo.jpg"
+    "image": "https://res.cloudinary.com/vcrqvhjf/image/upload/f_auto,q_auto/WhatsApp_Image_2026-08-27_at_13.32.12"
   },
   "accessibility": {
     "addBypassLinks": false,
