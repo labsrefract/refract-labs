@@ -5,6 +5,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><!-- figma:title --></title>
+    <link rel="icon" href="/logo.jpg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="/logo.jpg" />
+    <script>
+      try {
+        var stored = localStorage.getItem("refract-theme");
+        var theme =
+          stored === "light" || stored === "dark"
+            ? stored
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    </script>
     <!-- figma:head-end -->
   </head>
   <body>

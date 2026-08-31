@@ -1,4 +1,4 @@
-# figma-make-app
+# refract-labs
 
 React + Vite + Tailwind CSS project running inside Figma Make.
 

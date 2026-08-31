@@ -1,7 +1,8 @@
-import { defineConfig, type HtmlTagDescriptor, type Plugin } from 'vite'
+import { defineConfig, loadEnv, type HtmlTagDescriptor, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
+import type { IncomingMessage } from 'node:http'
 
 import siteConfiguration from './.figma/make/site.json'
 
@@ -23,6 +24,7 @@ export default defineConfig(({ mode }) => {
       figmaErrorOverlayReplay(),
       figmaReactRefreshBoundaryFallback(),
       figmaMakeKitPlugin({ storiesGlob: '/src/**/*.stories.{ts,tsx,js,jsx}' }),
+      contactDevApi(mode),
     ],
     resolve: {
       alias: {
@@ -350,6 +352,123 @@ function figmaMakeKitPlugin(options: { storiesGlob: string | string[] }): Plugin
         } catch (err) {
           next(err as Error)
         }
+      })
+    },
+  }
+}
+
+function readJsonBody(req: IncomingMessage): Promise<Record<string, unknown>> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = []
+    req.on('data', (c) => chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c)))
+    req.on('end', () => {
+      try {
+        const raw = Buffer.concat(chunks).toString('utf8')
+        resolve(raw ? JSON.parse(raw) : {})
+      } catch {
+        reject(new Error('invalid_json'))
+      }
+    })
+    req.on('error', reject)
+  })
+}
+
+/** Local stand-in for /api/contact so the form can be exercised in `vite dev`. */
+function contactDevApi(mode: string): Plugin {
+  const env = loadEnv(mode, process.cwd(), '')
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const TYPES = new Set(['web', 'mobile', 'mvp', 'consulting', 'other'])
+
+  return {
+    name: 'contact-dev-api',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.url?.split('?')[0] !== '/api/contact') return next()
+        if (req.method !== 'POST') {
+          res.statusCode = 405
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ error: 'Method not allowed.' }))
+          return
+        }
+
+        let body: Record<string, unknown>
+        try {
+          body = await readJsonBody(req)
+        } catch {
+          res.statusCode = 400
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ error: 'Could not read that request.' }))
+          return
+        }
+
+        const name = String(body.name || '').trim()
+        const email = String(body.email || '').trim()
+        const type = String(body.type || '').trim()
+        const message = String(body.message || '').trim()
+        const errors: Record<string, string> = {}
+        if (!name) errors.name = 'Please enter your name.'
+        if (!email) errors.email = 'Please enter your email.'
+        else if (!EMAIL_RE.test(email)) errors.email = 'Please enter a valid email.'
+        if (!TYPES.has(type)) errors.type = 'Please select a project type.'
+        if (!message) errors.message = 'Please tell us a bit about the project.'
+
+        if (Object.keys(errors).length) {
+          res.statusCode = 422
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ error: 'Please fix the highlighted fields.', errors }))
+          return
+        }
+
+        const apiKey = env.RESEND_API_KEY
+        const to = env.CONTACT_TO_EMAIL
+        if (!apiKey || !to) {
+          console.info('[contact] Local preview — email not sent. Payload:', { name, email, type, message })
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ ok: true, preview: true }))
+          return
+        }
+
+        const typeLabel: Record<string, string> = {
+          web: 'Web app',
+          mobile: 'Mobile app',
+          mvp: 'MVP',
+          consulting: 'Technical consulting',
+          other: 'Other',
+        }
+        const from = env.CONTACT_FROM_EMAIL || 'Refract Labs <onboarding@resend.dev>'
+        try {
+          const response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from,
+              to: [to],
+              reply_to: email,
+              subject: `New inquiry from ${name} (${typeLabel[type] || type})`,
+              text: `Name: ${name}\nEmail: ${email}\nType: ${typeLabel[type] || type}\n\n${message}`,
+            }),
+          })
+          if (!response.ok) {
+            res.statusCode = 502
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ error: 'We could not send the message. Try email instead.' }))
+            return
+          }
+        } catch {
+          res.statusCode = 502
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ error: 'We could not send the message. Try email instead.' }))
+          return
+        }
+
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify({ ok: true }))
       })
     },
   }
