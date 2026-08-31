@@ -1,6 +1,7 @@
 import { Link } from "react-router";
+import { site } from "../content/site";
 
-export const LOGO_SRC = "/logo.jpg";
+export const LOGO_SRC = site.logo;
 
 export function BrandMark({
   className = "",
