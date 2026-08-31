@@ -1,38 +1,31 @@
 import type { ReactNode } from "react";
+import Eyebrow from "./Eyebrow";
 
-interface PageHeaderProps {
+export default function PageHeader({
+  eyebrow,
+  title,
+  subtitle,
+}: {
   eyebrow: string;
   title: string | ReactNode;
   subtitle?: string;
-}
-
-export default function PageHeader({ eyebrow, title, subtitle }: PageHeaderProps) {
+}) {
   return (
-    <section className="relative pt-32 pb-16 lg:pb-20 overflow-hidden"
-      style={{ backgroundColor: "var(--bg)" }}>
-      <div className="absolute inset-0 scan-lines" />
-      <div className="absolute inset-0 dot-grid opacity-40" />
-
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="inline-flex items-center gap-2 mb-5 px-3 py-1.5"
-          style={{ backgroundColor: "var(--accent-soft)", border: "1px solid var(--accent-pill-border)", borderRadius: "4px" }}>
-          <span className="text-xs font-mono font-medium uppercase tracking-widest"
-            style={{ color: "var(--accent)", fontFamily: "JetBrains Mono, monospace" }}>
-            {eyebrow}
-          </span>
-        </div>
-
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-5"
-          style={{ color: "var(--text)", letterSpacing: "-0.025em" }}>
+    <header className="pt-28 pb-12 lg:pt-36 lg:pb-16">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+        <Eyebrow text={eyebrow} />
+        <h1
+          className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold max-w-4xl"
+          style={{ color: "var(--text)" }}
+        >
           {title}
         </h1>
-
         {subtitle && (
-          <p className="text-lg max-w-2xl" style={{ color: "var(--muted)" }}>
+          <p className="mt-5 text-lg max-w-2xl" style={{ color: "var(--muted)" }}>
             {subtitle}
           </p>
         )}
       </div>
-    </section>
+    </header>
   );
 }

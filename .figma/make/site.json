@@ -1,8 +1,14 @@
 {
   "title": "Refract Labs",
-  "description": "Streamline task management by organizing, tracking, and prioritizing work efficiently to boost productivity for individuals and teams.",
+  "description": "Refract Labs designs and builds web apps, mobile apps, and MVPs for startups and growing businesses.",
   "robots": {
-    "index": false
+    "index": true
+  },
+  "icons": {
+    "icon": "/logo.jpg"
+  },
+  "openGraph": {
+    "image": "/logo.jpg"
   },
   "accessibility": {
     "addBypassLinks": false,
