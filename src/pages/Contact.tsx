@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import PageHeader from "../components/PageHeader";
 import { Button } from "../components/Button";
+import Reveal from "../components/Reveal";
 import { site } from "../content/site";
 import { usePageMeta } from "../hooks/usePageMeta";
 
@@ -241,9 +242,11 @@ export default function Contact() {
 
       <section className="pb-24 lg:pb-32" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-12 grid lg:grid-cols-[1fr_320px] gap-10 items-start">
+          <Reveal className="min-w-0">
           <ContactForm />
+          </Reveal>
 
-          <aside className="p-6" style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)" }}>
+          <Reveal as="aside" delay={80} className="p-6" style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)" }}>
             <p className="eyebrow">Direct</p>
             <p className="text-sm mb-4" style={{ color: "var(--muted)" }}>
               Prefer email? Write to us and we will pick it up from there.
@@ -254,7 +257,7 @@ export default function Contact() {
             <p className="mt-6 text-sm" style={{ color: "var(--muted)" }}>
               {site.location}
             </p>
-          </aside>
+          </Reveal>
         </div>
       </section>
     </>

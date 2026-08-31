@@ -1,8 +1,9 @@
-import { Outlet, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import { useEffect } from "react";
 import { ThemeProvider } from "../context/theme";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import PageFade from "./PageFade";
 
 function ScrollReset() {
   const { pathname, hash } = useLocation();
@@ -28,7 +29,7 @@ export default function Root() {
       <div style={{ backgroundColor: "var(--bg)", minHeight: "100vh" }}>
         <Nav />
         <main id="main">
-          <Outlet />
+          <PageFade />
         </main>
         <Footer />
       </div>
