@@ -3,7 +3,7 @@
  * TODO: set RESEND_API_KEY and CONTACT_TO_EMAIL in the Vercel project.
  */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TYPES = new Set(["web", "mobile", "mvp", "consulting", "other"]);
+const TYPES = new Set(["web", "mobile", "automation", "mvp", "consulting", "other"]);
 const MAX = { name: 120, email: 200, message: 5000 };
 
 function readBody(req) {
@@ -48,6 +48,7 @@ function validate(body) {
 const typeLabel = {
   web: "Web app",
   mobile: "Mobile app",
+  automation: "Automation",
   mvp: "MVP",
   consulting: "Technical consulting",
   other: "Other",
@@ -76,7 +77,7 @@ export default async function handler(req, res) {
   if (!apiKey || !to) {
     return res.status(503).json({
       error:
-        "The contact inbox is not configured yet. Email hello@refractlabs.dev directly, or set RESEND_API_KEY and CONTACT_TO_EMAIL.",
+        "The contact inbox is not configured yet. Email internal.refract.labs@gmail.com directly, or set RESEND_API_KEY and CONTACT_TO_EMAIL.",
     });
   }
 

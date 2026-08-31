@@ -4,8 +4,8 @@
 export const site = {
   name: "Refract Labs",
   tagline: "Software · Intelligence · Security",
-  email: "hello@refractlabs.dev",
-  location: "Remote — worldwide",
+  email: "internal.refract.labs@gmail.com",
+  location: "Nairobi, Kenya",
   logo: "https://res.cloudinary.com/vcrqvhjf/image/upload/f_auto,q_auto/WhatsApp_Image_2026-08-27_at_13.32.12",
   socials: {
     linkedin: "https://www.linkedin.com/company/refract-labs",

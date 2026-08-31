@@ -12,8 +12,8 @@
   and coming out the other side with a clearer product. Choices:
   - Type: Syne for display (geometric, slightly odd proportions), Source Sans 3
     for reading, IBM Plex Mono only on tech chips — not as a personality layer.
-  - Color: warm stone paper, near-black ink, a deep verdigris accent instead of
-    default indigo. One accent, used sparingly.
+  - Color: warm stone paper, near-black ink, a deep cyan accent taken from the
+    mark. One accent, used sparingly.
   - Layout: editorial spacing, asymmetric hero, no fake IDE frames.
   Contrast: --muted and --subtle are tuned for WCAG AA on --bg in both themes.
 */
@@ -28,9 +28,9 @@
   --border: #d9d4c8;
   --border-strong: #c8c2b4;
 
-  --accent: #1b6b5a;
-  --accent-hover: #155447;
-  --accent-soft: #e4f0ec;
+  --accent: #0d6e8c;
+  --accent-hover: #0b5d77;
+  --accent-soft: #e2f3f7;
   --accent-on-accent: #f7f4ee;
 
   --positive: #0f6b3e;
@@ -61,10 +61,10 @@
   --border: #2c2f36;
   --border-strong: #3a3e47;
 
-  --accent: #5dae9a;
-  --accent-hover: #7dc0b0;
-  --accent-soft: rgba(93, 174, 154, 0.14);
-  --accent-on-accent: #0e1412;
+  --accent: #4ec4dc;
+  --accent-hover: #73d4e8;
+  --accent-soft: rgba(78, 196, 220, 0.16);
+  --accent-on-accent: #0c1214;
 
   --positive: #5dba86;
   --positive-soft: rgba(93, 186, 134, 0.14);
