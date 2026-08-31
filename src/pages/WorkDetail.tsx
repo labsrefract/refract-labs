@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router";
 import { getCaseStudy } from "../content/work";
 import { ButtonLink } from "../components/Button";
+import Reveal from "../components/Reveal";
 import { usePageMeta } from "../hooks/usePageMeta";
 import NotFound from "./NotFound";
 
@@ -24,6 +25,7 @@ export default function WorkDetail() {
   return (
     <article className="pt-28 pb-24 lg:pt-36 lg:pb-32">
       <div className="max-w-3xl mx-auto px-6 lg:px-10">
+        <Reveal>
         <p className="mb-6">
           <Link to="/work" className="nav-link">
             ← All work
@@ -43,15 +45,16 @@ export default function WorkDetail() {
             </span>
           ))}
         </div>
+        </Reveal>
 
         <div className="mt-14 flex flex-col gap-12">
-          {sections.map((s) => (
-            <section key={s.key}>
+          {sections.map((s, i) => (
+            <Reveal as="section" key={s.key} delay={i * 80}>
               <h2 className="text-2xl font-bold mb-3">{s.label}</h2>
               <p className="text-base leading-relaxed" style={{ color: "var(--muted)" }}>
                 {project[s.key]}
               </p>
-            </section>
+            </Reveal>
           ))}
         </div>
 

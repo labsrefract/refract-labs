@@ -1,5 +1,6 @@
 import PageHeader from "../components/PageHeader";
 import PageCTA from "../components/PageCTA";
+import Reveal from "../components/Reveal";
 import { services } from "../content/services";
 import { usePageMeta } from "../hooks/usePageMeta";
 
@@ -20,9 +21,11 @@ export default function Services() {
       <section style={{ borderTop: "1px solid var(--border)" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           {services.map((s, i) => (
-            <article
+            <Reveal
+              as="article"
               key={s.id}
               id={s.id}
+              delay={i * 60}
               className="scroll-mt-24 py-14 lg:py-16 grid lg:grid-cols-[minmax(0,280px)_1fr] gap-8 lg:gap-16"
               style={i < services.length - 1 ? { borderBottom: "1px solid var(--border)" } : undefined}
             >
@@ -53,7 +56,7 @@ export default function Services() {
                   </ul>
                 </div>
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </section>

@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import Eyebrow from "../components/Eyebrow";
 import PageCTA from "../components/PageCTA";
+import Reveal from "../components/Reveal";
 import { BrandMark } from "../components/Logo";
 import { ButtonLink } from "../components/Button";
 import { usePageMeta } from "../hooks/usePageMeta";
@@ -15,17 +16,17 @@ function Hero() {
     <section className="hero pt-28 pb-16 lg:pt-36 lg:pb-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div>
-          <Eyebrow text="Software · Intelligence · Security" />
-          <h1 className="text-4xl sm:text-5xl lg:text-[3.6rem] font-extrabold" style={{ color: "var(--text)" }}>
+          <Eyebrow text="Software · Intelligence · Security" className="hero-in hero-in-1" />
+          <h1 className="hero-in hero-in-2 text-4xl sm:text-5xl lg:text-[3.6rem] font-extrabold" style={{ color: "var(--text)" }}>
             We bend ideas
             <br />
             into products.
           </h1>
-          <p className="mt-6 text-lg max-w-lg" style={{ color: "var(--muted)" }}>
+          <p className="hero-in hero-in-3 mt-6 text-lg max-w-lg" style={{ color: "var(--muted)" }}>
             Refract Labs designs and builds web apps, mobile apps, automation, and MVPs for startups and growing businesses who need
             to move fast without cutting corners.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="hero-in hero-in-4 mt-8 flex flex-wrap gap-3">
             <ButtonLink to="/contact">Start a project</ButtonLink>
             <ButtonLink to="/work" variant="ghost">
               See the work
@@ -34,7 +35,7 @@ function Hero() {
         </div>
         <div className="hero-visual min-w-0 flex justify-center lg:justify-end">
           <BrandMark
-            className="hero-logo w-full max-w-sm lg:max-w-md rounded-2xl object-cover"
+            className="hero-logo hero-in hero-in-5 w-full max-w-sm lg:max-w-md rounded-2xl object-cover"
             alt="Refract Labs — Software, Intelligence, Security"
           />
         </div>
@@ -47,16 +48,18 @@ function Proof() {
   return (
     <section className="py-16 lg:py-20" style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", background: "var(--surface)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="flex items-end justify-between gap-4 mb-10 flex-wrap">
+        <Reveal className="flex items-end justify-between gap-4 mb-10 flex-wrap">
           <div>
             <Eyebrow text="What clients say" />
             <h2 className="text-2xl sm:text-3xl font-bold">From the people we ship with.</h2>
           </div>
-        </div>
+        </Reveal>
         <div className="grid md:grid-cols-2 gap-6">
           {testimonials.map((t, i) => (
-            <figure
+            <Reveal
+              as="figure"
               key={i}
+              delay={i * 80}
               className="p-6 lg:p-8"
               style={{ background: "var(--bg)", border: "1px solid var(--border)", borderRadius: "var(--radius)" }}
             >
@@ -66,7 +69,7 @@ function Proof() {
               <figcaption className="mt-5 text-sm" style={{ color: "var(--muted)" }}>
                 {t.attribution}
               </figcaption>
-            </figure>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -78,7 +81,7 @@ function ServicesTeaser() {
   return (
     <section className="py-20 lg:py-28">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="flex items-end justify-between gap-4 mb-10 flex-wrap">
+        <Reveal className="flex items-end justify-between gap-4 mb-10 flex-wrap">
           <div>
             <Eyebrow text="What we do" />
             <h2 className="text-2xl sm:text-3xl font-bold">Engineering, end to end.</h2>
@@ -86,10 +89,11 @@ function ServicesTeaser() {
           <Link to="/services" className="nav-link">
             All services →
           </Link>
-        </div>
+        </Reveal>
         <div className="grid sm:grid-cols-2 gap-5">
-          {services.map((s) => (
-            <Link key={s.id} to={`/services#${s.id}`} className="card-link p-6 lg:p-7">
+          {services.map((s, i) => (
+            <Reveal key={s.id} delay={i * 70} className="h-full">
+              <Link to={`/services#${s.id}`} className="card-link p-6 lg:p-7">
               <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--accent)" }}>
                 {s.kicker}
               </p>
@@ -97,7 +101,8 @@ function ServicesTeaser() {
               <p className="text-[15px]" style={{ color: "var(--muted)" }}>
                 {s.summary}
               </p>
-            </Link>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -109,7 +114,7 @@ function WorkTeaser() {
   return (
     <section className="py-20 lg:py-28" style={{ background: "var(--surface-2)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="flex items-end justify-between gap-4 mb-10 flex-wrap">
+        <Reveal className="flex items-end justify-between gap-4 mb-10 flex-wrap">
           <div>
             <Eyebrow text="Selected work" />
             <h2 className="text-2xl sm:text-3xl font-bold">Selected work.</h2>
@@ -117,10 +122,11 @@ function WorkTeaser() {
           <Link to="/work" className="nav-link">
             All work →
           </Link>
-        </div>
+        </Reveal>
         <div className="grid md:grid-cols-3 gap-5">
-          {caseStudies.map((p) => (
-            <Link key={p.slug} to={`/work/${p.slug}`} className="card-link p-6">
+          {caseStudies.map((p, i) => (
+            <Reveal key={p.slug} delay={i * 70} className="h-full">
+              <Link to={`/work/${p.slug}`} className="card-link p-6">
               <div className="flex items-center justify-between gap-3 mb-4">
                 <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--accent)" }}>
                   {p.sector}
@@ -137,7 +143,8 @@ function WorkTeaser() {
                   </span>
                 ))}
               </div>
-            </Link>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -149,7 +156,7 @@ function ProcessTeaser() {
   return (
     <section className="py-20 lg:py-28">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="flex items-end justify-between gap-4 mb-10 flex-wrap">
+        <Reveal className="flex items-end justify-between gap-4 mb-10 flex-wrap">
           <div>
             <Eyebrow text="How we work" />
             <h2 className="text-2xl sm:text-3xl font-bold">From idea to launch.</h2>
@@ -157,8 +164,8 @@ function ProcessTeaser() {
           <Link to="/process" className="nav-link">
             The process →
           </Link>
-        </div>
-        <ol className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        </Reveal>
+        <Reveal as="ol" className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {steps.map((title, i) => (
             <li
               key={title}
@@ -171,7 +178,7 @@ function ProcessTeaser() {
               <span className="font-bold">{title}</span>
             </li>
           ))}
-        </ol>
+        </Reveal>
       </div>
     </section>
   );

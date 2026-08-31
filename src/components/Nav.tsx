@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 import { useTheme } from "../context/theme";
 import { site } from "../content/site";
@@ -32,9 +32,35 @@ export default function Nav() {
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const themeLabel = theme === "light" ? "Switch to dark mode" : "Switch to light mode";
+  const linksRef = useRef<HTMLDivElement>(null);
+  const [underline, setUnderline] = useState({ left: 0, width: 0, opacity: 0 });
 
   useEffect(() => {
     setOpen(false);
+  }, [location.pathname]);
+
+  useLayoutEffect(() => {
+    function measure() {
+      const list = linksRef.current;
+      if (!list) return;
+      const active = list.querySelector(".nav-link-active");
+      if (!(active instanceof HTMLElement)) {
+        setUnderline((current) => ({ ...current, opacity: 0 }));
+        return;
+      }
+      const parent = list.getBoundingClientRect();
+      const box = active.getBoundingClientRect();
+      setUnderline({
+        left: box.left - parent.left,
+        width: box.width,
+        opacity: 1,
+      });
+    }
+
+    measure();
+    window.addEventListener("resize", measure);
+    void document.fonts?.ready.then(measure);
+    return () => window.removeEventListener("resize", measure);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -81,15 +107,26 @@ export default function Nav() {
         <Logo />
 
         <div className="hidden md:flex items-center gap-7">
-          {site.nav.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}
-            >
-              {l.label}
-            </NavLink>
-          ))}
+          <div ref={linksRef} className="nav-links flex items-center gap-7">
+            {site.nav.map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}
+              >
+                {l.label}
+              </NavLink>
+            ))}
+            <span
+              className="nav-underline"
+              aria-hidden="true"
+              style={{
+                width: underline.width,
+                opacity: underline.opacity,
+                transform: `translateX(${underline.left}px)`,
+              }}
+            />
+          </div>
           <button
             type="button"
             onClick={toggle}

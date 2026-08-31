@@ -1,6 +1,72 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@600;700;800&display=swap");
 @import "tailwindcss";
 
+@property --bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f3f1eb;
+}
+@property --surface {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #fffdf8;
+}
+@property --surface-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e8e4db;
+}
+@property --text {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #161513;
+}
+@property --muted {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4a4844;
+}
+@property --subtle {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #5c5954;
+}
+@property --border {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #d9d4c8;
+}
+@property --border-strong {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c8c2b4;
+}
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #0d6e8c;
+}
+@property --accent-hover {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #0b5d77;
+}
+@property --accent-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e2f3f7;
+}
+@property --accent-on-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f7f4ee;
+}
+@property --nav-bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f3f1eb;
+}
+
 /*
   Refract Labs visual system
   --------------------------
@@ -83,6 +149,20 @@
 
 html {
   scroll-behavior: smooth;
+  transition:
+    --bg 0.2s ease,
+    --surface 0.2s ease,
+    --surface-2 0.2s ease,
+    --text 0.2s ease,
+    --muted 0.2s ease,
+    --subtle 0.2s ease,
+    --border 0.2s ease,
+    --border-strong 0.2s ease,
+    --accent 0.2s ease,
+    --accent-hover 0.2s ease,
+    --accent-soft 0.2s ease,
+    --accent-on-accent 0.2s ease,
+    --nav-bg 0.2s ease;
 }
 
 body {
@@ -232,6 +312,33 @@ svg {
   bottom: -2px;
   height: 2px;
   background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: underline-draw 0.28s ease-out forwards;
+}
+
+.nav-links {
+  position: relative;
+}
+
+.nav-links .nav-link-active::after {
+  content: none;
+  animation: none;
+}
+
+.nav-underline {
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  pointer-events: none;
+  transform-origin: left;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
 }
 
 .card-link {
@@ -288,6 +395,31 @@ svg {
 .hero-logo {
   display: block;
   box-shadow: var(--shadow-md);
+  transform: perspective(1200px) rotateY(0deg);
+  transform-origin: center center;
+  transition:
+    transform 0.5s ease,
+    box-shadow 0.5s ease,
+    filter 0.5s ease;
+}
+
+.hero-logo:hover {
+  transform: perspective(1200px) rotateY(-5deg) scale(1.01);
+  box-shadow:
+    var(--shadow-md),
+    0 16px 40px rgba(13, 110, 140, 0.22);
+}
+
+[data-theme="dark"] .hero-logo:hover {
+  box-shadow:
+    var(--shadow-md),
+    0 16px 48px rgba(78, 196, 220, 0.28);
+}
+
+[data-theme="dark"] .hero-logo.hero-in {
+  animation:
+    hero-in 0.55s ease-out 0.32s backwards,
+    logo-bloom 1.8s ease-out 0.5s backwards;
 }
 
 .field-label {
@@ -339,9 +471,90 @@ svg {
   border: 1px solid var(--positive);
 }
 
+.hero-in {
+  animation: hero-in 0.55s ease-out backwards;
+}
+.hero-in-1 {
+  animation-delay: 0ms;
+}
+.hero-in-2 {
+  animation-delay: 80ms;
+}
+.hero-in-3 {
+  animation-delay: 160ms;
+}
+.hero-in-4 {
+  animation-delay: 240ms;
+}
+.hero-in-5 {
+  animation-delay: 320ms;
+}
+
+.page-enter {
+  animation: page-in 0.2s ease-out both;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.55s ease-out,
+    transform 0.55s ease-out;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes logo-bloom {
+  0% {
+    filter: brightness(1);
+    box-shadow: var(--shadow-md);
+  }
+  45% {
+    filter: brightness(1.08);
+    box-shadow:
+      var(--shadow-md),
+      0 0 36px rgba(78, 196, 220, 0.34);
+  }
+  100% {
+    filter: brightness(1);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes underline-draw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+    transition: none;
   }
   *,
   *::before,
@@ -349,5 +562,21 @@ svg {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .hero-in,
+  .hero-logo,
+  .page-enter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hero-logo:hover {
+    transform: none;
   }
 }

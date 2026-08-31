@@ -1,5 +1,6 @@
 import PageHeader from "../components/PageHeader";
 import PageCTA from "../components/PageCTA";
+import Reveal from "../components/Reveal";
 import { BrandMark } from "../components/Logo";
 import { founders } from "../content/team";
 import { usePageMeta } from "../hooks/usePageMeta";
@@ -41,23 +42,24 @@ export default function About() {
 
       <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-[240px_1fr] gap-10 lg:gap-16 items-start">
-          <div>
+          <Reveal>
             <p className="eyebrow">The story</p>
             <BrandMark
               className="mt-6 w-full max-w-[220px] rounded-xl object-cover logo-lockup"
               alt="Refract Labs"
             />
-          </div>
+          </Reveal>
           <div>
             {story.map((s, i) => (
-              <div
+              <Reveal
                 key={s.heading}
+                delay={i * 80}
                 className="py-8"
                 style={i < story.length - 1 ? { borderBottom: "1px solid var(--border)" } : undefined}
               >
                 <h2 className="text-xl font-bold mb-3">{s.heading}</h2>
                 <p style={{ color: "var(--muted)" }}>{s.body}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -65,14 +67,16 @@ export default function About() {
 
       <section className="py-16 lg:py-24" style={{ background: "var(--surface-2)", borderTop: "1px solid var(--border)" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="mb-10">
+          <Reveal className="mb-10">
             <p className="eyebrow">Founders</p>
             <h2 className="text-2xl sm:text-3xl font-bold">Who you work with.</h2>
-          </div>
+          </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {founders.map((f) => (
-              <article
+            {founders.map((f, i) => (
+              <Reveal
+                as="article"
                 key={f.name}
+                delay={i * 80}
                 className="p-8"
                 style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)" }}
               >
@@ -121,7 +125,7 @@ export default function About() {
                     </span>
                   ))}
                 </div>
-              </article>
+              </Reveal>
             ))}
           </div>
         </div>

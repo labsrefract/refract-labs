@@ -1,5 +1,6 @@
 import PageHeader from "../components/PageHeader";
 import PageCTA from "../components/PageCTA";
+import Reveal from "../components/Reveal";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 const steps = [
@@ -41,7 +42,7 @@ export default function Process() {
 
       <section className="pb-20 lg:pb-28" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="max-w-3xl mx-auto px-6 lg:px-10">
-          <ol>
+          <Reveal as="ol">
             {steps.map((s, i) => (
               <li
                 key={s.num}
@@ -57,7 +58,7 @@ export default function Process() {
                 </p>
               </li>
             ))}
-          </ol>
+          </Reveal>
         </div>
       </section>
 
