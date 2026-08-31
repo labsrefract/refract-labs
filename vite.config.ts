@@ -377,7 +377,7 @@ function readJsonBody(req: IncomingMessage): Promise<Record<string, unknown>> {
 function contactDevApi(mode: string): Plugin {
   const env = loadEnv(mode, process.cwd(), '')
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  const TYPES = new Set(['web', 'mobile', 'mvp', 'consulting', 'other'])
+  const TYPES = new Set(['web', 'mobile', 'automation', 'mvp', 'consulting', 'other'])
 
   return {
     name: 'contact-dev-api',
@@ -433,6 +433,7 @@ function contactDevApi(mode: string): Plugin {
         const typeLabel: Record<string, string> = {
           web: 'Web app',
           mobile: 'Mobile app',
+          automation: 'Automation',
           mvp: 'MVP',
           consulting: 'Technical consulting',
           other: 'Other',

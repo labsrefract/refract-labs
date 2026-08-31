@@ -30,11 +30,13 @@ export const founders: readonly Founder[] = [
   },
   {
     name: "Hosanna Alex",
-    role: "Co-founder & security engineer",
-    bio: "Application security and infrastructure. Threat modeling, auth reviews, and the checks that keep a launch from becoming an incident.",
-    stack: ["Security", "AWS", "Python", "Go"],
+    role: "Co-founder & backend engineer",
+    bio: "Backend engineer in Nairobi. Builds APIs and databases that hold up under pressure — marketplace platforms, finance trackers, work-management systems. Currently finishing a BSc in Information Technology at JKUAT.",
+    stack: ["Python", "Node.js", "TypeScript", "PostgreSQL", "MongoDB", "Flask"],
     initials: "HA",
-    linkedin: "https://www.linkedin.com/in/hosanna-alex",
+    photo: "https://avatars.githubusercontent.com/u/81245867?v=4",
+    linkedin: "https://www.linkedin.com/in/hosanacodes",
+    github: "https://github.com/hosanacodes",
   },
 ];
 

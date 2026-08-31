@@ -6,7 +6,7 @@ import { usePageMeta } from "../hooks/usePageMeta";
 export default function Services() {
   usePageMeta(
     "Services — Refract Labs",
-    "Web apps, mobile apps, MVP development, and technical consulting from Refract Labs.",
+    "Web apps, mobile apps, automation, MVP development, and technical consulting from Refract Labs.",
   );
 
   return (

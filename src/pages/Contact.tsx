@@ -7,6 +7,7 @@ import { usePageMeta } from "../hooks/usePageMeta";
 const TYPES = [
   { value: "web", label: "Web app" },
   { value: "mobile", label: "Mobile app" },
+  { value: "automation", label: "Automation" },
   { value: "mvp", label: "MVP" },
   { value: "consulting", label: "Technical consulting" },
   { value: "other", label: "Other" },

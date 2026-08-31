@@ -32,7 +32,7 @@ export default function Footer() {
           <div>
             <Logo size="footer" />
             <p className="mt-4 text-sm max-w-xs" style={{ color: "var(--muted)" }}>
-              A three-person studio that designs and builds software for teams who need to move with care.
+              We design and build software for teams who need to move with care.
             </p>
           </div>
 

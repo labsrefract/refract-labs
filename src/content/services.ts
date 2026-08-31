@@ -30,6 +30,21 @@ export const services = [
     ],
   },
   {
+    id: "automation",
+    slug: "automation",
+    title: "Automation",
+    kicker: "Workflows & integrations",
+    summary:
+      "Replace repetitive ops with reliable scripts, APIs, and workflows — so your team spends time on the work that actually needs a person.",
+    desc: "We design and build automation that sits between the tools you already use. The goal is fewer hand-offs, fewer missed steps, and a system your team can run without us in the loop.",
+    includes: [
+      "Process mapping and the smallest set of automations that pay off",
+      "API integrations, webhooks, and scheduled jobs",
+      "Internal tools that wrap messy systems in a clean flow",
+      "Monitoring, retries, and a handoff the team can operate",
+    ],
+  },
+  {
     id: "mvp",
     slug: "mvp",
     title: "MVP development",

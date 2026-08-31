@@ -22,7 +22,7 @@ function Hero() {
             into products.
           </h1>
           <p className="mt-6 text-lg max-w-lg" style={{ color: "var(--muted)" }}>
-            Refract Labs designs and builds web apps, mobile apps, and MVPs for startups and growing businesses who need
+            Refract Labs designs and builds web apps, mobile apps, automation, and MVPs for startups and growing businesses who need
             to move fast without cutting corners.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -180,7 +180,7 @@ function ProcessTeaser() {
 export default function Home() {
   usePageMeta(
     "Refract Labs — Software, Intelligence, Security",
-    "Refract Labs designs and builds web apps, mobile apps, and MVPs for startups and growing businesses.",
+    "Refract Labs designs and builds web apps, mobile apps, automation, and MVPs for startups and growing businesses.",
   );
 
   return (

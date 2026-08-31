@@ -22,7 +22,7 @@ const story = [
 export default function About() {
   usePageMeta(
     "About — Refract Labs",
-    "Refract Labs is a three-person software studio. Every project is handled directly by the founders.",
+    "Refract Labs is a software studio. Every project is handled directly by the people who build it.",
   );
 
   return (
@@ -36,7 +36,7 @@ export default function About() {
             run by engineers.
           </>
         }
-        subtitle="Refract Labs is a three-person studio. No account managers, no junior developers, no outsourced work. Every project is handled directly by the founders."
+        subtitle="Refract Labs is a software studio. No account managers, no junior developers, no outsourced work. Every project is handled directly by the people who build it."
       />
 
       <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
