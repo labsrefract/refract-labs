@@ -4,6 +4,7 @@ import { ThemeProvider } from "../context/theme";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import PageFade from "./PageFade";
+import CircuitField from "./CircuitField";
 
 function ScrollReset() {
   const { pathname, hash } = useLocation();
@@ -26,7 +27,8 @@ export default function Root() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <div style={{ backgroundColor: "var(--bg)", minHeight: "100vh" }}>
+      <div className="page-shell">
+        <CircuitField />
         <Nav />
         <main id="main">
           <PageFade />
