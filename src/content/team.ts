@@ -40,15 +40,4 @@ export const founders: readonly Founder[] = [
   },
 ];
 
-export const testimonials = [
-  {
-    quote:
-      "They treated the booking platform like a product they would still own. We launched one tenancy model instead of three codebases, and the properties could run it without calling us every week.",
-    attribution: "Amara Njoroge, Head of Product — Harborline Hospitality",
-  },
-  {
-    quote:
-      "The dispatch screen stopped being a report and became the way we work. Exceptions that used to live in chat now live in the product.",
-    attribution: "James Okello, Operations Lead — Northline Logistics",
-  },
-] as const;
+export const testimonials: readonly { quote: string; attribution: string }[] = [];

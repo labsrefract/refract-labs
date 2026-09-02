@@ -58,7 +58,12 @@ export default function WorkDetail() {
           ))}
         </div>
 
-        <div className="mt-16 pt-10" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mt-16 pt-10 flex flex-wrap gap-3" style={{ borderTop: "1px solid var(--border)" }}>
+          {project.url ? (
+            <a href={project.url} className="btn btn-ghost" target="_blank" rel="noreferrer">
+              Visit site
+            </a>
+          ) : null}
           <ButtonLink to="/contact">Start a project</ButtonLink>
         </div>
       </div>
