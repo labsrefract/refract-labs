@@ -7,47 +7,64 @@ export type CaseStudy = {
   approach: string;
   result: string;
   stack: string[];
+  url?: string;
 };
 
 export const caseStudies: CaseStudy[] = [
   {
-    slug: "booking-platform",
-    name: "Multi-tenant booking platform",
-    sector: "Hospitality",
-    summary: "A scheduling product that had to support multiple brands without multiplying the codebase.",
+    slug: "highland-glaziers",
+    name: "Highland Glaziers",
+    sector: "Construction",
+    summary: "A site for a Kisumu aluminium contractor — services, a project gallery, and a quote path that actually gets used.",
     challenge:
-      "The client needed one platform that several properties could run independently — different branding, pricing, and staff permissions — without a separate deploy for each.",
+      "Highland Glaziers had the work (windows, doors, curtain walls, facades) but no place online that could show completed jobs or take a quote without a phone call.",
     approach:
-      "We modeled tenancy at the data layer first, then built a React admin and a public booking flow on a shared API. Payments, availability, and audit logs were designed as first-class resources rather than bolted on.",
+      "We built a React site around the sales path: services, a filterable project gallery, a quote form, and WhatsApp as the fastest close. Analytics went in so they can see which pages earn enquiries.",
     result:
-      "A single codebase serving multiple properties, with role-based access and a release process the internal team could run without us in the loop.",
-    stack: ["React", "Node.js", "PostgreSQL", "Stripe"],
+      "Visitors can browse the work and send a quote from highlandglaziers.app instead of waiting on a brochure or a call.",
+    stack: ["React", "Vite"],
+    url: "https://highlandglaziers.app",
   },
   {
-    slug: "operations-dashboard",
-    name: "Live operations dashboard",
-    sector: "Logistics",
-    summary: "A dispatch view that had to stay accurate while vehicles and jobs moved in real time.",
+    slug: "nairobi-curtains",
+    name: "Nairobi Curtains",
+    sector: "Home & interiors",
+    summary: "Curtain sales, installation, and laundry on one site — collections, enquiries, and WhatsApp as the close.",
     challenge:
-      "Operators were stitching together spreadsheets and a legacy tool. They needed one screen for jobs, vehicles, and exceptions — updating as the field changed, not on a five-minute refresh.",
+      "The business runs three related services across several cities. They needed one site that could explain the work, show collections, and take an enquiry without listing prices that go stale.",
     approach:
-      "We put a Go service in front of the existing systems of record, streamed changes over WebSockets, and designed the UI around the dispatcher's actual scan pattern rather than a generic data grid.",
+      "We structured the site around those three lines: collection browsing, a contact form, and WhatsApp as the fastest path. Copy and IA stay with the trade, not a generic shop template.",
     result:
-      "Dispatchers could act on a live picture of the fleet. Exception handling moved from chat threads into the product.",
-    stack: ["Next.js", "Go", "WebSockets", "Redis"],
+      "A public site that can take an enquiry for a new set of curtains, a fitting, or a pickup — and route it to the team the same day.",
+    stack: ["React", "Vite"],
+    url: "https://nairobi-curtains.vercel.app",
   },
   {
-    slug: "procurement-app",
-    name: "B2B procurement app",
-    sector: "Supply chain",
-    summary: "A mobile-first workflow for buyers who spend most of their day away from a desk.",
+    slug: "dispute-resolution-hub",
+    name: "Dispute Resolution Hub",
+    sector: "Legal services",
+    summary: "A booking product for offices and meeting rooms, with an admin side to run the calendar.",
     challenge:
-      "Field buyers were emailing photos and POs. The company wanted a proper app without waiting a year for native iOS and Android in parallel.",
+      "The Hub lets people hire private offices, boardrooms, and meeting space in Kilimani. Bookings were landing on the phone and in inboxes; staff had no single place to see what was reserved.",
     approach:
-      "We shipped a React Native app against a typed API, with offline drafts and a review queue for the office. The first release covered the three tasks that actually blocked orders; everything else waited.",
+      "We built a public booking flow for the spaces, and an admin so the team could confirm, update, and manage those bookings without a spreadsheet.",
     result:
-      "Buyers could raise and track orders from site. The office stopped reconciling inboxes to know what had been committed.",
-    stack: ["React Native", "TypeScript", "Node.js"],
+      "Visitors can reserve a room from the site. Staff manage the calendar from the back office instead of reconstructing it from messages.",
+    stack: ["React", "Node.js"],
+  },
+  {
+    slug: "lexah-holdings",
+    name: "Lexah Holdings",
+    sector: "Manufacturing",
+    summary: "A company site for interlocking pavers and composites made from recovered plastic — products, process, and a quote path.",
+    challenge:
+      "Lexah needed a public face that could explain a materials story (waste plastic into construction units) and collect project enquiries from developers and homeowners.",
+    approach:
+      "We designed a straightforward marketing site: product specs, the manufacturing process, and a quote form, on their own domain.",
+    result:
+      "lexahholdings.co.ke is the place a specifier can read the materials story and request a quote.",
+    stack: ["PHP", "JavaScript"],
+    url: "https://lexahholdings.co.ke",
   },
 ];
 

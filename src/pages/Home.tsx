@@ -45,6 +45,8 @@ function Hero() {
 }
 
 function Proof() {
+  if (testimonials.length === 0) return null;
+
   return (
     <section className="py-16 lg:py-20" style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", background: "var(--surface)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
@@ -123,7 +125,7 @@ function WorkTeaser() {
             All work →
           </Link>
         </Reveal>
-        <div className="grid md:grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {caseStudies.map((p, i) => (
             <Reveal key={p.slug} delay={i * 70} className="h-full">
               <Link to={`/work/${p.slug}`} className="card-link p-6">
