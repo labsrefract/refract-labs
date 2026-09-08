@@ -31,7 +31,7 @@ export default function Privacy() {
         <h2>Where it goes</h2>
         <p>
           The site is hosted on Vercel. Contact messages and call requests are sent with Resend to our inbox. The studio
-          mark and selected work shots are served from Cloudinary. Type is loaded from Google Fonts. Those providers process
+          mark, team portraits, and selected work shots are served from Cloudinary. Type is loaded from Google Fonts. Those providers process
           what they need to host the page, deliver mail, or serve an asset. We do not sell that data.
         </p>
       </Reveal>
