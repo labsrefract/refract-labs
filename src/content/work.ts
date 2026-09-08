@@ -8,7 +8,14 @@ export type CaseStudy = {
   result: string;
   stack: string[];
   url?: string;
+  image?: string;
 };
+
+const CLOUDINARY = "https://res.cloudinary.com/vcrqvhjf/image/upload";
+
+function workShot(version: string, publicId: string) {
+  return `${CLOUDINARY}/f_auto,q_auto,c_limit,w_1440/${version}/${publicId}`;
+}
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -24,6 +31,7 @@ export const caseStudies: CaseStudy[] = [
       "Visitors can browse the work and send a quote from highlandglaziers.app instead of waiting on a brochure or a call.",
     stack: ["React", "Vite"],
     url: "https://highlandglaziers.app",
+    image: workShot("v1788878997", "highlandglaziers.png"),
   },
   {
     slug: "nairobi-curtains",
@@ -38,6 +46,7 @@ export const caseStudies: CaseStudy[] = [
       "A public site that can take an enquiry for a new set of curtains, a fitting, or a pickup — and route it to the team the same day.",
     stack: ["React", "Vite"],
     url: "https://nairobi-curtains.vercel.app",
+    image: workShot("v1788879145", "nairobicurtains.png"),
   },
   {
     slug: "dispute-resolution-hub",
@@ -51,6 +60,7 @@ export const caseStudies: CaseStudy[] = [
     result:
       "Visitors can reserve a room from the site. Staff manage the calendar from the back office instead of reconstructing it from messages.",
     stack: ["React", "Node.js"],
+    image: "/work/dispute-resolution-hub.jpg",
   },
   {
     slug: "lexah-holdings",
@@ -65,6 +75,7 @@ export const caseStudies: CaseStudy[] = [
       "lexahholdings.co.ke is the place a specifier can read the materials story and request a quote.",
     stack: ["PHP", "JavaScript"],
     url: "https://lexahholdings.co.ke",
+    image: workShot("v1788879113", "lexah.png"),
   },
 ];
 

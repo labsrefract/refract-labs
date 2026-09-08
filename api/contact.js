@@ -1,10 +1,8 @@
 /**
- * Vercel serverless function for the contact form.
+ * Vercel serverless function for the contact form and call requests.
  * TODO: set RESEND_API_KEY and CONTACT_TO_EMAIL in the Vercel project.
  */
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TYPES = new Set(["web", "mobile", "automation", "mvp", "consulting", "other"]);
-const MAX = { name: 120, email: 200, message: 5000 };
+import { enquiryEmail, validateEnquiry } from "./enquiry.js";
 
 function readBody(req) {
   return new Promise((resolve, reject) => {
@@ -22,38 +20,6 @@ function readBody(req) {
   });
 }
 
-function validate(body) {
-  const name = String(body.name || "").trim();
-  const email = String(body.email || "").trim();
-  const type = String(body.type || "").trim();
-  const message = String(body.message || "").trim();
-  const errors = {};
-
-  if (!name) errors.name = "Please enter your name.";
-  else if (name.length > MAX.name) errors.name = "Name is too long.";
-
-  if (!email) errors.email = "Please enter your email.";
-  else if (!EMAIL_RE.test(email) || email.length > MAX.email) {
-    errors.email = "Please enter a valid email.";
-  }
-
-  if (!TYPES.has(type)) errors.type = "Please select a project type.";
-
-  if (!message) errors.message = "Please tell us a bit about the project.";
-  else if (message.length > MAX.message) errors.message = "Message is too long.";
-
-  return { name, email, type, message, errors };
-}
-
-const typeLabel = {
-  web: "Web app",
-  mobile: "Mobile app",
-  automation: "Automation",
-  mvp: "MVP",
-  consulting: "Technical consulting",
-  other: "Other",
-};
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -67,7 +33,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Could not read that request." });
   }
 
-  const { name, email, type, message, errors } = validate(body);
+  const { intent, name, email, type, message, slot, errors } = validateEnquiry(body);
   if (Object.keys(errors).length) {
     return res.status(422).json({ error: "Please fix the highlighted fields.", errors });
   }
@@ -82,13 +48,7 @@ export default async function handler(req, res) {
   }
 
   const from = process.env.CONTACT_FROM_EMAIL || "Refract Labs <onboarding@resend.dev>";
-  const text = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Type: ${typeLabel[type] || type}`,
-    "",
-    message,
-  ].join("\n");
+  const mail = enquiryEmail({ intent, name, email, type, message, slot });
 
   try {
     const response = await fetch("https://api.resend.com/emails", {
@@ -101,8 +61,8 @@ export default async function handler(req, res) {
         from,
         to: [to],
         reply_to: email,
-        subject: `New inquiry from ${name} (${typeLabel[type] || type})`,
-        text,
+        subject: mail.subject,
+        text: mail.text,
       }),
     });
 

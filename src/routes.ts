@@ -8,6 +8,9 @@ import WorkDetail from "./pages/WorkDetail";
 import Process from "./pages/Process";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Cookies from "./pages/Cookies";
 import NotFound from "./pages/NotFound";
 
 const pages = [
@@ -18,6 +21,9 @@ const pages = [
   { path: "process", Component: Process },
   { path: "about", Component: About },
   { path: "contact", Component: Contact },
+  { path: "privacy", Component: Privacy },
+  { path: "terms", Component: Terms },
+  { path: "cookies", Component: Cookies },
   { path: "*", Component: NotFound },
 ];
 

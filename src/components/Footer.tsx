@@ -28,7 +28,7 @@ export default function Footer() {
   return (
     <footer style={{ borderTop: "1px solid var(--border)", background: "var(--bg)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           <div>
             <Logo size="footer" />
             <p className="mt-4 text-sm max-w-xs" style={{ color: "var(--muted)" }}>
@@ -70,6 +70,27 @@ export default function Footer() {
               <p className="eyebrow">Connect</p>
               <Socials />
             </div>
+          </div>
+
+          <div>
+            <p className="eyebrow">Legal</p>
+            <ul className="flex flex-col gap-2">
+              <li>
+                <Link to="/privacy" className="nav-link">
+                  Privacy
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms" className="nav-link">
+                  Terms
+                </Link>
+              </li>
+              <li>
+                <Link to="/cookies" className="nav-link">
+                  Cookies
+                </Link>
+              </li>
+            </ul>
           </div>
 
           <div>

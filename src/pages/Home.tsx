@@ -2,22 +2,32 @@ import { Link } from "react-router";
 import Eyebrow from "../components/Eyebrow";
 import PageCTA from "../components/PageCTA";
 import Reveal from "../components/Reveal";
-import { BrandMark } from "../components/Logo";
+import WorkCard from "../components/WorkCard";
 import { ButtonLink } from "../components/Button";
 import { usePageMeta } from "../hooks/usePageMeta";
+import { processSteps } from "../content/process";
 import { services } from "../content/services";
-import { caseStudies } from "../content/work";
+import { site } from "../content/site";
 import { testimonials } from "../content/team";
+import { caseStudies } from "../content/work";
 
-const steps = ["Discover", "Design", "Build", "Launch"];
+const pictured = caseStudies.filter((p) => p.image);
+const unpictured = caseStudies.filter((p) => !p.image);
+
+const heroStats = [
+  { value: site.projectsShipped, label: "Projects shipped" },
+  { value: site.clientRetention, label: "Client retention" },
+  { value: "1 day", label: "Typical reply" },
+  { value: site.expertYears, label: "Combined expert years" },
+] as const;
 
 function Hero() {
   return (
-    <section className="hero pt-28 pb-16 lg:pt-36 lg:pb-24">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div>
+    <section className="hero pt-28 pb-14 lg:pt-36 lg:pb-20">
+      <div className="hero-stage max-w-7xl mx-auto px-6 lg:px-10">
+        <div className="hero-copy">
           <Eyebrow text="Software · Intelligence · Security" className="hero-in hero-in-1" />
-          <h1 className="hero-in hero-in-2 text-4xl sm:text-5xl lg:text-[3.6rem] font-extrabold" style={{ color: "var(--text)" }}>
+          <h1 className="hero-in hero-in-2 text-4xl sm:text-5xl lg:text-[3.6rem] font-bold" style={{ color: "var(--text)" }}>
             We bend ideas
             <br />
             into products.
@@ -33,80 +43,14 @@ function Hero() {
             </ButtonLink>
           </div>
         </div>
-        <div className="hero-visual min-w-0 flex justify-center lg:justify-end">
-          <BrandMark
-            className="hero-logo hero-in hero-in-5 w-full max-w-sm lg:max-w-md rounded-2xl object-cover"
-            alt="Refract Labs — Software, Intelligence, Security"
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Proof() {
-  if (testimonials.length === 0) return null;
-
-  return (
-    <section className="py-16 lg:py-20" style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", background: "var(--surface)" }}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <Reveal className="flex items-end justify-between gap-4 mb-10 flex-wrap">
-          <div>
-            <Eyebrow text="What clients say" />
-            <h2 className="text-2xl sm:text-3xl font-bold">From the people we ship with.</h2>
-          </div>
-        </Reveal>
-        <div className="grid md:grid-cols-2 gap-6">
-          {testimonials.map((t, i) => (
-            <Reveal
-              as="figure"
-              key={i}
-              delay={i * 80}
-              className="p-6 lg:p-8"
-              style={{ background: "var(--bg)", border: "1px solid var(--border)", borderRadius: "var(--radius)" }}
-            >
-              <blockquote className="text-lg leading-relaxed" style={{ color: "var(--text)" }}>
-                “{t.quote}”
-              </blockquote>
-              <figcaption className="mt-5 text-sm" style={{ color: "var(--muted)" }}>
-                {t.attribution}
-              </figcaption>
-            </Reveal>
+        <dl className="hero-stats hero-in hero-in-5">
+          {heroStats.map((stat) => (
+            <div key={stat.label} className="hero-stat">
+              <dt className="hero-stat-label">{stat.label}</dt>
+              <dd className="hero-stat-value">{stat.value}</dd>
+            </div>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ServicesTeaser() {
-  return (
-    <section className="py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <Reveal className="flex items-end justify-between gap-4 mb-10 flex-wrap">
-          <div>
-            <Eyebrow text="What we do" />
-            <h2 className="text-2xl sm:text-3xl font-bold">Engineering, end to end.</h2>
-          </div>
-          <Link to="/services" className="nav-link">
-            All services →
-          </Link>
-        </Reveal>
-        <div className="grid sm:grid-cols-2 gap-5">
-          {services.map((s, i) => (
-            <Reveal key={s.id} delay={i * 70} className="h-full">
-              <Link to={`/services#${s.id}`} className="card-link p-6 lg:p-7">
-              <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--accent)" }}>
-                {s.kicker}
-              </p>
-              <h3 className="text-xl font-bold mb-2">{s.title}</h3>
-              <p className="text-[15px]" style={{ color: "var(--muted)" }}>
-                {s.summary}
-              </p>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
+        </dl>
       </div>
     </section>
   );
@@ -114,40 +58,124 @@ function ServicesTeaser() {
 
 function WorkTeaser() {
   return (
-    <section className="py-20 lg:py-28" style={{ background: "var(--surface-2)" }}>
+    <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <Reveal className="flex items-end justify-between gap-4 mb-10 flex-wrap">
-          <div>
-            <Eyebrow text="Selected work" />
-            <h2 className="text-2xl sm:text-3xl font-bold">Selected work.</h2>
-          </div>
+        <Reveal className="flex items-end justify-between gap-4 mb-8 flex-wrap">
+          <h2 className="text-2xl sm:text-3xl font-bold">Recent builds.</h2>
           <Link to="/work" className="nav-link">
             All work →
           </Link>
         </Reveal>
-        <div className="grid sm:grid-cols-2 gap-5">
-          {caseStudies.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 70} className="h-full">
-              <Link to={`/work/${p.slug}`} className="card-link p-6">
-              <div className="flex items-center justify-between gap-3 mb-4">
-                <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--accent)" }}>
-                  {p.sector}
-                </span>
-              </div>
-              <h3 className="text-lg font-bold mb-2">{p.name}</h3>
-              <p className="text-sm mb-4" style={{ color: "var(--muted)" }}>
-                {p.summary}
-              </p>
-              <div className="mt-auto flex flex-wrap gap-1.5">
-                {p.stack.map((t) => (
-                  <span key={t} className="chip">
-                    {t}
-                  </span>
-                ))}
-              </div>
-              </Link>
+
+        <div className="home-work-grid">
+          {pictured.map((p, i) => (
+            <Reveal key={p.slug} delay={i * 70}>
+              <WorkCard project={p} layout="tile" />
             </Reveal>
           ))}
+        </div>
+
+        {unpictured.length ? (
+          <div className="mt-4 flex flex-col gap-3">
+            {unpictured.map((p) => (
+              <Reveal key={p.slug}>
+                <Link to={`/work/${p.slug}`} className="home-work-line">
+                  <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--accent)" }}>
+                    {p.sector}
+                  </span>
+                  <span className="font-bold">{p.name}</span>
+                  <span className="text-sm" style={{ color: "var(--muted)" }}>
+                    {p.summary}
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function ServicesTeaser() {
+  return (
+    <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+        <Reveal className="flex items-end justify-between gap-4 mb-4 flex-wrap">
+          <h2 className="text-2xl sm:text-3xl font-bold">What we do.</h2>
+          <Link to="/services" className="nav-link">
+            All services →
+          </Link>
+        </Reveal>
+        <Reveal>
+          <p className="max-w-xl mb-10 text-[15px]" style={{ color: "var(--muted)" }}>
+            Web, mobile, automation, MVPs, and consulting — from the first sketch through production.
+          </p>
+        </Reveal>
+        <ol className="home-offer">
+          {services.map((s, i) => (
+            <li key={s.id}>
+              <Reveal delay={i * 40}>
+                <Link to={`/services#${s.id}`} className="home-offer-link">
+                  <span className="home-offer-num" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="home-offer-kicker">{s.kicker}</span>
+                  <h3 className="home-offer-title">{s.title}</h3>
+                  <p className="home-offer-copy">{s.summary}</p>
+                </Link>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function Voices() {
+  const [featured, ...rest] = testimonials;
+  if (!featured) return null;
+
+  return (
+    <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+        <Reveal className="mb-10">
+          <h2 className="text-2xl sm:text-3xl font-bold">From clients.</h2>
+        </Reveal>
+        <div className="home-voices">
+          <Reveal>
+            <blockquote className="home-voice home-voice-feature">
+              <p className="home-voice-quote">{featured.quote}</p>
+              <footer className="home-voice-cite">
+                <cite>
+                  {featured.name}
+                  <span>
+                    {featured.role}, {featured.company}
+                  </span>
+                </cite>
+              </footer>
+            </blockquote>
+          </Reveal>
+          {rest.length ? (
+            <div className="home-voices-rest">
+              {rest.map((t, i) => (
+                <Reveal key={t.name} delay={(i + 1) * 60}>
+                  <blockquote className="home-voice">
+                    <p className="home-voice-quote">{t.quote}</p>
+                    <footer className="home-voice-cite">
+                      <cite>
+                        {t.name}
+                        <span>
+                          {t.role}, {t.company}
+                        </span>
+                      </cite>
+                    </footer>
+                  </blockquote>
+                </Reveal>
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </section>
@@ -156,31 +184,32 @@ function WorkTeaser() {
 
 function ProcessTeaser() {
   return (
-    <section className="py-20 lg:py-28">
+    <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <Reveal className="flex items-end justify-between gap-4 mb-10 flex-wrap">
-          <div>
-            <Eyebrow text="How we work" />
-            <h2 className="text-2xl sm:text-3xl font-bold">From idea to launch.</h2>
-          </div>
+        <Reveal className="flex items-end justify-between gap-4 mb-4 flex-wrap">
+          <h2 className="text-2xl sm:text-3xl font-bold">How we work.</h2>
           <Link to="/process" className="nav-link">
             The process →
           </Link>
         </Reveal>
-        <Reveal as="ol" className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {steps.map((title, i) => (
-            <li
-              key={title}
-              className="p-5"
-              style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)" }}
-            >
-              <span className="block text-sm font-semibold mb-2" style={{ color: "var(--accent)", fontFamily: "var(--font-mono)" }}>
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="font-bold">{title}</span>
-            </li>
-          ))}
+        <Reveal>
+          <p className="max-w-xl mb-10 text-[15px]" style={{ color: "var(--muted)" }}>
+            Four phases from the first conversation to production. You see the work as it happens.
+          </p>
         </Reveal>
+        <ol className="home-process">
+          {processSteps.map((s, i) => (
+            <Reveal as="li" key={s.id} delay={i * 50} className="home-process-step">
+              <Link to={`/process#${s.id}`} className="home-process-link">
+                <span className="home-process-num" aria-hidden="true">
+                  {s.num}
+                </span>
+                <h3 className="home-process-title">{s.title}</h3>
+                <p className="home-process-copy">{s.teaser}</p>
+              </Link>
+            </Reveal>
+          ))}
+        </ol>
       </div>
     </section>
   );
@@ -190,15 +219,16 @@ export default function Home() {
   usePageMeta(
     "Refract Labs — Software, Intelligence, Security",
     "Refract Labs designs and builds web apps, mobile apps, automation, and MVPs for startups and growing businesses.",
+    "/",
   );
 
   return (
     <>
       <Hero />
-      <Proof />
       <ServicesTeaser />
       <WorkTeaser />
       <ProcessTeaser />
+      {testimonials.length ? <Voices /> : null}
       <PageCTA />
     </>
   );

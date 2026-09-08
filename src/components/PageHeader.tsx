@@ -15,7 +15,7 @@ export default function PageHeader({
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <Eyebrow text={eyebrow} />
         <h1
-          className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold max-w-4xl"
+          className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold max-w-4xl"
           style={{ color: "var(--text)" }}
         >
           {title}
