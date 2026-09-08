@@ -39,11 +39,11 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL;
-  if (!apiKey || !to) {
+  const to = process.env.CONTACT_TO_EMAIL || "hello@refractlabs.tech";
+  if (!apiKey) {
     return res.status(503).json({
       error:
-        "The contact inbox is not configured yet. Email internal.refract.labs@gmail.com directly, or set RESEND_API_KEY and CONTACT_TO_EMAIL.",
+        "The contact inbox is not configured yet. Email hello@refractlabs.tech directly, or set RESEND_API_KEY and CONTACT_TO_EMAIL.",
     });
   }
 
