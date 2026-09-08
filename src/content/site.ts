@@ -7,7 +7,7 @@ const LOGO_ID = "WhatsApp_Image_2026-08-27_at_13.32.12";
 export const site = {
   name: "Refract Labs",
   tagline: "Software · Intelligence · Security",
-  email: "internal.refract.labs@gmail.com",
+  email: "hello@refractlabs.tech",
   location: "Nairobi, Kenya",
   url: "https://refractlabs.tech",
   logo: `${CLOUDINARY}/f_auto,q_auto/${LOGO_ID}`,
