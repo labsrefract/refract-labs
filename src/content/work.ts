@@ -60,7 +60,8 @@ export const caseStudies: CaseStudy[] = [
     result:
       "Visitors can reserve a room from the site. Staff manage the calendar from the back office instead of reconstructing it from messages.",
     stack: ["React", "Node.js"],
-    image: "/work/dispute-resolution-hub.jpg",
+    url: "https://disputeresolutionhub.com",
+    image: workShot("v1788880528", "drhub.png"),
   },
   {
     slug: "lexah-holdings",
