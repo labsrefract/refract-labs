@@ -1,3 +1,9 @@
+const CLOUDINARY = "https://res.cloudinary.com/vcrqvhjf/image/upload";
+
+function teamShot(version: string, publicId: string) {
+  return `${CLOUDINARY}/f_auto,q_auto,c_fill,g_face,w_416,h_416/${version}/${publicId}`;
+}
+
 export type Founder = {
   name: string;
   role: string;
@@ -13,10 +19,10 @@ export const founders: readonly Founder[] = [
   {
     name: "David Ouma",
     role: "Co-founder & backend engineer",
-    bio: "Backend-focused engineer in Nairobi. Designs APIs, authentication, and real-time systems in Node.js, and ships the frontend when the product needs it. Currently studying Information Technology at JKUAT.",
+    bio: "Backend-focused engineer in Nairobi. Designs APIs, authentication, and real-time systems in Node.js, and ships the frontend when the product needs it. Information Technology graduate from JKUAT.",
     stack: ["Node.js", "Express", "PostgreSQL", "MongoDB", "React", "Docker"],
     initials: "DO",
-    photo: "/team/david-ouma.jpg",
+    photo: teamShot("v1788882280", "david.jpg"),
     linkedin: "https://www.linkedin.com/in/oumadavid",
     github: "https://github.com/oumadavid",
   },
@@ -26,6 +32,7 @@ export const founders: readonly Founder[] = [
     bio: "Product-minded frontend engineer. Turns messy briefs into interfaces that hold up in production — React, TypeScript, and the unglamorous work of making software feel finished.",
     stack: ["React", "TypeScript", "React Native", "CSS"],
     initials: "SG",
+    photo: teamShot("v1788882291", "steve.jpg"),
     linkedin: "https://www.linkedin.com/in/stephen-githua",
   },
   {
