@@ -1,10 +1,7 @@
-import { useState, type FormEvent } from "react";
-import PageHeader from "../components/PageHeader";
-import { Button } from "../components/Button";
-import CallScheduler from "../components/CallScheduler";
-import Reveal from "../components/Reveal";
+import { useMemo, useState, type FormEvent } from "react";
+import { Button } from "./Button";
+import { formatCallSlot, isValidCallSlot, listCallDays, listCallTimes } from "../lib/callSlots";
 import { site } from "../content/site";
-import { usePageMeta } from "../hooks/usePageMeta";
 
 const TYPES = [
   { value: "web", label: "Web app" },
@@ -15,51 +12,48 @@ const TYPES = [
   { value: "other", label: "Other" },
 ] as const;
 
-const faqs = [
-  {
-    q: "How fast do you reply?",
-    a: "Within one business day. Discovery calls are 30 minutes and free.",
-  },
-  {
-    q: "Do you take every project?",
-    a: "No. We take a small number at a time so the people who bid the work are the people who build it.",
-  },
-  {
-    q: "Where are you based?",
-    a: "Nairobi. We work with clients here and remotely. Call times are Africa/Nairobi (EAT).",
-  },
-];
-
-type Field = "name" | "email" | "type" | "message";
-type FormState = Record<Field, string>;
+type Field = "name" | "email" | "type" | "message" | "slot";
+type FormState = Record<"name" | "email" | "type" | "message", string>;
 type FieldErrors = Partial<Record<Field, string>>;
 
 const empty: FormState = { name: "", email: "", type: "", message: "" };
 
-function validate(form: FormState): FieldErrors {
+function validate(form: FormState, slot: string): FieldErrors {
   const errors: FieldErrors = {};
   if (!form.name.trim()) errors.name = "Please enter your name.";
   if (!form.email.trim()) errors.email = "Please enter your email.";
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) errors.email = "Please enter a valid email.";
   if (!form.type) errors.type = "Please select a project type.";
-  if (!form.message.trim()) errors.message = "Please tell us a bit about the project.";
+  if (!slot || !isValidCallSlot(slot)) errors.slot = "Pick a day and time.";
   return errors;
 }
 
-function ContactForm() {
+export default function CallScheduler() {
+  const days = useMemo(() => listCallDays(), []);
+  const [day, setDay] = useState(days[0]?.ymd ?? "");
+  const [slot, setSlot] = useState("");
   const [form, setForm] = useState<FormState>(empty);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "preview" | "error">("idle");
   const [serverError, setServerError] = useState("");
+  const [confirmed, setConfirmed] = useState("");
 
-  function update<K extends Field>(key: K, value: string) {
+  const times = useMemo(() => (day ? listCallTimes(day) : []), [day]);
+
+  function update<K extends keyof FormState>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
     setErrors((e) => ({ ...e, [key]: undefined }));
   }
 
+  function pickDay(ymd: string) {
+    setDay(ymd);
+    setSlot("");
+    setErrors((e) => ({ ...e, slot: undefined }));
+  }
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    const next = validate(form);
+    const next = validate(form, slot);
     setErrors(next);
     if (Object.keys(next).length) return;
 
@@ -71,11 +65,12 @@ function ContactForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          intent: "message",
+          intent: "call",
           name: form.name.trim(),
           email: form.email.trim(),
           type: form.type,
           message: form.message.trim(),
+          slot,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -96,6 +91,7 @@ function ContactForm() {
         return;
       }
 
+      setConfirmed(formatCallSlot(slot));
       setStatus(data.preview ? "preview" : "success");
     } catch {
       setServerError("Could not reach the server. Check your connection or email us directly.");
@@ -107,8 +103,20 @@ function ContactForm() {
     return (
       <p className="alert alert-ok" role="status">
         {status === "preview"
-          ? "Local preview — the form validated, but email is not sent until RESEND_API_KEY and CONTACT_TO_EMAIL are set."
-          : "Message received. We will get back to you within one business day."}
+          ? `Local preview — requested for ${confirmed}. Email is not sent until RESEND_API_KEY and CONTACT_TO_EMAIL are set.`
+          : `Requested for ${confirmed}. We will confirm by email within one business day.`}
+      </p>
+    );
+  }
+
+  if (!days.length) {
+    return (
+      <p style={{ color: "var(--muted)" }}>
+        No open slots this window. Email{" "}
+        <a href={`mailto:${site.email}`} className="nav-link">
+          {site.email}
+        </a>{" "}
+        and we will find a time.
       </p>
     );
   }
@@ -124,13 +132,59 @@ function ContactForm() {
         </p>
       )}
 
+      <fieldset className="slot-fieldset">
+        <legend className="field-label">Day</legend>
+        <div className="slot-row" role="radiogroup" aria-label="Day">
+          {days.map((d) => (
+            <button
+              key={d.ymd}
+              type="button"
+              className="slot-chip"
+              aria-pressed={day === d.ymd}
+              onClick={() => pickDay(d.ymd)}
+            >
+              {d.label}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset className="slot-fieldset">
+        <legend className="field-label">Time · 30 minutes · EAT</legend>
+        <div className="slot-row" role="radiogroup" aria-label="Time">
+          {times.length ? (
+            times.map((t) => (
+              <button
+                key={t.iso}
+                type="button"
+                className="slot-chip"
+                aria-pressed={slot === t.iso}
+                onClick={() => {
+                  setSlot(t.iso);
+                  setErrors((e) => ({ ...e, slot: undefined }));
+                }}
+              >
+                {t.label}
+              </button>
+            ))
+          ) : (
+            <p className="slot-empty">No times left this day. Pick another.</p>
+          )}
+        </div>
+        {errors.slot && (
+          <p id="call-slot-error" className="field-error">
+            {errors.slot}
+          </p>
+        )}
+      </fieldset>
+
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label className="field-label" htmlFor="contact-name">
+          <label className="field-label" htmlFor="call-name">
             Name
           </label>
           <input
-            id="contact-name"
+            id="call-name"
             name="name"
             type="text"
             autoComplete="name"
@@ -139,20 +193,20 @@ function ContactForm() {
             onChange={(e) => update("name", e.target.value)}
             className="field-input"
             aria-invalid={errors.name ? true : undefined}
-            aria-describedby={errors.name ? "contact-name-error" : undefined}
+            aria-describedby={errors.name ? "call-name-error" : undefined}
           />
           {errors.name && (
-            <p id="contact-name-error" className="field-error">
+            <p id="call-name-error" className="field-error">
               {errors.name}
             </p>
           )}
         </div>
         <div>
-          <label className="field-label" htmlFor="contact-email">
+          <label className="field-label" htmlFor="call-email">
             Email
           </label>
           <input
-            id="contact-email"
+            id="call-email"
             name="email"
             type="email"
             autoComplete="email"
@@ -161,10 +215,10 @@ function ContactForm() {
             onChange={(e) => update("email", e.target.value)}
             className="field-input"
             aria-invalid={errors.email ? true : undefined}
-            aria-describedby={errors.email ? "contact-email-error" : undefined}
+            aria-describedby={errors.email ? "call-email-error" : undefined}
           />
           {errors.email && (
-            <p id="contact-email-error" className="field-error">
+            <p id="call-email-error" className="field-error">
               {errors.email}
             </p>
           )}
@@ -172,18 +226,18 @@ function ContactForm() {
       </div>
 
       <div>
-        <label className="field-label" htmlFor="contact-type">
+        <label className="field-label" htmlFor="call-type">
           Project type
         </label>
         <select
-          id="contact-type"
+          id="call-type"
           name="type"
           required
           value={form.type}
           onChange={(e) => update("type", e.target.value)}
           className="field-input"
           aria-invalid={errors.type ? true : undefined}
-          aria-describedby={errors.type ? "contact-type-error" : undefined}
+          aria-describedby={errors.type ? "call-type-error" : undefined}
         >
           <option value="" disabled>
             Select a type
@@ -195,98 +249,29 @@ function ContactForm() {
           ))}
         </select>
         {errors.type && (
-          <p id="contact-type-error" className="field-error">
+          <p id="call-type-error" className="field-error">
             {errors.type}
           </p>
         )}
       </div>
 
       <div>
-        <label className="field-label" htmlFor="contact-message">
-          Message
+        <label className="field-label" htmlFor="call-note">
+          Note <span className="field-optional">optional</span>
         </label>
         <textarea
-          id="contact-message"
+          id="call-note"
           name="message"
-          required
-          rows={6}
+          rows={4}
           value={form.message}
           onChange={(e) => update("message", e.target.value)}
-          className="field-input resize-y min-h-[8rem]"
-          aria-invalid={errors.message ? true : undefined}
-          aria-describedby={errors.message ? "contact-message-error" : undefined}
+          className="field-input resize-y min-h-[6rem]"
         />
-        {errors.message && (
-          <p id="contact-message-error" className="field-error">
-            {errors.message}
-          </p>
-        )}
       </div>
 
       <Button type="submit" disabled={status === "submitting"}>
-        {status === "submitting" ? "Sending…" : "Send message"}
+        {status === "submitting" ? "Sending…" : "Request this time"}
       </Button>
     </form>
-  );
-}
-
-export default function Contact() {
-  usePageMeta(
-    "Contact — Refract Labs",
-    "Start a project with Refract Labs. Write to us or book a 30-minute discovery call — we reply within one business day.",
-    "/contact",
-  );
-
-  return (
-    <>
-      <PageHeader
-        eyebrow="Get in touch"
-        title={
-          <>
-            Have a project
-            <br />
-            in mind?
-          </>
-        }
-        subtitle="Write to us, or pick a time for a 30-minute discovery call. We reply within one business day."
-      />
-
-      <section style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="contact-page">
-          <Reveal className="contact-direct">
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-            <span aria-hidden="true"> · </span>
-            {site.location}
-            <span aria-hidden="true"> · </span>
-            Typical reply 1 day
-            <span aria-hidden="true"> · </span>
-            <a href="#call">Book a call</a>
-          </Reveal>
-
-          <Reveal className="contact-chapter" id="write">
-            <h2 className="contact-chapter-title">Write</h2>
-            <p className="contact-chapter-lead">Tell us what you are building. We will come back with how we would approach it.</p>
-            <ContactForm />
-          </Reveal>
-
-          <Reveal className="contact-chapter" id="call">
-            <h2 className="contact-chapter-title">Book a call</h2>
-            <p className="contact-chapter-lead">
-              30 minutes, weekdays, Nairobi time. This is a request — we will confirm the slot by email.
-            </p>
-            <CallScheduler />
-          </Reveal>
-
-          <div className="contact-faq">
-            {faqs.map((item, i) => (
-              <Reveal key={item.q} delay={i * 50} className="contact-faq-item">
-                <h2>{item.q}</h2>
-                <p>{item.a}</p>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
   );
 }

@@ -28,11 +28,11 @@ export function Logo({ size = "nav" }: { size?: "nav" | "footer" }) {
   const frame =
     size === "footer"
       ? "h-20 w-20 rounded-lg"
-      : "h-12 w-12 sm:h-14 sm:w-14 rounded-md";
+      : "h-11 w-11 sm:h-12 sm:w-12 rounded-full";
 
   return (
     <Link to="/" className="shrink-0 block" aria-label="Refract Labs home">
-      <BrandMark className={`${frame} object-cover`} />
+      <BrandMark className={`${frame} object-cover`} alt="" />
     </Link>
   );
 }

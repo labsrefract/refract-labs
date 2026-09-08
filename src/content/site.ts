@@ -1,12 +1,20 @@
 /**
  * Site-wide copy and contact details.
  */
+const CLOUDINARY = "https://res.cloudinary.com/vcrqvhjf/image/upload";
+const LOGO_ID = "WhatsApp_Image_2026-08-27_at_13.32.12";
+
 export const site = {
   name: "Refract Labs",
   tagline: "Software · Intelligence · Security",
   email: "internal.refract.labs@gmail.com",
   location: "Nairobi, Kenya",
-  logo: "https://res.cloudinary.com/vcrqvhjf/image/upload/f_auto,q_auto/WhatsApp_Image_2026-08-27_at_13.32.12",
+  url: "https://refractlabs.tech",
+  logo: `${CLOUDINARY}/f_auto,q_auto/${LOGO_ID}`,
+  ogImage: `${CLOUDINARY}/c_fill,g_auto,w_1200,h_630,f_auto,q_auto/${LOGO_ID}`,
+  clientRetention: "96%",
+  projectsShipped: "20+",
+  expertYears: "20+",
   socials: {
     linkedin: "https://www.linkedin.com/company/refract-labs",
     github: "https://github.com/labsrefract",

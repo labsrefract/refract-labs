@@ -40,4 +40,31 @@ export const founders: readonly Founder[] = [
   },
 ];
 
-export const testimonials: readonly { quote: string; attribution: string }[] = [];
+export type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  company: string;
+};
+
+/** Placeholder quotes until real client lines replace them. */
+export const testimonials: readonly Testimonial[] = [
+  {
+    quote: "They built a site we actually send people to. Quotes come in from the form instead of us chasing missed calls.",
+    name: "James Otieno",
+    role: "Director",
+    company: "Highland Glaziers",
+  },
+  {
+    quote: "Three services, one site, and WhatsApp as the close. Customers find what they need without us walking them through it.",
+    name: "Mercy Njeri",
+    role: "Founder",
+    company: "Nairobi Curtains",
+  },
+  {
+    quote: "Bookings used to live in inboxes. Now the calendar is the source of truth — for the front desk and for anyone hiring a room.",
+    name: "Paul Mwangi",
+    role: "Operations lead",
+    company: "Dispute Resolution Hub",
+  },
+];

@@ -99,14 +99,11 @@ export default function Nav() {
   }, [open]);
 
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50"
-      style={{ backgroundColor: "var(--nav-bg)", backdropFilter: "blur(14px)", borderBottom: "1px solid var(--border)" }}
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between h-[4.5rem]">
+    <nav className="site-nav" aria-label="Primary">
+      <div className="site-nav-bar">
         <Logo />
 
-        <div className="hidden md:flex items-center gap-7">
+        <div className="hidden md:flex items-center gap-7 pr-1">
           <div ref={linksRef} className="nav-links flex items-center gap-7">
             {site.nav.map((l) => (
               <NavLink
@@ -127,39 +124,26 @@ export default function Nav() {
               }}
             />
           </div>
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={themeLabel}
-            className="flex items-center justify-center w-9 h-9"
-            style={{ color: "var(--muted)", border: "1px solid var(--border)", background: "var(--surface)", borderRadius: "6px" }}
-          >
+          <button type="button" onClick={toggle} aria-label={themeLabel} className="site-nav-icon">
             {theme === "light" ? <MoonIcon /> : <SunIcon />}
           </button>
-          <ButtonLink to="/contact" className="!py-2.5 !px-4 !text-sm">
+          <ButtonLink to="/contact" className="!py-2.5 !px-4 !text-sm !rounded-full">
             Start a project
           </ButtonLink>
         </div>
 
-        <div className="md:hidden flex items-center gap-2">
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={themeLabel}
-            className="flex items-center justify-center w-10 h-10"
-            style={{ color: "var(--muted)", border: "1px solid var(--border)", background: "var(--surface)", borderRadius: "6px" }}
-          >
+        <div className="md:hidden flex items-center gap-2 pr-0.5">
+          <button type="button" onClick={toggle} aria-label={themeLabel} className="site-nav-icon site-nav-icon-lg">
             {theme === "light" ? <MoonIcon /> : <SunIcon />}
           </button>
           <button
             ref={toggleRef}
             type="button"
-            className="flex items-center justify-center w-10 h-10"
+            className="site-nav-icon site-nav-icon-lg"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls={panelId}
             onClick={() => setOpen((v) => !v)}
-            style={{ color: "var(--text)", border: "1px solid var(--border)", background: "var(--surface)", borderRadius: "6px" }}
           >
             <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
             <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
@@ -173,13 +157,8 @@ export default function Nav() {
         </div>
       </div>
 
-      {open && (
-        <div
-          id={panelId}
-          ref={panelRef}
-          className="md:hidden px-6 py-5 flex flex-col gap-4"
-          style={{ borderTop: "1px solid var(--border)", background: "var(--bg)" }}
-        >
+      {open ? (
+        <div id={panelId} ref={panelRef} className="site-nav-panel md:hidden">
           {site.nav.map((l) => (
             <NavLink
               key={l.to}
@@ -190,11 +169,11 @@ export default function Nav() {
               {l.label}
             </NavLink>
           ))}
-          <ButtonLink to="/contact" onClick={() => setOpen(false)}>
+          <ButtonLink to="/contact" className="!rounded-full mt-1" onClick={() => setOpen(false)}>
             Start a project
           </ButtonLink>
         </div>
-      )}
+      ) : null}
     </nav>
   );
 }

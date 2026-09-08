@@ -8,6 +8,7 @@ export default function Services() {
   usePageMeta(
     "Services — Refract Labs",
     "Web apps, mobile apps, automation, MVP development, and technical consulting from Refract Labs.",
+    "/services",
   );
 
   return (
@@ -15,7 +16,7 @@ export default function Services() {
       <PageHeader
         eyebrow="What we do"
         title="Engineering, end to end."
-        subtitle="We work across the full product lifecycle — from the first sketch to production and the iterations after."
+        subtitle="Web, mobile, automation, MVPs, and consulting — from the first sketch through production and the iterations after."
       />
 
       <section style={{ borderTop: "1px solid var(--border)" }}>
@@ -25,36 +26,22 @@ export default function Services() {
               as="article"
               key={s.id}
               id={s.id}
-              delay={i * 60}
-              className="scroll-mt-24 py-14 lg:py-16 grid lg:grid-cols-[minmax(0,280px)_1fr] gap-8 lg:gap-16"
-              style={i < services.length - 1 ? { borderBottom: "1px solid var(--border)" } : undefined}
+              delay={i * 50}
+              className="service-chapter"
             >
-              <div>
-                <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--accent)" }}>
-                  {s.kicker}
-                </p>
-                <h2 className="text-2xl font-bold">{s.title}</h2>
-              </div>
-              <div>
-                <p className="text-base mb-8" style={{ color: "var(--muted)" }}>
-                  {s.desc}
-                </p>
-                <div
-                  className="p-6"
-                  style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)" }}
-                >
-                  <p className="eyebrow">What's included</p>
-                  <ul className="flex flex-col gap-3">
-                    {s.includes.map((item) => (
-                      <li key={item} className="flex gap-3 text-sm" style={{ color: "var(--muted)" }}>
-                        <span style={{ color: "var(--accent)" }} aria-hidden="true">
-                          →
-                        </span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <span className="service-chapter-num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <p className="service-chapter-kicker">{s.kicker}</p>
+              <h2 className="service-chapter-title">{s.title}</h2>
+              <div className="service-chapter-body">
+                <p className="service-chapter-desc">{s.desc}</p>
+                <p className="eyebrow">Included</p>
+                <ul className="service-includes">
+                  {s.includes.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
               </div>
             </Reveal>
           ))}
