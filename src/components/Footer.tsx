@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router";
+import { categoryPath, serviceCategories } from "../content/services";
 import { site } from "../content/site";
 import { Logo } from "./Logo";
 
@@ -44,10 +45,28 @@ export default function Footer() {
                   Home
                 </NavLink>
               </li>
-              {site.nav.map((l) => (
-                <li key={l.to}>
-                  <NavLink to={l.to} className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}>
-                    {l.label}
+              {site.nav
+                .filter((l) => l.label !== "Services")
+                .map((l) => (
+                  <li key={l.to}>
+                    <NavLink to={l.to} className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}>
+                      {l.label}
+                    </NavLink>
+                  </li>
+                ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="eyebrow">Services</p>
+            <ul className="flex flex-col gap-2">
+              {serviceCategories.map((category) => (
+                <li key={category.id}>
+                  <NavLink
+                    to={categoryPath(category.id)}
+                    className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}
+                  >
+                    {category.title}
                   </NavLink>
                 </li>
               ))}
@@ -91,16 +110,6 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
-
-          <div>
-            <p className="eyebrow">Projects</p>
-            <p className="text-sm mb-5" style={{ color: "var(--muted)" }}>
-              We take on a small number of engagements at a time.
-            </p>
-            <Link to="/contact" className="btn btn-ghost !py-2.5 !px-4 !text-sm">
-              Start a project
-            </Link>
           </div>
         </div>
 

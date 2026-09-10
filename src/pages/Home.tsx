@@ -6,7 +6,7 @@ import WorkCard from "../components/WorkCard";
 import { ButtonLink } from "../components/Button";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { processSteps } from "../content/process";
-import { services } from "../content/services";
+import { serviceCategories } from "../content/services";
 import { site } from "../content/site";
 import { testimonials } from "../content/team";
 import { caseStudies } from "../content/work";
@@ -27,7 +27,7 @@ function Hero() {
       <div className="hero-stage max-w-7xl mx-auto px-6 lg:px-10">
         <div className="hero-copy">
           <Eyebrow text="Software · Intelligence · Security" className="hero-in hero-in-1" />
-          <h1 className="hero-in hero-in-2 text-4xl sm:text-5xl lg:text-[3.6rem] font-bold" style={{ color: "var(--text)" }}>
+          <h1 className="hero-in hero-in-2 text-4xl sm:text-5xl lg:text-[3.6rem] font-extrabold" style={{ color: "var(--text)" }}>
             We bend ideas
             <br />
             into products.
@@ -101,28 +101,25 @@ function ServicesTeaser() {
   return (
     <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <Reveal className="flex items-end justify-between gap-4 mb-4 flex-wrap">
+        <Reveal className="mb-4">
           <h2 className="text-2xl sm:text-3xl font-bold">What we do.</h2>
-          <Link to="/services" className="nav-link">
-            All services →
-          </Link>
         </Reveal>
         <Reveal>
           <p className="max-w-xl mb-10 text-[15px]" style={{ color: "var(--muted)" }}>
-            Web, mobile, automation, MVPs, and consulting — from the first sketch through production.
+            Software, infrastructure, design, advisory, and support — from the first sketch through production.
           </p>
         </Reveal>
         <ol className="home-offer">
-          {services.map((s, i) => (
+          {serviceCategories.map((s, i) => (
             <li key={s.id}>
               <Reveal delay={i * 40}>
-                <Link to={`/services#${s.id}`} className="home-offer-link">
+                <Link to={`/services/${s.id}`} className="home-offer-link">
                   <span className="home-offer-num" aria-hidden="true">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="home-offer-kicker">{s.kicker}</span>
                   <h3 className="home-offer-title">{s.title}</h3>
-                  <p className="home-offer-copy">{s.summary}</p>
+                  <p className="home-offer-copy">{s.intro}</p>
                 </Link>
               </Reveal>
             </li>
@@ -134,49 +131,48 @@ function ServicesTeaser() {
 }
 
 function Voices() {
-  const [featured, ...rest] = testimonials;
-  if (!featured) return null;
+  if (!testimonials.length) return null;
 
   return (
     <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <Reveal className="mb-10">
+        <Reveal className="mb-4">
           <h2 className="text-2xl sm:text-3xl font-bold">From clients.</h2>
         </Reveal>
-        <div className="home-voices">
-          <Reveal>
-            <blockquote className="home-voice home-voice-feature">
-              <p className="home-voice-quote">{featured.quote}</p>
-              <footer className="home-voice-cite">
-                <cite>
-                  {featured.name}
+        <Reveal>
+          <p className="max-w-xl mb-10 text-[15px]" style={{ color: "var(--muted)" }}>
+            A few words from people we have shipped with — and the work those words sit on.
+          </p>
+        </Reveal>
+        <ul className="home-voices">
+          {testimonials.map((t, i) => {
+            const body = (
+              <>
+                <p className="home-voice-quote">{t.quote}</p>
+                <p className="home-voice-cite">
+                  <span className="home-voice-name">{t.name}</span>
                   <span>
-                    {featured.role}, {featured.company}
+                    {t.role}
+                    <span aria-hidden="true"> · </span>
+                    {t.company}
                   </span>
-                </cite>
-              </footer>
-            </blockquote>
-          </Reveal>
-          {rest.length ? (
-            <div className="home-voices-rest">
-              {rest.map((t, i) => (
-                <Reveal key={t.name} delay={(i + 1) * 60}>
-                  <blockquote className="home-voice">
-                    <p className="home-voice-quote">{t.quote}</p>
-                    <footer className="home-voice-cite">
-                      <cite>
-                        {t.name}
-                        <span>
-                          {t.role}, {t.company}
-                        </span>
-                      </cite>
-                    </footer>
-                  </blockquote>
-                </Reveal>
-              ))}
-            </div>
-          ) : null}
-        </div>
+                </p>
+              </>
+            );
+
+            return (
+              <Reveal as="li" key={t.name} delay={i * 40}>
+                {t.workSlug ? (
+                  <Link to={`/work/${t.workSlug}`} className="home-voice">
+                    {body}
+                  </Link>
+                ) : (
+                  <blockquote className="home-voice">{body}</blockquote>
+                )}
+              </Reveal>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );
