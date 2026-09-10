@@ -26,15 +26,15 @@ function Hero() {
     <section className="hero pt-28 pb-14 lg:pt-36 lg:pb-20">
       <div className="hero-stage max-w-7xl mx-auto px-6 lg:px-10">
         <div className="hero-copy">
-          <Eyebrow text="Software · Intelligence · Security" className="hero-in hero-in-1" />
+          <Eyebrow text={site.tagline} className="hero-in hero-in-1" />
           <h1 className="hero-in hero-in-2 text-4xl sm:text-5xl lg:text-[3.6rem] font-extrabold" style={{ color: "var(--text)" }}>
             We bend ideas
             <br />
             into products.
           </h1>
           <p className="hero-in hero-in-3 mt-6 text-lg max-w-lg" style={{ color: "var(--muted)" }}>
-            Refract Labs designs and builds web apps, mobile apps, automation, and MVPs for startups and growing businesses who need
-            to move fast without cutting corners.
+            We design, build, and look after software for startups and growing businesses who need to move fast without cutting
+            corners — products, the cloud they run on, and the work after launch.
           </p>
           <div className="hero-in hero-in-4 mt-8 flex flex-wrap gap-3">
             <ButtonLink to="/contact">Start a project</ButtonLink>
@@ -214,7 +214,7 @@ function ProcessTeaser() {
 export default function Home() {
   usePageMeta(
     "Refract Labs — Software, Intelligence, Security",
-    "Refract Labs designs and builds web apps, mobile apps, automation, and MVPs for startups and growing businesses.",
+    "Refract Labs designs, builds, and looks after software — products, infrastructure, design, advisory, and support — for startups and growing businesses.",
     "/",
   );
 
