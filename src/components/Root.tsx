@@ -10,7 +10,12 @@ function ScrollReset() {
   useEffect(() => {
     if (hash) {
       const id = decodeURIComponent(hash.slice(1));
-      const move = () => document.getElementById(id)?.scrollIntoView({ block: "start" });
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const move = () =>
+        document.getElementById(id)?.scrollIntoView({
+          block: "start",
+          behavior: reduced ? "auto" : "smooth",
+        });
       requestAnimationFrame(move);
       return;
     }

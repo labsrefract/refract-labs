@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://refractlabs.tech/</loc></url>
-  <url><loc>https://refractlabs.tech/services</loc></url>
+  <url><loc>https://refractlabs.tech/services/software-development</loc></url>
+  <url><loc>https://refractlabs.tech/services/infrastructure-devops</loc></url>
+  <url><loc>https://refractlabs.tech/services/design</loc></url>
+  <url><loc>https://refractlabs.tech/services/strategy-advisory</loc></url>
+  <url><loc>https://refractlabs.tech/services/support-maintenance</loc></url>
   <url><loc>https://refractlabs.tech/work</loc></url>
   <url><loc>https://refractlabs.tech/work/highland-glaziers</loc></url>
   <url><loc>https://refractlabs.tech/work/nairobi-curtains</loc></url>

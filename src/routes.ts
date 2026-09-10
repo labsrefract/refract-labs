@@ -2,7 +2,8 @@ import { createBrowserRouter } from "react-router";
 import { createElement } from "react";
 import Root from "./components/Root";
 import Home from "./pages/Home";
-import Services from "./pages/Services";
+import ServicesIndex from "./pages/ServicesIndex";
+import ServiceCategory from "./pages/ServiceCategory";
 import Work from "./pages/Work";
 import WorkDetail from "./pages/WorkDetail";
 import Process from "./pages/Process";
@@ -15,7 +16,8 @@ import NotFound from "./pages/NotFound";
 
 const pages = [
   { index: true, Component: Home },
-  { path: "services", Component: Services },
+  { path: "services", Component: ServicesIndex },
+  { path: "services/:slug", Component: ServiceCategory },
   { path: "work", Component: Work },
   { path: "work/:slug", Component: WorkDetail },
   { path: "process", Component: Process },
