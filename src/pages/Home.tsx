@@ -213,7 +213,7 @@ function ProcessTeaser() {
 
 export default function Home() {
   usePageMeta(
-    "Refract Labs — Software, Intelligence, Security",
+    "Refract Labs — From sketch through production",
     "Refract Labs designs, builds, and looks after software — products, infrastructure, design, advisory, and support — for startups and growing businesses.",
     "/",
   );
