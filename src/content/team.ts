@@ -52,6 +52,7 @@ export type Testimonial = {
   name: string;
   role: string;
   company: string;
+  rating: 1 | 2 | 3 | 4 | 5;
   workSlug?: string;
 };
 
@@ -62,6 +63,7 @@ export const testimonials: readonly Testimonial[] = [
     name: "James Otieno",
     role: "Director",
     company: "Highland Glaziers",
+    rating: 4,
     workSlug: "highland-glaziers",
   },
   {
@@ -69,6 +71,7 @@ export const testimonials: readonly Testimonial[] = [
     name: "Mercy Njeri",
     role: "Founder",
     company: "Nairobi Curtains",
+    rating: 5,
     workSlug: "nairobi-curtains",
   },
   {
@@ -76,6 +79,7 @@ export const testimonials: readonly Testimonial[] = [
     name: "Paul Mwangi",
     role: "Operations lead",
     company: "Dispute Resolution Hub",
+    rating: 3,
     workSlug: "dispute-resolution-hub",
   },
 ];

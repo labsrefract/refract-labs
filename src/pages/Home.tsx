@@ -130,6 +130,28 @@ function ServicesTeaser() {
   );
 }
 
+function initialsFromName(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+}
+
+function VoiceStars({ rating }: { rating: number }) {
+  return (
+    <p className="home-voice-stars" aria-hidden="true">
+      {Array.from({ length: 5 }, (_, i) => (
+        <svg key={i} className={i < rating ? "is-on" : "is-off"} viewBox="0 0 24 24" width="18" height="18">
+          <path d="M12 2.6l2.47 7.04H22l-6.02 4.38 2.3 7.08L12 16.92l-6.28 4.18 2.3-7.08L2 9.64h7.53L12 2.6z" />
+        </svg>
+      ))}
+    </p>
+  );
+}
+
 function Voices() {
   if (!testimonials.length) return null;
 
@@ -148,15 +170,18 @@ function Voices() {
           {testimonials.map((t, i) => {
             const body = (
               <>
-                <p className="home-voice-quote">{t.quote}</p>
-                <p className="home-voice-cite">
-                  <span className="home-voice-name">{t.name}</span>
-                  <span>
-                    {t.role}
-                    <span aria-hidden="true"> · </span>
-                    {t.company}
-                  </span>
-                </p>
+                <span className="home-voice-tab-back" aria-hidden="true" />
+                <div className="home-voice-tab">
+                  <p className="home-voice-name">{t.name}</p>
+                  <p className="home-voice-role">{t.role}</p>
+                </div>
+                <span className="home-voice-avatar" aria-hidden="true">
+                  {initialsFromName(t.name)}
+                </span>
+                <div className="home-voice-card">
+                  <VoiceStars rating={t.rating} />
+                  <p className="home-voice-quote">{t.quote}</p>
+                </div>
               </>
             );
 

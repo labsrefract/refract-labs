@@ -1327,76 +1327,225 @@ svg {
 .home-voices {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 2.75rem 2.25rem;
   margin: 0;
-  padding: 0;
+  padding: 0.4rem 0.1rem 0.6rem 0;
   list-style: none;
 }
 
 .home-voice {
-  display: flex;
-  flex-direction: column;
+  --voice-tab: var(--accent);
+  --voice-on-tab: var(--accent-on-accent);
+  --voice-card: var(--accent-soft);
+  --voice-ink: var(--text);
+  --voice-star: var(--accent);
+  --voice-star-off: var(--border-strong);
+  --voice-avatar: var(--surface-2);
+  --voice-avatar-ink: var(--accent);
+  position: relative;
+  isolation: isolate;
+  display: block;
   height: 100%;
   margin: 0;
-  padding: 1.7rem 1.55rem 1.5rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 1.15rem;
-  box-shadow: var(--shadow-sm);
-  transition:
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+  padding: 2.75rem 0.2rem 0.15rem 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+[data-theme="dark"] .home-voice {
+  --voice-card: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  --voice-avatar: color-mix(in srgb, var(--accent) 22%, var(--surface-2));
 }
 
 a.home-voice:focus-visible {
-  outline-offset: 4px;
+  outline-offset: 8px;
+  border-radius: 1.6rem;
+}
+
+.home-voice-tab-back {
+  position: absolute;
+  z-index: 0;
+  top: 1.15rem;
+  left: 0;
+  width: 2.75rem;
+  height: 4.28rem;
+  background: var(--voice-tab);
+  border-radius: 1.6rem;
+}
+
+.home-voice-tab {
+  position: absolute;
+  z-index: 2;
+  top: 1.15rem;
+  left: 1.35rem;
+  width: calc(100% - 8.15rem);
+  padding: 0.68rem 1.4rem 0.72rem 1.25rem;
+  background: var(--voice-tab);
+  color: var(--voice-on-tab);
+  border-radius: 0 1.6rem 1.6rem 0;
+}
+
+.home-voice-name {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--voice-on-tab);
+}
+
+.home-voice-role {
+  margin: 0.12rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--voice-on-tab) 82%, transparent);
+}
+
+.home-voice-avatar {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0.1rem;
+  display: grid;
+  place-items: center;
+  width: 5.85rem;
+  height: 5.85rem;
+  border-radius: 50%;
+  background: var(--voice-avatar);
+  color: var(--voice-avatar-ink);
+  font-family: var(--font-body);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 5px solid var(--bg);
+}
+
+.home-voice-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 10.75rem;
+  margin-left: 1.35rem;
+  padding: 3.45rem 1.35rem 1.45rem 1.85rem;
+  border-radius: 1.7rem;
+  background: radial-gradient(
+    circle 3.2rem at calc(100% - 2.85rem) 0.08rem,
+    transparent 3.18rem,
+    var(--voice-card) 3.22rem
+  );
+  filter: drop-shadow(0 12px 18px color-mix(in srgb, var(--text) 14%, transparent));
+}
+
+.home-voice-card::before {
+  content: "";
+  position: absolute;
+  left: 1.2rem;
+  top: 3.35rem;
+  bottom: 1.35rem;
+  width: 3px;
+  background: var(--voice-tab);
+}
+
+.home-voice-stars {
+  display: flex;
+  gap: 0.12rem;
+  margin: 0 0 0.65rem;
+}
+
+.home-voice-stars svg {
+  display: block;
+}
+
+.home-voice-stars .is-on {
+  fill: var(--voice-star);
+}
+
+.home-voice-stars .is-off {
+  fill: var(--voice-star-off);
 }
 
 .home-voice-quote {
   margin: 0;
-  font-size: 1.08rem;
-  font-weight: 500;
+  max-width: 22rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
   line-height: 1.5;
-  letter-spacing: -0.015em;
-}
-
-.home-voice-cite {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  margin: auto 0 0;
-  padding-top: 1.35rem;
-  font-size: 0.85rem;
-}
-
-.home-voice-name {
-  font-weight: 700;
-}
-
-.home-voice-cite span:last-child {
-  color: var(--muted);
-  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--voice-ink);
 }
 
 @media (hover: hover) and (pointer: fine) {
   a.home-voice:hover {
-    box-shadow: 0 10px 28px color-mix(in srgb, var(--accent) 38%, transparent);
-    transform: translateY(-4px);
+    transform: translateY(-3px);
+  }
+}
+
+@media (min-width: 768px) {
+  .home-voices {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.85rem 2.5rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .home-voices {
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1.15rem;
+  .home-voice {
+    padding-top: 2.95rem;
   }
 
-  .home-voice {
-    padding: 1.9rem 1.7rem 1.65rem;
+  .home-voice-tab-back {
+    top: 1.25rem;
+    width: 3rem;
+    height: 4.28rem;
+  }
+
+  .home-voice-tab {
+    top: 1.25rem;
+    left: 1.5rem;
+    width: calc(100% - 9rem);
+    padding: 0.76rem 1.55rem 0.8rem 1.4rem;
+  }
+
+  .home-voice-name {
+    font-size: 1.12rem;
+  }
+
+  .home-voice-role {
+    font-size: 1rem;
+  }
+
+  .home-voice-avatar {
+    width: 6.25rem;
+    height: 6.25rem;
+    font-size: 1.45rem;
+    right: 0.15rem;
+  }
+
+  .home-voice-card {
+    min-height: 11.5rem;
+    margin-left: 1.5rem;
+    padding: 3.65rem 1.5rem 1.55rem 2rem;
+    background: radial-gradient(
+      circle 3.4rem at calc(100% - 3.1rem) 0.1rem,
+      transparent 3.38rem,
+      var(--voice-card) 3.42rem
+    );
+  }
+
+  .home-voice-card::before {
+    top: 3.55rem;
   }
 
   .home-voice-quote {
-    font-size: 1.12rem;
+    font-size: 1rem;
   }
 }
 
