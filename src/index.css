@@ -715,6 +715,12 @@ svg {
     padding-bottom: 2.5rem;
   }
 
+  .service-card-grid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - 1.15rem) / 2);
+  }
+
   .service-card {
     padding: 1.9rem 1.75rem 1.7rem;
     scroll-margin-top: calc(var(--nav-offset) + 1.5rem);
@@ -893,6 +899,7 @@ svg {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 3.4rem 0.3rem 2.6rem 0.3rem;
+  box-shadow: var(--shadow-sm);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
@@ -912,8 +919,7 @@ svg {
 @media (hover: hover) and (pointer: fine) {
   .work-tile:hover,
   .work-tile:focus-visible {
-    border-color: var(--accent);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 10px 28px color-mix(in srgb, var(--accent) 38%, transparent);
     transform: translateY(-4px);
   }
 
@@ -1079,6 +1085,10 @@ svg {
   gap: 14px;
 }
 
+.home-work-grid .work-tile .work-shot {
+  aspect-ratio: 16 / 10;
+}
+
 .home-work-line {
   display: grid;
   gap: 6px;
@@ -1213,12 +1223,23 @@ svg {
   .home-work-grid {
     grid-template-columns: 1fr 1fr;
     gap: 14px;
-    max-width: 46rem;
+    max-width: 56rem;
+    margin-inline: auto;
+  }
+
+  .home-work-grid .work-tile .work-shot {
+    aspect-ratio: 16 / 10;
   }
 
   .work-index-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 1.15rem;
+    gap: 1rem;
+    max-width: 56rem;
+    margin-inline: auto;
+  }
+
+  .work-index-grid .work-tile .work-shot {
+    aspect-ratio: 16 / 10;
   }
 
   .work-tile .work-shot {
@@ -1227,6 +1248,10 @@ svg {
 }
 
 @media (min-width: 1024px) {
+  .home-work-grid {
+    gap: 1rem;
+  }
+
   .work-case {
     padding: 8rem 0 6.5rem;
   }
@@ -1336,18 +1361,24 @@ svg {
 .home-voice {
   --voice-tab: var(--accent);
   --voice-on-tab: var(--accent-on-accent);
-  --voice-card: var(--accent-soft);
+  --voice-card: var(--surface);
   --voice-ink: var(--text);
   --voice-star: var(--accent);
-  --voice-star-off: var(--border-strong);
+  --voice-star-off: var(--border);
   --voice-avatar: var(--surface-2);
   --voice-avatar-ink: var(--accent);
+  --voice-avatar-size: 5.85rem;
+  --voice-avatar-right: 0px;
+  --voice-avatar-r: calc(var(--voice-avatar-size) / 2);
+  --voice-notch-r: var(--voice-avatar-r);
+  --voice-notch-x: calc(var(--voice-avatar-right) + var(--voice-avatar-r));
+  --voice-tab-overlap: 1.55rem;
   position: relative;
   isolation: isolate;
   display: block;
   height: 100%;
   margin: 0;
-  padding: 2.75rem 0.2rem 0.15rem 0;
+  padding: var(--voice-avatar-r) 0 0.15rem 0;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -1356,20 +1387,16 @@ svg {
   transition: transform 0.2s ease;
 }
 
-[data-theme="dark"] .home-voice {
-  --voice-card: color-mix(in srgb, var(--accent) 18%, var(--surface));
-  --voice-avatar: color-mix(in srgb, var(--accent) 22%, var(--surface-2));
-}
-
 a.home-voice:focus-visible {
   outline-offset: 8px;
   border-radius: 1.6rem;
+  transform: translateY(-4px);
 }
 
 .home-voice-tab-back {
   position: absolute;
   z-index: 0;
-  top: 1.15rem;
+  top: calc(var(--voice-avatar-r) - var(--voice-tab-overlap));
   left: 0;
   width: 2.75rem;
   height: 4.28rem;
@@ -1380,10 +1407,12 @@ a.home-voice:focus-visible {
 .home-voice-tab {
   position: absolute;
   z-index: 2;
-  top: 1.15rem;
+  top: calc(var(--voice-avatar-r) - var(--voice-tab-overlap));
   left: 1.35rem;
-  width: calc(100% - 8.15rem);
-  padding: 0.68rem 1.4rem 0.72rem 1.25rem;
+  width: max-content;
+  min-width: 13.5rem;
+  max-width: calc(100% - var(--voice-avatar-size) - 1.35rem);
+  padding: 0.68rem 1.85rem 0.72rem 1.25rem;
   background: var(--voice-tab);
   color: var(--voice-on-tab);
   border-radius: 0 1.6rem 1.6rem 0;
@@ -1412,11 +1441,11 @@ a.home-voice:focus-visible {
   position: absolute;
   z-index: 3;
   top: 0;
-  right: 0.1rem;
+  right: var(--voice-avatar-right);
   display: grid;
   place-items: center;
-  width: 5.85rem;
-  height: 5.85rem;
+  width: var(--voice-avatar-size);
+  height: var(--voice-avatar-size);
   border-radius: 50%;
   background: var(--voice-avatar);
   color: var(--voice-avatar-ink);
@@ -1424,7 +1453,6 @@ a.home-voice:focus-visible {
   font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  border: 5px solid var(--bg);
 }
 
 .home-voice-card {
@@ -1437,11 +1465,12 @@ a.home-voice:focus-visible {
   padding: 3.45rem 1.35rem 1.45rem 1.85rem;
   border-radius: 1.7rem;
   background: radial-gradient(
-    circle 3.2rem at calc(100% - 2.85rem) 0.08rem,
-    transparent 3.18rem,
-    var(--voice-card) 3.22rem
+    circle var(--voice-notch-r) at calc(100% - var(--voice-notch-x)) 0,
+    transparent var(--voice-notch-r),
+    var(--voice-card) calc(var(--voice-notch-r) + 0.5px)
   );
-  filter: drop-shadow(0 12px 18px color-mix(in srgb, var(--text) 14%, transparent));
+  filter: drop-shadow(0 8px 24px color-mix(in srgb, var(--text) 8%, transparent));
+  transition: filter 0.2s ease;
 }
 
 .home-voice-card::before {
@@ -1483,9 +1512,17 @@ a.home-voice:focus-visible {
   color: var(--voice-ink);
 }
 
+a.home-voice:focus-visible .home-voice-card {
+  filter: drop-shadow(0 10px 28px color-mix(in srgb, var(--accent) 38%, transparent));
+}
+
 @media (hover: hover) and (pointer: fine) {
   a.home-voice:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+  }
+
+  a.home-voice:hover .home-voice-card {
+    filter: drop-shadow(0 10px 28px color-mix(in srgb, var(--accent) 38%, transparent));
   }
 }
 
@@ -1494,24 +1531,28 @@ a.home-voice:focus-visible {
     grid-template-columns: 1fr 1fr;
     gap: 2.85rem 2.5rem;
   }
-}
 
-@media (min-width: 1024px) {
+  .home-voices > :first-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 1.25rem);
+  }
+
   .home-voice {
-    padding-top: 2.95rem;
+    --voice-avatar-size: 8rem;
+    --voice-avatar-right: 0px;
+    --voice-tab-overlap: 1.7rem;
   }
 
   .home-voice-tab-back {
-    top: 1.25rem;
     width: 3rem;
-    height: 4.28rem;
+    height: 4.55rem;
   }
 
   .home-voice-tab {
-    top: 1.25rem;
     left: 1.5rem;
-    width: calc(100% - 9rem);
-    padding: 0.76rem 1.55rem 0.8rem 1.4rem;
+    max-width: calc(100% - var(--voice-avatar-size) - 1.6rem);
+    padding: 0.76rem 2rem 0.8rem 1.4rem;
   }
 
   .home-voice-name {
@@ -1523,29 +1564,27 @@ a.home-voice:focus-visible {
   }
 
   .home-voice-avatar {
-    width: 6.25rem;
-    height: 6.25rem;
-    font-size: 1.45rem;
-    right: 0.15rem;
+    font-size: 1.55rem;
   }
 
   .home-voice-card {
-    min-height: 11.5rem;
+    min-height: 12.25rem;
     margin-left: 1.5rem;
-    padding: 3.65rem 1.5rem 1.55rem 2rem;
-    background: radial-gradient(
-      circle 3.4rem at calc(100% - 3.1rem) 0.1rem,
-      transparent 3.38rem,
-      var(--voice-card) 3.42rem
-    );
+    padding: 4.1rem 1.5rem 1.55rem 2rem;
   }
 
   .home-voice-card::before {
-    top: 3.55rem;
+    top: 4rem;
   }
 
   .home-voice-quote {
     font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-voice {
+    --voice-avatar-size: 8.5rem;
   }
 }
 
