@@ -32,7 +32,7 @@ export const founders: readonly Founder[] = [
     bio: "Product-minded frontend engineer. Turns messy briefs into interfaces that hold up in production — React, TypeScript, and the unglamorous work of making software feel finished.",
     stack: ["React", "TypeScript", "React Native", "CSS"],
     initials: "SG",
-    photo: teamShot("v1788882291", "steve.jpg"),
+    photo: "/team/steve.jpg",
     linkedin: "https://www.linkedin.com/in/stephen-githua",
   },
   {

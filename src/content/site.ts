@@ -11,7 +11,7 @@ export const site = {
   location: "Nairobi, Kenya",
   url: "https://refractlabs.tech",
   logo: `${CLOUDINARY}/f_auto,q_auto/${LOGO_ID}`,
-  ogImage: `${CLOUDINARY}/c_fill,g_auto,w_1200,h_630,f_auto,q_auto/${LOGO_ID}`,
+  ogImage: "https://refractlabs.tech/og-image.png",
   clientRetention: "96%",
   projectsShipped: "20+",
   expertYears: "20+",
