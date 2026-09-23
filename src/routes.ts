@@ -29,15 +29,27 @@ const pages = [
   { path: "*", Component: NotFound },
 ];
 
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    Component: Root,
-    children: [
-      {
-        errorElement: createElement(NotFound),
-        children: pages,
-      },
-    ],
-  },
-]);
+function routerBasename() {
+  const raw = import.meta.env.BASE_URL || "/";
+  try {
+    return new URL(raw, "http://local.invalid").pathname.replace(/\/$/, "") || "/";
+  } catch {
+    return "/";
+  }
+}
+
+export const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      Component: Root,
+      children: [
+        {
+          errorElement: createElement(NotFound),
+          children: pages,
+        },
+      ],
+    },
+  ],
+  { basename: routerBasename() },
+);

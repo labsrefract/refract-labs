@@ -1,5 +1,11 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TYPES = new Set(["web", "mobile", "automation", "mvp", "consulting", "other"]);
+const TYPES = new Set([
+  "software-development",
+  "infrastructure-devops",
+  "design",
+  "strategy-advisory",
+  "support-maintenance",
+]);
 const SLOT_HOURS = new Set([9, 10, 11, 12, 14, 15, 16]);
 const SLOT_RE = /^(\d{4}-\d{2}-\d{2})T(\d{2}):00:00\+03:00$/;
 const MAX = { name: 120, email: 200, message: 5000 };
@@ -7,12 +13,11 @@ const LEAD_MS = 60 * 60 * 1000;
 const WINDOW_MS = 28 * 24 * 60 * 60 * 1000;
 
 export const typeLabel = {
-  web: "Web app",
-  mobile: "Mobile app",
-  automation: "Automation",
-  mvp: "MVP",
-  consulting: "Technical consulting",
-  other: "Other",
+  "software-development": "Software Development",
+  "infrastructure-devops": "Infrastructure & DevOps",
+  design: "Design",
+  "strategy-advisory": "Strategy & Advisory",
+  "support-maintenance": "Support & Maintenance",
 };
 
 function isWeekdayEAT(iso) {
@@ -60,7 +65,7 @@ export function validateEnquiry(body) {
     errors.email = "Please enter a valid email.";
   }
 
-  if (!TYPES.has(type)) errors.type = "Please select a project type.";
+  if (!TYPES.has(type)) errors.type = "Please select a service.";
 
   if (intent === "message") {
     if (!message) errors.message = "Please tell us a bit about the project.";

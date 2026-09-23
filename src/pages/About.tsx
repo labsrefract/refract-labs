@@ -1,8 +1,32 @@
+import { useState } from "react";
 import PageHeader from "../components/PageHeader";
 import PageCTA from "../components/PageCTA";
 import Reveal from "../components/Reveal";
-import { founders } from "../content/team";
+import { founders, type Founder } from "../content/team";
 import { usePageMeta } from "../hooks/usePageMeta";
+
+function PersonPhoto({ founder }: { founder: Founder }) {
+  const [failed, setFailed] = useState(false);
+
+  if (!founder.photo || failed) {
+    return (
+      <div className="about-person-photo about-person-fallback" aria-hidden="true">
+        {founder.initials}
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={founder.photo}
+      alt={`Portrait of ${founder.name}`}
+      width={104}
+      height={104}
+      className="about-person-photo"
+      onError={() => setFailed(true)}
+    />
+  );
+}
 
 const story = [
   {
@@ -63,19 +87,7 @@ export default function About() {
 
           {founders.map((f, i) => (
             <Reveal as="article" key={f.name} delay={i * 70} className="about-person">
-              {f.photo ? (
-                <img
-                  src={f.photo}
-                  alt={`Portrait of ${f.name}`}
-                  width={104}
-                  height={104}
-                  className="about-person-photo"
-                />
-              ) : (
-                <div className="about-person-photo about-person-fallback" aria-hidden="true">
-                  {f.initials}
-                </div>
-              )}
+              <PersonPhoto founder={f} />
               <div className="about-person-id">
                 <h3 className="about-person-name">{f.name}</h3>
                 <p className="about-person-role">{f.role}</p>

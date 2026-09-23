@@ -1,8 +1,9 @@
+import ogImageAsset from "../assets/og-image.png";
+import logoAsset from "../assets/logo.png";
+
 /**
  * Site-wide copy and contact details.
  */
-const CLOUDINARY = "https://res.cloudinary.com/vcrqvhjf/image/upload";
-const LOGO_ID = "WhatsApp_Image_2026-08-27_at_13.32.12";
 
 export const site = {
   name: "Refract Labs",
@@ -10,8 +11,8 @@ export const site = {
   email: "hello@refractlabs.tech",
   location: "Nairobi, Kenya",
   url: "https://refractlabs.tech",
-  logo: `${CLOUDINARY}/f_auto,q_auto/${LOGO_ID}`,
-  ogImage: "https://refractlabs.tech/og-image.png",
+  logo: logoAsset,
+  ogImage: ogImageAsset,
   clientRetention: "96%",
   projectsShipped: "20+",
   expertYears: "20+",

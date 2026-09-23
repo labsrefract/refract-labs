@@ -4,16 +4,8 @@ import { Button } from "../components/Button";
 import CallScheduler from "../components/CallScheduler";
 import Reveal from "../components/Reveal";
 import { site } from "../content/site";
+import { enquiryTypes } from "../content/services";
 import { usePageMeta } from "../hooks/usePageMeta";
-
-const TYPES = [
-  { value: "web", label: "Web app" },
-  { value: "mobile", label: "Mobile app" },
-  { value: "automation", label: "Automation" },
-  { value: "mvp", label: "MVP" },
-  { value: "consulting", label: "Technical consulting" },
-  { value: "other", label: "Other" },
-] as const;
 
 const faqs = [
   {
@@ -41,7 +33,7 @@ function validate(form: FormState): FieldErrors {
   if (!form.name.trim()) errors.name = "Please enter your name.";
   if (!form.email.trim()) errors.email = "Please enter your email.";
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) errors.email = "Please enter a valid email.";
-  if (!form.type) errors.type = "Please select a project type.";
+  if (!form.type) errors.type = "Please select a service.";
   if (!form.message.trim()) errors.message = "Please tell us a bit about the project.";
   return errors;
 }
@@ -173,7 +165,7 @@ function ContactForm() {
 
       <div>
         <label className="field-label" htmlFor="contact-type">
-          Project type
+          Service
         </label>
         <select
           id="contact-type"
@@ -186,9 +178,9 @@ function ContactForm() {
           aria-describedby={errors.type ? "contact-type-error" : undefined}
         >
           <option value="" disabled>
-            Select a type
+            Select a service
           </option>
-          {TYPES.map((t) => (
+          {enquiryTypes.map((t) => (
             <option key={t.value} value={t.value}>
               {t.label}
             </option>

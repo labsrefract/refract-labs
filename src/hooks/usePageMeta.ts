@@ -22,17 +22,20 @@ export function usePageMeta(title: string, description: string, path = "/") {
       return el;
     }
 
+    const origin = window.location.origin;
+    const image = new URL(site.ogImage, origin).href;
+
     const desc = setMeta('meta[name="description"]', "content", description);
     const ogTitle = setMeta('meta[property="og:title"]', "content", title);
     const ogDesc = setMeta('meta[property="og:description"]', "content", description);
     const ogUrl = setMeta('meta[property="og:url"]', "content", url);
-    const ogImage = setMeta('meta[property="og:image"]', "content", site.ogImage);
+    const ogImage = setMeta('meta[property="og:image"]', "content", image);
     const ogType = setMeta('meta[property="og:type"]', "content", "website");
     const ogSite = setMeta('meta[property="og:site_name"]', "content", site.name);
     const twCard = setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
     const twTitle = setMeta('meta[name="twitter:title"]', "content", title);
     const twDesc = setMeta('meta[name="twitter:description"]', "content", description);
-    const twImage = setMeta('meta[name="twitter:image"]', "content", site.ogImage);
+    const twImage = setMeta('meta[name="twitter:image"]', "content", image);
 
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
@@ -48,13 +51,13 @@ export function usePageMeta(title: string, description: string, path = "/") {
       ogTitle.setAttribute("content", previousTitle);
       ogDesc.setAttribute("content", description);
       ogUrl.setAttribute("content", site.url);
-      ogImage.setAttribute("content", site.ogImage);
+      ogImage.setAttribute("content", image);
       ogType.setAttribute("content", "website");
       ogSite.setAttribute("content", site.name);
       twCard.setAttribute("content", "summary_large_image");
       twTitle.setAttribute("content", previousTitle);
       twDesc.setAttribute("content", description);
-      twImage.setAttribute("content", site.ogImage);
+      twImage.setAttribute("content", image);
     };
   }, [title, description, path]);
 }

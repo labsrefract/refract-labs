@@ -21,7 +21,7 @@ export default function Privacy() {
       <Reveal as="section">
         <h2>What we collect</h2>
         <p>
-          If you use the contact form we receive your name, email address, project type, and message so we can reply. If you
+          If you use the contact form we receive your name, email address, the service you are asking about, and message so we can reply. If you
           request a discovery call we also receive the weekday and time you asked for (Africa/Nairobi). If you email us
           directly we keep that correspondence. The site stores a theme preference (light or dark) in your browser with
           localStorage. We do not use advertising cookies or analytics pixels on this site today.

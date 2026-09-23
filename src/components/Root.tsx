@@ -1,6 +1,7 @@
 import { useLocation } from "react-router";
 import { useEffect } from "react";
 import { ThemeProvider } from "../context/theme";
+import BrandHead from "./BrandHead";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import PageFade from "./PageFade";
@@ -27,6 +28,7 @@ function ScrollReset() {
 export default function Root() {
   return (
     <ThemeProvider>
+      <BrandHead />
       <ScrollReset />
       <a href="#main" className="skip-link">
         Skip to content

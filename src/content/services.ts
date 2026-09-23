@@ -191,6 +191,11 @@ export const serviceCategories = [
   },
 ] as const satisfies readonly ServiceCategory[];
 
+export const enquiryTypes = serviceCategories.map((category) => ({
+  value: category.id,
+  label: category.title,
+}));
+
 export const services = serviceCategories.flatMap((category) => category.services);
 
 export function categoryPath(categoryId: string) {

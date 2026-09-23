@@ -2,15 +2,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { Button } from "./Button";
 import { formatCallSlot, isValidCallSlot, listCallDays, listCallTimes } from "../lib/callSlots";
 import { site } from "../content/site";
-
-const TYPES = [
-  { value: "web", label: "Web app" },
-  { value: "mobile", label: "Mobile app" },
-  { value: "automation", label: "Automation" },
-  { value: "mvp", label: "MVP" },
-  { value: "consulting", label: "Technical consulting" },
-  { value: "other", label: "Other" },
-] as const;
+import { enquiryTypes } from "../content/services";
 
 type Field = "name" | "email" | "type" | "message" | "slot";
 type FormState = Record<"name" | "email" | "type" | "message", string>;
@@ -23,7 +15,7 @@ function validate(form: FormState, slot: string): FieldErrors {
   if (!form.name.trim()) errors.name = "Please enter your name.";
   if (!form.email.trim()) errors.email = "Please enter your email.";
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) errors.email = "Please enter a valid email.";
-  if (!form.type) errors.type = "Please select a project type.";
+  if (!form.type) errors.type = "Please select a service.";
   if (!slot || !isValidCallSlot(slot)) errors.slot = "Pick a day and time.";
   return errors;
 }
@@ -227,7 +219,7 @@ export default function CallScheduler() {
 
       <div>
         <label className="field-label" htmlFor="call-type">
-          Project type
+          Service
         </label>
         <select
           id="call-type"
@@ -240,9 +232,9 @@ export default function CallScheduler() {
           aria-describedby={errors.type ? "call-type-error" : undefined}
         >
           <option value="" disabled>
-            Select a type
+            Select a service
           </option>
-          {TYPES.map((t) => (
+          {enquiryTypes.map((t) => (
             <option key={t.value} value={t.value}>
               {t.label}
             </option>

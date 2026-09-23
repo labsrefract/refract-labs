@@ -1,3 +1,5 @@
+import stevePhoto from "../assets/team/steve.jpg";
+
 const CLOUDINARY = "https://res.cloudinary.com/vcrqvhjf/image/upload";
 
 function teamShot(version: string, publicId: string) {
@@ -32,7 +34,7 @@ export const founders: readonly Founder[] = [
     bio: "Product-minded frontend engineer. Turns messy briefs into interfaces that hold up in production — React, TypeScript, and the unglamorous work of making software feel finished.",
     stack: ["React", "TypeScript", "React Native", "CSS"],
     initials: "SG",
-    photo: "/team/steve.jpg",
+    photo: stevePhoto,
     linkedin: "https://www.linkedin.com/in/stephen-githua",
   },
   {
