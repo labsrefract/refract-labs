@@ -5,10 +5,10 @@
     "index": true
   },
   "icons": {
-    "icon": "/favicon-48.png"
+    "icon": "https://www.refractlabs.tech/favicon-96.png"
   },
   "openGraph": {
-    "image": "https://refractlabs.tech/og-image.png"
+    "image": "https://www.refractlabs.tech/og-image.png"
   },
   "accessibility": {
     "addBypassLinks": false,

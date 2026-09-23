@@ -10,7 +10,7 @@ export const site = {
   tagline: "Software · Intelligence · Security",
   email: "hello@refractlabs.tech",
   location: "Nairobi, Kenya",
-  url: "https://refractlabs.tech",
+  url: "https://www.refractlabs.tech",
   logo: logoAsset,
   ogImage: ogImageAsset,
   clientRetention: "96%",
