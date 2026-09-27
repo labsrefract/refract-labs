@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&display=swap");
 @import "tailwindcss";
 
 @property --bg {
@@ -76,7 +77,7 @@
 
   Direction: optical glass. The name is about bending light — taking an idea
   and coming out the other side with a clearer product. Choices:
-  - Type: Syne for page titles and section headings, Source Sans 3
+  - Type: Cabinet Grotesk for page titles and section headings, Source Sans 3
     for reading, IBM Plex Mono only on tech chips — not as a personality layer.
   - Color: warm stone paper, near-black ink, a deep cyan accent taken from the
     mark. One accent, used sparingly.
@@ -109,7 +110,7 @@
   --shadow-md: 0 8px 24px rgba(22, 21, 19, 0.07);
   --nav-bg: var(--surface);
 
-  --font-display: "Syne", sans-serif;
+  --font-display: "Cabinet Grotesk", sans-serif;
   --font-body: "Source Sans 3", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
 
