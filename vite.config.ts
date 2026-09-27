@@ -441,6 +441,7 @@ function contactDevApi(mode: string): Plugin {
               reply_to: email,
               subject: mail.subject,
               text: mail.text,
+              html: mail.html,
             }),
           })
           if (!response.ok) {

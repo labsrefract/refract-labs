@@ -63,6 +63,7 @@ export default async function handler(req, res) {
         reply_to: email,
         subject: mail.subject,
         text: mail.text,
+        html: mail.html,
       }),
     });
 

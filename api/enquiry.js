@@ -95,10 +95,91 @@ function formatSlot(iso) {
   }).format(new Date(iso));
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function htmlBlock(text) {
+  return escapeHtml(text).replace(/\n/g, "<br />");
+}
+
+function row(label, valueHtml) {
+  return `<tr>
+    <td style="padding:10px 0 4px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#0d6e8c;font-weight:700;">${escapeHtml(label)}</td>
+  </tr>
+  <tr>
+    <td style="padding:0 0 14px;font-size:16px;line-height:1.45;color:#161513;border-bottom:1px solid #d9d4c8;">${valueHtml}</td>
+  </tr>`;
+}
+
+function brandedEmail({ kicker, title, rows, bodyLabel, body }) {
+  const rowsHtml = rows
+    .map(([label, valueHtml]) => row(label, valueHtml))
+    .join("");
+  const message =
+    body != null
+      ? `<tr>
+          <td style="padding:18px 0 6px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#0d6e8c;font-weight:700;">${escapeHtml(bodyLabel)}</td>
+        </tr>
+        <tr>
+          <td style="padding:14px 16px;background:#e8e4db;border:1px solid #d9d4c8;border-radius:8px;font-size:16px;line-height:1.55;color:#161513;">${body}</td>
+        </tr>`
+      : "";
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${escapeHtml(title)}</title>
+</head>
+<body style="margin:0;padding:0;background:#f3f1eb;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f1eb;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#fffdf8;border:1px solid #d9d4c8;border-radius:12px;overflow:hidden;">
+          <tr>
+            <td style="height:6px;background:#0d6e8c;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:28px 28px 8px;font-family:Arial,Helvetica,sans-serif;">
+              <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#0d6e8c;">${escapeHtml(kicker)}</p>
+              <h1 style="margin:0;font-size:26px;line-height:1.2;font-weight:400;color:#161513;letter-spacing:-0.03em;">${escapeHtml(title)}</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:8px 28px 8px;font-family:Arial,Helvetica,sans-serif;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                ${rowsHtml}
+                ${message}
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 28px 28px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.5;color:#5c5954;">
+              Reply to this email to write them back. <a href="https://www.refractlabs.tech" style="color:#0d6e8c;text-decoration:none;">www.refractlabs.tech</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
 export function enquiryEmail({ intent, name, email, type, message, slot }) {
   const kind = typeLabel[type] || type;
+  const safeName = escapeHtml(name);
+  const mailLink = `<a href="mailto:${escapeHtml(email)}" style="color:#0d6e8c;text-decoration:none;">${escapeHtml(email)}</a>`;
+
   if (intent === "call") {
     const when = formatSlot(slot);
+    const note = message ? htmlBlock(message) : "No note.";
     return {
       subject: `Call request from ${name} — ${when} EAT`,
       text: [
@@ -111,11 +192,34 @@ export function enquiryEmail({ intent, name, email, type, message, slot }) {
         "",
         message || "(No note.)",
       ].join("\n"),
+      html: brandedEmail({
+        kicker: "Refract Labs",
+        title: "Call request",
+        rows: [
+          ["Requested", `${escapeHtml(when)} EAT`],
+          ["Name", safeName],
+          ["Email", mailLink],
+          ["Service", escapeHtml(kind)],
+        ],
+        bodyLabel: "Note",
+        body: note,
+      }),
     };
   }
 
   return {
     subject: `New inquiry from ${name} (${kind})`,
     text: [`Name: ${name}`, `Email: ${email}`, `Type: ${kind}`, "", message].join("\n"),
+    html: brandedEmail({
+      kicker: "Refract Labs",
+      title: "New inquiry",
+      rows: [
+        ["Name", safeName],
+        ["Email", mailLink],
+        ["Service", escapeHtml(kind)],
+      ],
+      bodyLabel: "Message",
+      body: htmlBlock(message),
+    }),
   };
 }
