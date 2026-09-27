@@ -5,7 +5,7 @@
     "index": true
   },
   "icons": {
-    "icon": "https://www.refractlabs.tech/favicon-96.png"
+    "icon": "/favicon-96.png"
   },
   "openGraph": {
     "image": "https://www.refractlabs.tech/og-image.png"
