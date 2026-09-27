@@ -22,7 +22,7 @@ export default function WorkCard({
           <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--accent)" }}>
             {project.sector}
           </span>
-          <Heading className="text-[15px] font-bold mt-1">{project.name}</Heading>
+          <Heading className="text-base mt-1">{project.name}</Heading>
         </div>
       </Link>
     );
@@ -37,7 +37,7 @@ export default function WorkCard({
         <span className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--accent)" }}>
           {project.sector}
         </span>
-        <Heading className="text-lg font-bold mb-2">{project.name}</Heading>
+        <Heading className="text-xl mb-2">{project.name}</Heading>
         <p className="text-sm mb-5" style={{ color: "var(--muted)" }}>
           {project.summary}
         </p>

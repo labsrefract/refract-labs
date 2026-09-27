@@ -27,7 +27,7 @@ function Hero() {
       <div className="hero-stage max-w-7xl mx-auto px-6 lg:px-10">
         <div className="hero-copy">
           <Eyebrow text={site.tagline} className="hero-in hero-in-1" />
-          <h1 className="hero-in hero-in-2 text-4xl sm:text-5xl lg:text-[3.6rem] font-extrabold" style={{ color: "var(--text)" }}>
+          <h1 className="hero-in hero-in-2 text-5xl sm:text-6xl lg:text-[4.35rem]" style={{ color: "var(--text)" }}>
             We bend ideas
             <br />
             into products.
@@ -61,7 +61,7 @@ function WorkTeaser() {
     <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <Reveal className="flex items-end justify-between gap-4 mb-8 flex-wrap">
-          <h2 className="text-2xl sm:text-3xl font-bold">Recent builds.</h2>
+          <h2 className="text-3xl sm:text-4xl">Recent builds.</h2>
           <Link to="/work" className="nav-link">
             All work →
           </Link>
@@ -83,7 +83,7 @@ function WorkTeaser() {
                   <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--accent)" }}>
                     {p.sector}
                   </span>
-                  <span className="font-bold">{p.name}</span>
+                  <span className="home-work-name">{p.name}</span>
                   <span className="text-sm" style={{ color: "var(--muted)" }}>
                     {p.summary}
                   </span>
@@ -102,7 +102,7 @@ function ServicesTeaser() {
     <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <Reveal className="mb-4">
-          <h2 className="text-2xl sm:text-3xl font-bold">What we do.</h2>
+          <h2 className="text-3xl sm:text-4xl">What we do.</h2>
         </Reveal>
         <Reveal>
           <p className="max-w-xl mb-10 text-[15px]" style={{ color: "var(--muted)" }}>
@@ -159,7 +159,7 @@ function Voices() {
     <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <Reveal className="mb-4">
-          <h2 className="text-2xl sm:text-3xl font-bold">From clients.</h2>
+          <h2 className="text-3xl sm:text-4xl">From clients.</h2>
         </Reveal>
         <Reveal>
           <p className="max-w-xl mb-10 text-[15px]" style={{ color: "var(--muted)" }}>
@@ -208,7 +208,7 @@ function ProcessTeaser() {
     <section className="py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <Reveal className="flex items-end justify-between gap-4 mb-4 flex-wrap">
-          <h2 className="text-2xl sm:text-3xl font-bold">How we work.</h2>
+          <h2 className="text-3xl sm:text-4xl">How we work.</h2>
           <Link to="/process" className="nav-link">
             The process →
           </Link>
