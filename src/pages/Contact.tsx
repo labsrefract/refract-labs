@@ -13,8 +13,8 @@ const faqs = [
     a: "Within one business day. Discovery calls are 30 minutes and free.",
   },
   {
-    q: "Do you take every project?",
-    a: "No. We take a small number at a time so the people who bid the work are the people who build it.",
+    q: "Who actually does the work?",
+    a: "The same people you talk to. We do not hand the project to a junior team after the call.",
   },
   {
     q: "Where are you based?",
