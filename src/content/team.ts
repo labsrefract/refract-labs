@@ -10,7 +10,6 @@ export type Founder = {
   name: string;
   role: string;
   bio: string;
-  stack: readonly string[];
   initials: string;
   photo?: string;
   linkedin?: string;
@@ -19,31 +18,27 @@ export type Founder = {
 
 export const founders: readonly Founder[] = [
   {
+    name: "Stephen Githua",
+    role: "Co-founder & Business Lead",
+    bio: "Leads how the studio takes work on. Turns a messy brief into a scoped engagement — what to build, what to skip, and what a first version actually has to do.",
+    initials: "SG",
+    photo: stevePhoto,
+    linkedin: "https://www.linkedin.com/in/stephen-githua",
+  },
+  {
     name: "David Ouma",
-    role: "Co-founder & backend engineer",
-    bio: "Backend-focused engineer in Nairobi. Designs APIs, authentication, and real-time systems in Node.js, and ships the frontend when the product needs it. Information Technology graduate from JKUAT.",
-    stack: ["Node.js", "Express", "PostgreSQL", "MongoDB", "React", "Docker"],
+    role: "Co-founder & Lead Developer",
+    bio: "Leads how the studio builds. Architecture, APIs, and the codebase you keep after launch — then the frontend when the product needs it. Information Technology graduate from JKUAT, based in Nairobi.",
     initials: "DO",
     photo: teamShot("v1788882280", "david.jpg"),
     linkedin: "https://www.linkedin.com/in/oumadavid",
     github: "https://github.com/oumadavid",
   },
   {
-    name: "Stephen Githua",
-    role: "Co-founder & product engineer",
-    bio: "Product-minded frontend engineer. Turns messy briefs into interfaces that hold up in production — React, TypeScript, and the unglamorous work of making software feel finished.",
-    stack: ["React", "TypeScript", "React Native", "CSS"],
-    initials: "SG",
-    photo: stevePhoto,
-    linkedin: "https://www.linkedin.com/in/stephen-githua",
-  },
-  {
     name: "Hosanna Alex",
-    role: "Co-founder & backend engineer",
-    bio: "Backend engineer in Nairobi. Builds APIs and databases that hold up under pressure — marketplace platforms, finance trackers, work-management systems. Currently finishing a BSc in Information Technology at JKUAT.",
-    stack: ["Python", "Node.js", "TypeScript", "PostgreSQL", "MongoDB", "Flask"],
+    role: "Co-founder & Customer Success",
+    bio: "Leads what happens after we start. The named person on the work: updates, questions, and keeping production from becoming an open tab.",
     initials: "HA",
-    photo: "https://avatars.githubusercontent.com/u/81245867?v=4",
     linkedin: "https://www.linkedin.com/in/hosanacodes",
     github: "https://github.com/hosanacodes",
   },

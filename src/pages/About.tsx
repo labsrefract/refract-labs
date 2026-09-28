@@ -39,7 +39,7 @@ const story = [
   },
   {
     heading: "How we work with clients",
-    body: "We take on a small number of projects at a time, by design. Every client gets senior attention — not a junior team managed by a senior one. We ask hard questions, push back when scope does not serve the goal, and stay engaged past launch.",
+    body: "Every client gets senior attention — not a junior team managed by a senior one. We ask hard questions, push back when scope does not serve the goal, and stay engaged past launch.",
   },
 ];
 
@@ -81,7 +81,7 @@ export default function About() {
             <p className="eyebrow">The people</p>
             <h2 className="about-people-title">Who you work with.</h2>
             <p className="about-people-lead">
-              Nairobi. Direct. The people on the call are the people who write the code.
+              Nairobi. Direct. The people on the call are the people on the work.
             </p>
           </Reveal>
 
@@ -109,20 +109,13 @@ export default function About() {
                     ) : null}
                   </p>
                 ) : null}
-                <ul className="about-person-stack">
-                  {f.stack.map((tag) => (
-                    <li key={tag}>
-                      <span className="chip">{tag}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </Reveal>
           ))}
         </div>
       </section>
 
-      <PageCTA sub="We are selective about what we take on, which means the projects we do take on get our full attention." />
+      <PageCTA />
     </>
   );
 }
