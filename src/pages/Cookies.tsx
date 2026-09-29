@@ -30,8 +30,8 @@ export default function Cookies() {
         <h2>Hosting and type</h2>
         <p>
           Vercel may set a cookie that is strictly necessary to serve the site and protect it from abuse. Those are
-          operational, not marketing. Type is loaded from Google Fonts, so Google may see the request for the font files. We
-          do not set a cookie for that.
+          operational, not marketing. Type is loaded from Google Fonts and Fontshare, so those providers may see the request
+          for the font files. We do not set a cookie for that.
         </p>
       </Reveal>
       <Reveal as="section">
