@@ -2039,6 +2039,19 @@ a.home-voice:focus-visible .home-voice-card {
   color: var(--muted);
 }
 
+.legal-copy-body {
+  margin-top: 0.85rem;
+  max-width: 40rem;
+}
+
+.legal-copy-body p {
+  margin: 0;
+}
+
+.legal-copy-body p + p {
+  margin-top: 0.85rem;
+}
+
 .legal-copy a {
   color: var(--accent);
   text-underline-offset: 3px;
@@ -2079,6 +2092,10 @@ a.home-voice:focus-visible .home-voice-card {
   }
 
   .legal-copy p {
+    margin-top: 0;
+  }
+
+  .legal-copy-body {
     margin-top: 0;
   }
 }

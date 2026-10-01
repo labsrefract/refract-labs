@@ -46,7 +46,8 @@ export default function LegalPage({
           </nav>
           <div className="legal-copy">{children}</div>
           <Reveal className="legal-updated">
-            Last updated September 2026. This is written for the marketing site, not as formal legal advice.
+            Last updated October 2026. These pages are not legal advice. A signed engagement or product agreement, if you
+            have one, controls if it conflicts with what is written here.
           </Reveal>
         </div>
       </section>
