@@ -45,7 +45,7 @@ export const caseStudies: CaseStudy[] = [
     result:
       "A public site that can take an enquiry for a new set of curtains, a fitting, or a pickup — and route it to the team the same day.",
     stack: ["React", "Vite"],
-    url: "https://nairobi-curtains.vercel.app",
+    url: "https://www.nairobicurtains.com",
     image: workShot("v1788879145", "nairobicurtains.png"),
   },
   {
