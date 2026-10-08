@@ -1,8 +1,10 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import { useTheme } from "../context/theme";
+import { AI_PATH, DEMO_PATH, agentPath, agents, featuredAgent } from "../content/ai";
 import { categoryPath, serviceCategories, servicePath } from "../content/services";
 import { site } from "../content/site";
+import AgentGlyph from "./AgentGlyph";
 import { ButtonLink } from "./Button";
 import { Logo } from "./Logo";
 
@@ -31,31 +33,37 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
+type Menu = "software" | "ai";
+
 const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
-const restNav = site.nav.filter((item) => item.label !== "Services");
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
-  const [megaOpen, setMegaOpen] = useState(false);
+  const [menu, setMenu] = useState<Menu | null>(null);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileAIOpen, setMobileAIOpen] = useState(true);
   const { theme, toggle } = useTheme();
   const location = useLocation();
   const panelId = useId();
   const megaId = useId();
   const mobileServicesId = useId();
+  const mobileAIId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const megaRef = useRef<HTMLDivElement>(null);
   const servicesBtnRef = useRef<HTMLButtonElement>(null);
+  const aiBtnRef = useRef<HTMLButtonElement>(null);
   const hoverTimer = useRef<number>(0);
   const themeLabel = theme === "light" ? "Switch to dark mode" : "Switch to light mode";
   const linksRef = useRef<HTMLDivElement>(null);
   const [underline, setUnderline] = useState({ left: 0, width: 0, opacity: 0 });
   const servicesActive = location.pathname === "/services" || location.pathname.startsWith("/services/");
+  const aiActive = location.pathname === AI_PATH || location.pathname.startsWith(`${AI_PATH}/`);
+  const triggerRef = (m: Menu) => (m === "ai" ? aiBtnRef : servicesBtnRef);
 
   useEffect(() => {
     setOpen(false);
-    setMegaOpen(false);
+    setMenu(null);
     setMobileServicesOpen(false);
   }, [location.pathname, location.hash]);
 
@@ -81,7 +89,7 @@ export default function Nav() {
     window.addEventListener("resize", measure);
     void document.fonts?.ready.then(measure);
     return () => window.removeEventListener("resize", measure);
-  }, [location.pathname, megaOpen]);
+  }, [location.pathname, menu]);
 
   useEffect(() => {
     if (!open) return;
@@ -117,22 +125,23 @@ export default function Nav() {
       document.removeEventListener("keydown", onKey);
       toggleRef.current?.focus();
     };
-  }, [open, mobileServicesOpen]);
+  }, [open, mobileServicesOpen, mobileAIOpen]);
 
   useEffect(() => {
-    if (!megaOpen) return;
+    if (!menu) return;
+    const trigger = triggerRef(menu);
 
     function onDoc(e: MouseEvent) {
       const target = e.target;
       if (!(target instanceof Node)) return;
-      if (megaRef.current?.contains(target) || servicesBtnRef.current?.contains(target)) return;
-      setMegaOpen(false);
+      if (megaRef.current?.contains(target) || servicesBtnRef.current?.contains(target) || aiBtnRef.current?.contains(target)) return;
+      setMenu(null);
     }
 
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        setMegaOpen(false);
-        servicesBtnRef.current?.focus();
+        setMenu(null);
+        trigger.current?.focus();
       }
     }
 
@@ -142,35 +151,32 @@ export default function Nav() {
       document.removeEventListener("mousedown", onDoc);
       document.removeEventListener("keydown", onKey);
     };
-  }, [megaOpen]);
+  }, [menu]);
 
-  function openMega() {
+  function openMenu(next: Menu) {
     window.clearTimeout(hoverTimer.current);
-    setMegaOpen(true);
+    setMenu(next);
   }
 
-  function closeMegaSoon() {
+  function closeMenuSoon() {
     window.clearTimeout(hoverTimer.current);
-    hoverTimer.current = window.setTimeout(() => setMegaOpen(false), 140);
+    hoverTimer.current = window.setTimeout(() => setMenu(null), 140);
   }
 
-  function onServicesKey(e: ReactKeyboardEvent<HTMLButtonElement>) {
-    if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      setMegaOpen(true);
-      requestAnimationFrame(() => {
-        megaRef.current?.querySelector<HTMLElement>("a")?.focus();
-      });
-    }
+  function onTriggerKey(next: Menu) {
+    return (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+      if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setMenu(next);
+        requestAnimationFrame(() => {
+          megaRef.current?.querySelector<HTMLElement>("a")?.focus();
+        });
+      }
+    };
   }
 
-  const mega = (
-    <div
-      id={megaId}
-      ref={megaRef}
-      className="nav-mega"
-      aria-label="Services"
-    >
+  const softwareMega = (
+    <div id={megaId} ref={megaRef} className="nav-mega" aria-label="Software">
       {serviceCategories.map((category) => (
         <div key={category.id} className="nav-mega-col">
           <Link to={categoryPath(category.id)} className="nav-mega-heading">
@@ -190,43 +196,98 @@ export default function Nav() {
     </div>
   );
 
+  const aiMega = (
+    <div id={megaId} ref={megaRef} className="nav-ai-mega" aria-label="Refract AI">
+      <div className="nav-ai-catalogue">
+        <div className="nav-ai-head">
+          <span className="nav-ai-kicker">Refract AI — Agent catalogue</span>
+          <Link to={AI_PATH} className="nav-ai-all">
+            All agents →
+          </Link>
+        </div>
+        <ul className="nav-ai-grid">
+          {agents.map((agent) => (
+            <li key={agent.id}>
+              <Link to={agentPath(agent.id)} className="nav-ai-agent">
+                <AgentGlyph kind={agent.glyph} />
+                <span className="nav-ai-agent-text">
+                  <span className="nav-ai-agent-name">
+                    {agent.name}
+                    {agent.tag ? <span className="nav-ai-tag">{agent.tag}</span> : null}
+                  </span>
+                  <span className="nav-ai-agent-desc">{agent.desc}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="nav-ai-foot">
+          <span>Need software built around your own systems?</span>
+          <Link to="/services" className="nav-ai-software">
+            Refract Software →
+          </Link>
+        </div>
+      </div>
+      <div className="nav-ai-featured">
+        <span className="nav-ai-featured-kicker">Featured agent</span>
+        <span className="nav-ai-featured-title">{featuredAgent.title}</span>
+        <span className="nav-ai-featured-desc">{featuredAgent.desc}</span>
+        <Link to={DEMO_PATH} className="nav-ai-featured-cta">
+          Book a demo
+        </Link>
+      </div>
+    </div>
+  );
+
   return (
-    <nav
-      className={megaOpen ? "site-nav is-mega" : "site-nav"}
-      aria-label="Primary"
-      onMouseLeave={closeMegaSoon}
-    >
+    <nav className={menu ? "site-nav is-mega" : "site-nav"} aria-label="Primary" onMouseLeave={closeMenuSoon}>
       <div className="site-nav-bar">
         <Logo />
 
         <div className="hidden md:flex items-center gap-7 pr-1">
           <div ref={linksRef} className="nav-links flex items-center gap-7">
-            <div className="nav-services" onMouseEnter={openMega}>
+            <div className="nav-services" onMouseEnter={() => openMenu("software")}>
               <button
                 ref={servicesBtnRef}
                 type="button"
                 className={servicesActive ? "nav-link nav-link-active nav-services-trigger" : "nav-link nav-services-trigger"}
-                aria-expanded={megaOpen}
+                aria-expanded={menu === "software"}
                 aria-haspopup="true"
-                aria-controls={megaId}
-                onClick={() => setMegaOpen(true)}
-                onKeyDown={onServicesKey}
+                aria-controls={menu === "software" ? megaId : undefined}
+                onClick={() => setMenu("software")}
+                onKeyDown={onTriggerKey("software")}
               >
-                Services
-                <Chevron open={megaOpen} />
+                Software
+                <Chevron open={menu === "software"} />
               </button>
             </div>
-            {restNav.map((l) => (
+            <div className="nav-services" onMouseEnter={() => openMenu("ai")}>
+              <button
+                ref={aiBtnRef}
+                type="button"
+                className={aiActive ? "nav-link nav-link-active nav-services-trigger nav-ai-trigger" : "nav-link nav-services-trigger nav-ai-trigger"}
+                aria-expanded={menu === "ai"}
+                aria-haspopup="true"
+                aria-controls={menu === "ai" ? megaId : undefined}
+                onClick={() => setMenu("ai")}
+                onKeyDown={onTriggerKey("ai")}
+              >
+                AI
+                <Chevron open={menu === "ai"} />
+              </button>
+            </div>
+            {site.nav.map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
+                onMouseEnter={closeMenuSoon}
                 className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}
               >
                 {l.label}
               </NavLink>
             ))}
             <span
-              className="nav-underline"
+              className={aiActive ? "nav-underline is-ai" : "nav-underline"}
               aria-hidden="true"
               style={{
                 width: underline.width,
@@ -238,9 +299,15 @@ export default function Nav() {
           <button type="button" onClick={toggle} aria-label={themeLabel} className="site-nav-icon">
             {theme === "light" ? <MoonIcon /> : <SunIcon />}
           </button>
-          <ButtonLink to="/contact" className="!py-2.5 !px-4 !text-sm !rounded-full">
-            Start a project
-          </ButtonLink>
+          {aiActive ? (
+            <Link to={DEMO_PATH} className="btn nav-ai-cta !py-2.5 !px-4 !text-sm !rounded-full">
+              Book a demo
+            </Link>
+          ) : (
+            <ButtonLink to="/contact" className="!py-2.5 !px-4 !text-sm !rounded-full">
+              Start a project
+            </ButtonLink>
+          )}
         </div>
 
         <div className="md:hidden flex items-center gap-2 pr-0.5">
@@ -268,9 +335,9 @@ export default function Nav() {
         </div>
       </div>
 
-      {megaOpen ? (
-        <div className="hidden md:block nav-mega-wrap" onMouseEnter={openMega}>
-          {mega}
+      {menu ? (
+        <div className="hidden md:block nav-mega-wrap" onMouseEnter={() => openMenu(menu)}>
+          {menu === "ai" ? aiMega : softwareMega}
         </div>
       ) : null}
 
@@ -284,7 +351,7 @@ export default function Nav() {
               aria-controls={mobileServicesId}
               onClick={() => setMobileServicesOpen((value) => !value)}
             >
-              Services
+              Software
               <Chevron open={mobileServicesOpen} />
             </button>
             {mobileServicesOpen ? (
@@ -302,7 +369,35 @@ export default function Nav() {
               </div>
             ) : null}
           </div>
-          {restNav.map((l) => (
+          <div className="nav-mobile-services">
+            <button
+              type="button"
+              className={aiActive ? "nav-link nav-link-active text-base nav-mobile-services-trigger nav-ai-trigger" : "nav-link text-base nav-mobile-services-trigger nav-ai-trigger"}
+              aria-expanded={mobileAIOpen}
+              aria-controls={mobileAIId}
+              onClick={() => setMobileAIOpen((value) => !value)}
+            >
+              AI
+              <Chevron open={mobileAIOpen} />
+            </button>
+            {mobileAIOpen ? (
+              <div id={mobileAIId} className="nav-mobile-ai-panel">
+                {agents.map((agent) => (
+                  <Link key={agent.id} to={agentPath(agent.id)} className="nav-ai-agent" onClick={() => setOpen(false)}>
+                    <AgentGlyph kind={agent.glyph} size={36} />
+                    <span className="nav-ai-agent-text">
+                      <span className="nav-ai-agent-name is-sm">{agent.name}</span>
+                      <span className="nav-ai-agent-desc">{agent.desc}</span>
+                    </span>
+                  </Link>
+                ))}
+                <Link to={AI_PATH} className="nav-ai-all" onClick={() => setOpen(false)}>
+                  All agents →
+                </Link>
+              </div>
+            ) : null}
+          </div>
+          {site.nav.map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
@@ -312,9 +407,15 @@ export default function Nav() {
               {l.label}
             </NavLink>
           ))}
-          <ButtonLink to="/contact" className="!rounded-full mt-1" onClick={() => setOpen(false)}>
-            Start a project
-          </ButtonLink>
+          {aiActive ? (
+            <Link to={DEMO_PATH} className="btn nav-ai-cta !rounded-full mt-1" onClick={() => setOpen(false)}>
+              Book a demo
+            </Link>
+          ) : (
+            <ButtonLink to="/contact" className="!rounded-full mt-1" onClick={() => setOpen(false)}>
+              Start a project
+            </ButtonLink>
+          )}
         </div>
       ) : null}
     </nav>

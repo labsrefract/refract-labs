@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router";
+import { AI_PATH, DEMO_PATH, agentPath, agents } from "../content/ai";
 import { categoryPath, serviceCategories } from "../content/services";
 import { site } from "../content/site";
 import { Logo } from "./Logo";
@@ -29,11 +30,11 @@ export default function Footer() {
   return (
     <footer style={{ borderTop: "1px solid var(--border)", background: "var(--bg)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-10">
           <div>
             <Logo size="footer" />
             <p className="mt-4 text-sm max-w-xs" style={{ color: "var(--muted)" }}>
-              We design and build software for teams who need to move with care.
+              A software and AI studio in Nairobi, building custom software and AI agents for businesses.
             </p>
           </div>
 
@@ -45,20 +46,41 @@ export default function Footer() {
                   Home
                 </NavLink>
               </li>
-              {site.nav
-                .filter((l) => l.label !== "Services")
-                .map((l) => (
-                  <li key={l.to}>
-                    <NavLink to={l.to} className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}>
-                      {l.label}
-                    </NavLink>
-                  </li>
-                ))}
+              {site.footerNav.map((l) => (
+                <li key={l.to}>
+                  <NavLink to={l.to} className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}>
+                    {l.label}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <p className="eyebrow">Services</p>
+            <p className="eyebrow">Refract AI</p>
+            <ul className="flex flex-col gap-2">
+              <li>
+                <NavLink to={AI_PATH} end className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}>
+                  All agents
+                </NavLink>
+              </li>
+              {agents.slice(0, 3).map((agent) => (
+                <li key={agent.id}>
+                  <Link to={agentPath(agent.id)} className="nav-link">
+                    {agent.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link to={DEMO_PATH} className="nav-link">
+                  Book a demo
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p className="eyebrow">Refract Software</p>
             <ul className="flex flex-col gap-2">
               {serviceCategories.map((category) => (
                 <li key={category.id}>

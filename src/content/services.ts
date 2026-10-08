@@ -191,10 +191,18 @@ export const serviceCategories = [
   },
 ] as const satisfies readonly ServiceCategory[];
 
-export const enquiryTypes = serviceCategories.map((category) => ({
-  value: category.id,
-  label: category.title,
-}));
+export const enquiryTypes = [
+  ...serviceCategories.map((category) => ({
+    value: category.id,
+    label: category.title,
+  })),
+  { value: "ai-agents", label: "Refract AI agents" },
+];
+
+/** Preselects the enquiry type from a `?type=` link, e.g. the AI "Book a demo" button. */
+export function enquiryTypeFromQuery(value: string | null) {
+  return value && enquiryTypes.some((t) => t.value === value) ? value : "";
+}
 
 export const services = serviceCategories.flatMap((category) => category.services);
 

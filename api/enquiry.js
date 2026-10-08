@@ -5,6 +5,7 @@ const TYPES = new Set([
   "design",
   "strategy-advisory",
   "support-maintenance",
+  "ai-agents",
 ]);
 const SLOT_HOURS = new Set([9, 10, 11, 12, 14, 15, 16]);
 const SLOT_RE = /^(\d{4}-\d{2}-\d{2})T(\d{2}):00:00\+03:00$/;
@@ -18,6 +19,7 @@ export const typeLabel = {
   design: "Design",
   "strategy-advisory": "Strategy & Advisory",
   "support-maintenance": "Support & Maintenance",
+  "ai-agents": "Refract AI agents",
 };
 
 function isWeekdayEAT(iso) {

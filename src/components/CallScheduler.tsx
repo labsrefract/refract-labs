@@ -2,7 +2,8 @@ import { useMemo, useState, type FormEvent } from "react";
 import { Button } from "./Button";
 import { formatCallSlot, isValidCallSlot, listCallDays, listCallTimes } from "../lib/callSlots";
 import { site } from "../content/site";
-import { enquiryTypes } from "../content/services";
+import { useSearchParams } from "react-router";
+import { enquiryTypeFromQuery, enquiryTypes } from "../content/services";
 
 type Field = "name" | "email" | "type" | "message" | "slot";
 type FormState = Record<"name" | "email" | "type" | "message", string>;
@@ -24,7 +25,8 @@ export default function CallScheduler() {
   const days = useMemo(() => listCallDays(), []);
   const [day, setDay] = useState(days[0]?.ymd ?? "");
   const [slot, setSlot] = useState("");
-  const [form, setForm] = useState<FormState>(empty);
+  const [params] = useSearchParams();
+  const [form, setForm] = useState<FormState>(() => ({ ...empty, type: enquiryTypeFromQuery(params.get("type")) }));
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "preview" | "error">("idle");
   const [serverError, setServerError] = useState("");
