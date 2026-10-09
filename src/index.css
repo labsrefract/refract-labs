@@ -454,6 +454,11 @@ svg {
   cursor: pointer;
   font: inherit;
 }
+/* The reset above also resets size; match the plain nav links. */
+.nav-services-trigger.nav-link {
+  font-size: 15px;
+  font-weight: 500;
+}
 
 .nav-chevron {
   display: block;
@@ -476,54 +481,6 @@ svg {
   padding-top: 0.35rem;
 }
 
-.nav-mega {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1.25rem 1.1rem;
-  padding: 1.15rem 1.25rem 1.3rem;
-  background: var(--nav-bg);
-  border: 1px solid var(--border-strong);
-  border-radius: 1.5rem;
-  box-shadow: var(--shadow-md);
-}
-
-.nav-mega-heading {
-  display: block;
-  margin-bottom: 0.55rem;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  line-height: 1.35;
-  text-transform: uppercase;
-  color: var(--text);
-  overflow-wrap: break-word;
-}
-
-.nav-mega-heading:hover {
-  color: var(--accent);
-}
-
-.nav-mega-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.nav-mega-link {
-  display: block;
-  font-size: 0.86rem;
-  font-weight: 500;
-  line-height: 1.35;
-  color: var(--muted);
-}
-
-.nav-mega-link:hover {
-  color: var(--text);
-}
-
 .nav-mobile-services {
   display: flex;
   flex-direction: column;
@@ -534,15 +491,6 @@ svg {
   justify-content: space-between;
   width: 100%;
   text-align: left;
-}
-
-.nav-mobile-services-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-  max-height: min(62vh, 34rem);
-  overflow: auto;
-  padding: 0.15rem 0 0.35rem 0.15rem;
 }
 
 .nav-mobile-cat {
@@ -707,12 +655,6 @@ svg {
   }
 }
 
-@media (min-width: 768px) and (max-width: 1099px) {
-  .nav-mega {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
 @media (min-width: 768px) {
   .service-cat {
     --nav-offset: calc(0.75rem + 4rem);
@@ -782,6 +724,21 @@ svg {
 
   .site-nav.is-scrolled .site-nav-bar {
     min-width: 0;
+  }
+
+  /* Logo left, main links centred, actions right. The side columns never
+     shrink below their content, so the scrolled pill still packs tightly. */
+  .site-nav-bar {
+    display: grid;
+    grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
+  }
+
+  .nav-center {
+    justify-content: center;
+  }
+
+  .nav-actions {
+    justify-self: end;
   }
 }
 
@@ -2614,24 +2571,6 @@ a.home-voice:focus-visible .home-voice-card {
   background: var(--border-strong);
 }
 
-.ai-diamond {
-  flex-shrink: 0;
-  width: 7px;
-  height: 7px;
-  background: var(--ai);
-  transform: rotate(45deg);
-}
-
-.ai-diamond.is-sm {
-  width: 6px;
-  height: 6px;
-}
-
-.ai-diamond.is-lg {
-  width: 12px;
-  height: 12px;
-}
-
 /* Buttons */
 
 .ai-btn {
@@ -3093,115 +3032,6 @@ a.home-voice:focus-visible .home-voice-card {
   transform: none;
 }
 
-.ai-tabs {
-  display: flex;
-  padding: 3px;
-  border-radius: 7px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-}
-
-.ai-tab {
-  padding: 6px 14px;
-  border: 0;
-  border-radius: 5px;
-  background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.ai-tab.is-active {
-  background: var(--text);
-  color: var(--bg);
-}
-
-.ai-chat-card {
-  padding: 24px;
-}
-
-.ai-chat-head {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--ink-border);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--ink-muted);
-}
-
-.ai-chat-body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 18px 0;
-}
-
-.ai-bubble {
-  max-width: 86%;
-  padding: 10px 12px;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.ai-bubble.is-in {
-  align-self: flex-start;
-  border-radius: 8px 8px 8px 2px;
-  background: var(--ink-border);
-}
-
-.ai-bubble.is-out {
-  align-self: flex-end;
-  border-radius: 8px 8px 2px 8px;
-  background: #a993ff;
-  color: #0c1214;
-}
-
-.ai-chat-meta {
-  align-self: flex-end;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--ink-muted);
-}
-
-.ai-chat-foot {
-  margin-top: auto;
-  max-width: 280px;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(22px, 2cqi, 26px);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-}
-
-.ai-tab-card {
-  gap: 20px;
-  padding: clamp(28px, 4cqi, 52px) 0 clamp(24px, 3cqi, 36px);
-}
-
-.ai-tab-intro {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 660px;
-  padding: 0 clamp(28px, 4cqi, 52px);
-}
-
-.ai-tab-statement {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(22px, 2.3cqi, 32px);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  text-wrap: pretty;
-}
-
 .ai-steps {
   list-style: none;
   margin: 0;
@@ -3226,66 +3056,272 @@ a.home-voice:focus-visible .home-voice-card {
   line-height: 1.15;
 }
 
-.ai-marquees {
-  margin-top: auto;
-  padding-top: 36px;
+/* The section's own content arrives after the car window has closed, so its
+   heading unmasks once the content is visible. */
+.ai-window .ai-mask-word > span {
+  transition-delay: calc(1000ms + var(--line, 0) * 110ms);
+}
+
+.ai-window .ai-mask-head .ai-eyebrow,
+.ai-window .ai-mask-head .ai-mask-after {
+  transition-delay: 1300ms;
+}
+
+/* Anatomy of an agent: a request travels Read → Decide → Act → Report. */
+.ai-anatomy {
+  position: relative;
+  margin-top: clamp(8px, 2cqi, 24px);
+  padding: clamp(20px, 3cqi, 32px);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.ai-anatomy-head {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  overflow: hidden;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--subtle);
 }
 
-.ai-marquee {
-  display: flex;
-  gap: 10px;
-  width: max-content;
-  padding-left: clamp(28px, 4cqi, 52px);
-  animation: ai-marquee 44s linear infinite;
-}
-
-.ai-marquee.is-reverse {
-  padding-left: 0;
-  animation-direction: reverse;
-}
-
-.ai-pill {
+.ai-anatomy-live {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  font-size: 15px;
-  font-weight: 600;
-  white-space: nowrap;
+  gap: 6px;
+  color: var(--positive);
 }
 
-.ai-pill.is-mono {
-  background: transparent;
+.ai-anatomy-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--positive);
+  animation: ai-ping 1.2s ease infinite alternate;
+}
+
+.ai-anatomy-runs {
+  display: flex;
+  gap: 5px;
+  margin-left: auto;
+}
+
+.ai-anatomy-runs > span {
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border-strong);
+  transition: background 0.3s ease;
+}
+
+.ai-anatomy-runs > span.is-on {
+  background: var(--ai);
+}
+
+/* Five equal columns; the track runs between the first and last node centres
+   (10% to 90%), and the pulse sits on the current stage (--pos, 0–4). */
+.ai-anatomy-flow {
+  --node: 52px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ai-anatomy-track {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: calc(var(--node) / 2);
+  height: 2px;
+  background: var(--border);
+}
+
+.ai-anatomy-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--pos) * 25%);
+  background: var(--ai);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--ai) 60%, transparent);
+  transition: width 0.5s var(--ease-soft);
+}
+
+.ai-anatomy-pulse {
+  position: absolute;
+  left: calc(10% + var(--pos) * 20%);
+  top: calc(var(--node) / 2);
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: var(--ai);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--ai) 25%, transparent);
+  transition:
+    left 0.5s var(--ease-soft),
+    top 0.5s var(--ease-soft);
+  /* Behind the nodes, so it shows only while travelling between them. */
+  z-index: 0;
+}
+
+.ai-anatomy-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  min-width: 0;
+}
+
+.ai-anatomy-node {
+  position: relative;
+  z-index: 1;
+  width: var(--node);
+  height: var(--node);
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg);
+  color: var(--subtle);
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.ai-anatomy-stage.is-active .ai-anatomy-node {
+  border-color: var(--ai);
+  color: var(--ai);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ai) 18%, transparent);
+}
+
+.ai-anatomy-stage.is-done .ai-anatomy-node {
+  border-color: color-mix(in srgb, var(--ai) 55%, var(--border-strong));
+  color: var(--text);
+}
+
+.ai-anatomy-stage.is-flag .ai-anatomy-node {
+  border-color: #d9952f;
+  color: #d9952f;
+  box-shadow: 0 0 0 4px rgba(217, 149, 47, 0.18);
+}
+
+.ai-anatomy-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.ai-anatomy-sub {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+
+.ai-anatomy-caption {
+  min-height: 3.2em;
+  max-width: 200px;
+  font-size: 13px;
+  line-height: 1.4;
   color: var(--muted);
+  animation: live-up 0.35s var(--ease-soft) both;
+}
+
+.ai-anatomy-caption.is-message {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border-bottom-left-radius: 3px;
+  background: var(--surface-2);
+  color: var(--text);
+  text-align: left;
+}
+
+.ai-anatomy-stage.is-flag .ai-anatomy-caption {
+  color: #d9952f;
+}
+
+.ai-anatomy-caption .live-shimmer {
+  width: 80%;
+}
+
+/* Getting started: always visible under the diagram. */
+.ai-start-steps {
+  margin-top: clamp(32px, 4cqi, 48px);
+  padding: 0;
+}
+
+/* Phones: the flow runs top to bottom, each stage a row beside the track. */
+@media (max-width: 760px) {
+  .ai-anatomy-flow {
+    --row: 96px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: var(--row);
+    gap: 0;
+  }
+
+  /* From the first node's centre to the last's. */
+  .ai-anatomy-track {
+    left: calc(var(--node) / 2);
+    right: auto;
+    top: calc(var(--node) / 2);
+    bottom: calc(var(--row) - var(--node) / 2);
+    width: 2px;
+    height: auto;
+  }
+
+  .ai-anatomy-fill {
+    inset: 0 0 auto 0;
+    width: auto;
+    height: calc(var(--pos) * 25%);
+    transition: height 0.5s var(--ease-soft);
+  }
+
+  .ai-anatomy-pulse {
+    left: calc(var(--node) / 2);
+    top: calc(var(--node) / 2 + var(--pos) * var(--row));
+  }
+
+  .ai-anatomy-stage {
+    display: grid;
+    grid-template-columns: var(--node) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    column-gap: 14px;
+    row-gap: 4px;
+    text-align: left;
+  }
+
+  .ai-anatomy-node {
+    grid-row: 1 / 3;
+  }
+
+  .ai-anatomy-label {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .ai-anatomy-caption {
+    min-height: 0;
+    max-width: none;
+  }
+
+  .ai-anatomy-caption.is-message {
+    justify-self: start;
+  }
 }
 
 /* 03 Platform */
-
-.ai-channel {
-  display: grid;
-  grid-template-columns: 110px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 16px;
-  padding: 11px 0;
-  border-top: 1px solid var(--border);
-  font-size: 15px;
-}
-
-.ai-channel-status {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--positive);
-}
 
 .ai-hub {
   position: absolute;
@@ -3368,24 +3404,6 @@ a.home-voice:focus-visible .home-voice-card {
   translate: 0 -50%;
 }
 
-.ai-masked {
-  margin: auto 0 0;
-  padding-top: 24px;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 8px 16px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-}
-
-.ai-masked dt {
-  color: var(--subtle);
-}
-
-.ai-masked dd {
-  margin: 0;
-}
-
 .ai-approval {
   margin-top: auto;
   padding: 14px;
@@ -3419,35 +3437,6 @@ a.home-voice:focus-visible .home-voice-card {
   background: var(--ai);
   border-color: var(--ai);
   color: var(--ai-on);
-}
-
-.ai-lang {
-  display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 12px;
-  padding: 10px 0;
-  border-top: 1px solid var(--border);
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.ai-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 5px;
-  height: 130px;
-  border-bottom: 1px solid var(--text);
-}
-
-.ai-bars > span {
-  flex: 1;
-  background: var(--surface-2);
-  border-top: 1px solid var(--border-strong);
-}
-
-.ai-bars > span.is-peak {
-  background: var(--ai);
-  border-top-color: var(--ai);
 }
 
 .ai-bars-axis {
@@ -3592,222 +3581,498 @@ a.home-voice:focus-visible .home-voice-card {
   }
 }
 
-/* 03 Platform: card demos
-   Each card (`.ai-plat-card`) plays its demo once it is in view. */
+/* 03 Platform: live cards
+   Each card loops a small scene of an agent at work (src/components/platform).
+   The scenes only run while on screen; reduced motion shows one still frame. */
 
-/* Channels: conversations arrive one by one, then each status lands. */
-.ai-plat-card .ai-channel {
-  opacity: 0;
-  transform: translateX(-10px);
+/* Shared: a "thinking" placeholder and status pills. */
+.live-shimmer {
+  display: inline-block;
+  width: min(180px, 70%);
+  height: 0.8em;
+  vertical-align: middle;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--surface-2) 25%, color-mix(in srgb, var(--ai) 30%, var(--surface-2)) 50%, var(--surface-2) 75%);
+  background-size: 300% 100%;
+  animation: live-shimmer 1.1s linear infinite;
+}
+
+@keyframes live-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes live-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes live-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.live-status {
+  justify-self: end;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--subtle);
+  white-space: nowrap;
+}
+
+.live-status.is-thinking,
+.live-status.is-replying {
+  border-color: color-mix(in srgb, var(--ai) 50%, var(--border));
+  color: var(--ai);
+}
+
+.live-status.is-resolved {
+  border-color: color-mix(in srgb, var(--positive) 45%, var(--border));
+  color: var(--positive);
+}
+
+.live-status.is-escalated {
+  border-color: rgba(217, 149, 47, 0.5);
+  color: #d9952f;
+}
+
+.live-ok {
+  color: var(--positive);
+}
+
+/* Every channel: a live inbox. */
+.live-inbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.live-inbox-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 14px;
+  padding: 11px 0;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  text-align: left;
+}
+
+.live-inbox-row.is-live {
+  animation: live-in 0.45s var(--ease-soft) both;
+}
+
+.live-inbox-row:not(.is-live) {
+  opacity: 0.6;
+}
+
+.live-inbox-channel {
+  padding-top: 1px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--subtle);
+}
+
+.live-inbox-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.live-inbox-in {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.live-inbox-reply {
+  min-height: 1.4em;
+  color: var(--muted);
+}
+
+.live-inbox-arrow {
+  margin-right: 6px;
+  color: var(--ai);
+}
+
+/* One connection: pulses from the core to each system in turn. */
+.live-hub .ai-hub-node {
   transition:
-    opacity 0.5s ease-out calc(200ms + var(--i) * 140ms),
-    transform 0.5s var(--ease-soft) calc(200ms + var(--i) * 140ms);
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.ai-plat-card .ai-channel-status {
-  opacity: 0;
-  scale: 0.8;
-  transition:
-    opacity 0.3s ease-out calc(650ms + var(--i) * 140ms),
-    scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) calc(650ms + var(--i) * 140ms);
-}
-
-.ai-plat-card.is-in .ai-channel {
-  opacity: 1;
-  transform: none;
-}
-
-.ai-plat-card.is-in .ai-channel-status {
-  opacity: 1;
-  scale: 1;
-}
-
-/* Hub: the core switches on, lines draw out from it, then each system
-   connects in turn, clockwise from the top. */
-.ai-plat-card .ai-hub-core {
-  scale: 0.6;
-  opacity: 0;
-  transition:
-    scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 150ms,
-    opacity 0.3s ease-out 150ms;
-}
-
-.ai-plat-card .ai-hub-v,
-.ai-plat-card .ai-hub-h {
-  transition: transform 0.8s var(--ease-soft) 450ms;
-}
-
-.ai-plat-card .ai-hub-v {
-  transform: scaleY(0);
-}
-
-.ai-plat-card .ai-hub-h {
-  transform: scaleX(0);
-}
-
-.ai-plat-card .ai-hub-node {
-  opacity: 0;
-  scale: 0.85;
-  transition:
-    opacity 0.35s ease-out calc(950ms + var(--i) * 130ms),
-    scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) calc(950ms + var(--i) * 130ms),
-    border-color 0.3s ease calc(950ms + var(--i) * 130ms);
-}
-
-.ai-plat-card.is-in .ai-hub-core,
-.ai-plat-card.is-in .ai-hub-node {
-  opacity: 1;
-  scale: 1;
-}
-
-.ai-plat-card.is-in .ai-hub-v,
-.ai-plat-card.is-in .ai-hub-h {
-  transform: none;
-}
-
-.ai-plat-card.is-in .ai-hub-node {
+.live-hub .ai-hub-node.is-active {
   border-color: var(--ai);
+  color: var(--ai);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--ai) 40%, transparent);
 }
 
-/* Privacy: the values scramble into masks (see <Scramble>); hosting lands last. */
-.ai-plat-card .ai-masked-host {
-  opacity: 0;
-  transition: opacity 0.5s ease-out 2.4s;
+.live-hub-pulse {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--ai);
+  box-shadow: 0 0 10px var(--ai);
+  animation: live-hub-pulse 0.6s ease-in both;
 }
 
-.ai-plat-card.is-in .ai-masked-host {
-  opacity: 1;
-}
-
-/* Approval: the request slides in, the limit is flagged, Approve calls for a click. */
-.ai-plat-card .ai-approval {
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 0.5s ease-out 250ms,
-    transform 0.6s var(--ease-soft) 250ms;
-}
-
-.ai-plat-card.is-in .ai-approval {
-  opacity: 1;
-  transform: none;
-}
-
-.ai-plat-card.is-in .ai-approval-limit {
-  animation: ai-limit-flag 1.4s ease-out 900ms both;
-}
-
-@keyframes ai-limit-flag {
-  0% {
-    color: var(--subtle);
+@keyframes live-hub-pulse {
+  from {
+    transform: translate(0, 0);
+    opacity: 1;
   }
-  30% {
-    color: #e8a33d;
-    text-shadow: 0 0 12px rgba(232, 163, 61, 0.6);
+  to {
+    transform: translate(var(--dx), var(--dy));
+    opacity: 0;
+  }
+}
+
+.live-hub-call {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 40px);
+  translate: -50% 0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--text);
+  animation: live-up 0.35s ease-out both;
+}
+
+/* Privacy: a scan line masks a record before it reaches the model. */
+.live-privacy {
+  margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.live-privacy-record {
+  --row-h: 24px;
+  position: relative;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.live-privacy-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  height: var(--row-h);
+  align-items: center;
+}
+
+.live-privacy-key {
+  color: var(--subtle);
+}
+
+.live-privacy-value {
+  white-space: nowrap;
+}
+
+.live-privacy-row.is-masked .live-privacy-value {
+  animation: live-mask 0.6s ease-out both;
+}
+
+@keyframes live-mask {
+  0% {
+    background: color-mix(in srgb, var(--ai) 35%, transparent);
   }
   100% {
-    color: #d9952f;
+    background: transparent;
   }
 }
 
-.ai-plat-card.is-in .ai-chip-btn.is-primary {
-  animation: ai-approve-ping 1.6s ease-out 1.6s 2;
+.live-privacy-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(10px + var(--row) * var(--row-h));
+  height: var(--row-h);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ai) 26%, transparent), transparent 85%);
+  box-shadow: inset 2px 0 0 var(--ai);
+  transition: top 0.5s var(--ease-soft);
+  pointer-events: none;
 }
 
-@keyframes ai-approve-ping {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ai) 55%, transparent);
-  }
-  100% {
-    box-shadow: 0 0 0 10px transparent;
-  }
+.live-privacy-send {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--subtle);
 }
 
-/* Languages: the same reply arrives in each language in turn. */
-.ai-plat-card .ai-lang {
-  opacity: 0;
-  transform: translateY(8px);
+.live-privacy-send.is-sent {
+  color: var(--positive);
+}
+
+/* People approve: a queue where the large refund waits for a person. */
+.live-approvals {
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.live-approvals-limit {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--subtle);
+}
+
+.live-approval-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 12px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 13px;
+}
+
+.live-approval-row.is-current {
+  animation: live-up 0.35s var(--ease-soft) both;
+}
+
+.live-approval-row.is-done:not(.is-current) {
+  opacity: 0.6;
+}
+
+.live-approval-amount {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: right;
+}
+
+.live-approval-state {
+  grid-column: 1 / -1;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ai);
+}
+
+.live-approval-state.is-ok {
+  color: var(--positive);
+}
+
+.live-approval-ask {
+  margin-top: 0;
+  border-color: rgba(217, 149, 47, 0.55);
+  animation: live-up 0.35s var(--ease-soft) both;
+}
+
+.live-approval-flag {
+  color: #d9952f;
+}
+
+.ai-chip-btn.is-pressed {
+  transform: scale(0.94);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ai) 35%, transparent);
   transition:
-    opacity 0.5s ease-out calc(250ms + var(--i) * 260ms),
-    transform 0.5s var(--ease-soft) calc(250ms + var(--i) * 260ms);
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.ai-plat-card.is-in .ai-lang {
-  opacity: 1;
-  transform: none;
+/* Languages: detect the customer's language and answer in it. */
+.live-lang {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
 }
 
-/* Volume: bars grow left to right; the month-end peak lands last. */
-.ai-plat-card .ai-bars > span {
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.7s var(--ease-soft) calc(200ms + var(--i) * 40ms);
+.live-lang-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
 }
 
-.ai-plat-card .ai-bars > span.is-peak {
-  transition-delay: 1.15s;
-}
-
-.ai-plat-card.is-in .ai-bars > span {
-  transform: none;
-}
-
-.ai-plat-card.is-in .ai-bars > span.is-peak {
-  animation: ai-peak-glow 1.2s ease-out 1.5s both;
-}
-
-@keyframes ai-peak-glow {
-  0% {
-    box-shadow: 0 0 0 transparent;
-  }
-  40% {
-    box-shadow: 0 0 18px color-mix(in srgb, var(--ai) 70%, transparent);
-  }
-  100% {
-    box-shadow: 0 0 6px color-mix(in srgb, var(--ai) 30%, transparent);
-  }
-}
-
-/* Audit log: each entry types out, one after another. */
-.ai-plat-card .ai-log > div {
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 0.7s steps(30, end) calc(400ms + var(--i) * 650ms);
-}
-
-.ai-plat-card.is-in .ai-log > div {
-  clip-path: inset(0);
-}
-
-/* Section extras on top of the shared scroll motion. */
-
-/* Use cases: list items cascade in after their card. */
-.ai-usecase .ai-list li {
-  opacity: 0;
-  transform: translateX(-8px);
+.live-lang-pill {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--subtle);
   transition:
-    opacity 0.5s ease-out calc(350ms + var(--i) * 90ms),
-    transform 0.5s var(--ease-soft) calc(350ms + var(--i) * 90ms);
+    border-color 0.3s ease,
+    color 0.3s ease,
+    background 0.3s ease;
 }
 
-.ai-usecase.is-in .ai-list li {
-  opacity: 1;
-  transform: none;
+.live-lang-pill.is-on {
+  border-color: var(--ai);
+  background: color-mix(in srgb, var(--ai) 14%, transparent);
+  color: var(--text);
 }
 
-/* Try an agent: the agent options arrive one by one after the heading. */
-.ai-demo .ai-demo-option {
-  opacity: 0;
-  transform: translateY(12px);
+.live-lang-detect {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ai);
+}
+
+.live-lang-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 132px;
+}
+
+.live-bubble {
+  max-width: 92%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  animation: live-up 0.3s var(--ease-soft) both;
+}
+
+.live-bubble.is-in {
+  align-self: flex-start;
+  background: var(--surface-2);
+  border-bottom-left-radius: 3px;
+}
+
+.live-bubble.is-out {
+  align-self: flex-end;
+  background: color-mix(in srgb, var(--ai) 18%, var(--surface));
+  border-bottom-right-radius: 3px;
+}
+
+.live-bubble.is-thinking {
+  width: 140px;
+}
+
+.live-bubble .live-shimmer {
+  width: 100%;
+}
+
+/* Volume: the month plays out and capacity follows demand. */
+.live-volume-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--subtle);
+}
+
+.live-volume-stats strong {
+  margin-left: 4px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.live-volume-chart {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 130px;
+  border-bottom: 1px solid var(--text);
+}
+
+.live-volume-chart > span:not(.live-volume-capacity) {
+  flex: 1;
+  background: var(--surface-2);
+  border-top: 1px solid var(--border-strong);
   transition:
-    opacity 0.5s ease-out calc(600ms + var(--i) * 90ms),
-    transform 0.6s var(--ease-soft) calc(600ms + var(--i) * 90ms),
-    background 0.2s ease,
-    border-color 0.2s ease;
+    background 0.3s ease,
+    border-color 0.3s ease;
 }
 
-.ai-demo.is-in .ai-demo-option {
-  opacity: 1;
-  transform: none;
+.live-volume-chart > span.is-past {
+  background: color-mix(in srgb, var(--ai) 22%, var(--surface-2));
+  border-top-color: color-mix(in srgb, var(--ai) 50%, var(--border-strong));
+}
+
+.live-volume-chart > span.is-now {
+  background: var(--ai);
+  border-top-color: var(--ai);
+}
+
+.live-volume-chart > span.is-peak.is-past {
+  box-shadow: 0 0 14px color-mix(in srgb, var(--ai) 55%, transparent);
+}
+
+/* Capacity line: rides just above the current day's volume. */
+.live-volume-capacity {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--h);
+  border-top: 1px dashed var(--ai);
+  transition: bottom 0.25s ease-out;
+  pointer-events: none;
+}
+
+.live-volume-capacity::after {
+  content: "capacity";
+  position: absolute;
+  right: 0;
+  bottom: 2px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ai);
+}
+
+/* Audit log: a live tail with the newest entry typing in. */
+.live-log > div.is-new {
+  animation: live-type 0.7s steps(30, end) both;
+}
+
+@keyframes live-type {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+.live-log-cursor {
+  height: 2em;
+  display: flex;
+  align-items: center;
+}
+
+.live-log-cursor .ai-caret {
+  height: 1.1em;
+  color: var(--ai);
 }
 
 /* 04 Reach */
@@ -3829,45 +4094,135 @@ a.home-voice:focus-visible .home-voice-card {
   font-size: clamp(34px, 4.6cqi, 64px);
 }
 
+/* The stage is one globe tall. The globe starts sunk halfway below the
+   stage's bottom edge and rises to a full globe, scrubbed by the scroll. */
 .ai-globe-stage {
+  --globe: min(640px, 88cqi);
   position: relative;
-  height: clamp(300px, 36cqi, 500px);
+  height: calc(var(--globe) + 40px);
   margin-top: clamp(32px, 4cqi, 56px);
+  overflow: hidden;
+  view-timeline-name: --globe-stage;
 }
 
 .ai-globe {
   position: absolute;
   left: 50%;
   top: 0;
-  width: min(1000px, 150cqi);
+  width: var(--globe);
   aspect-ratio: 1;
   translate: -50% 0;
-  border-radius: 50%;
-  border: 1px solid var(--text);
-  overflow: hidden;
 }
 
-.ai-meridian {
+.ai-globe-fade {
   position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid var(--border-strong);
-  animation: ai-meridian 16s ease-in-out infinite alternate;
+  inset: auto 0 0;
+  height: 35%;
+  background: linear-gradient(transparent, var(--bg));
+  pointer-events: none;
 }
 
-.ai-chord {
-  position: absolute;
-  height: 1px;
-  background: var(--border-strong);
+@supports (animation-timeline: view()) {
+  .ai-globe {
+    animation: ai-globe-rise linear both;
+    animation-timeline: --globe-stage;
+    animation-range: entry 0% contain 10%;
+  }
+
+  .ai-globe-fade {
+    animation: ai-globe-unfade linear both;
+    animation-timeline: --globe-stage;
+    animation-range: entry 40% contain 10%;
+  }
 }
 
+@keyframes ai-globe-rise {
+  from {
+    transform: translateY(50%) scale(1.15);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes ai-globe-unfade {
+  to {
+    opacity: 0;
+  }
+}
+
+.ai-earth {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.ai-earth-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ai-earth-sphere {
+  fill: var(--surface);
+  stroke: var(--text);
+  stroke-width: 1;
+}
+
+.ai-earth-grid {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 0.6;
+}
+
+.ai-earth-land {
+  fill: color-mix(in srgb, var(--ai) 16%, var(--surface));
+  stroke: color-mix(in srgb, var(--ai) 55%, var(--border-strong));
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+}
+
+.ai-earth-route {
+  fill: none;
+  stroke: var(--ai);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ai-route 7s ease-in-out infinite;
+}
+
+/* Each route draws out from Nairobi, holds, then clears before redrawing. */
+@keyframes ai-route {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  35%,
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+.ai-earth-city {
+  fill: var(--bg);
+  stroke: var(--ai);
+  stroke-width: 1.5;
+}
+
+/* The pin sits on Nairobi's projected position; the dot is its anchor. */
 .ai-pin {
   position: absolute;
-  left: 56%;
-  top: clamp(70px, 8cqi, 120px);
   display: flex;
   align-items: center;
   gap: 10px;
+  translate: -6px -50%;
+  pointer-events: none;
 }
 
 .ai-pin-dot {
@@ -3897,11 +4252,11 @@ a.home-voice:focus-visible .home-voice-card {
   white-space: nowrap;
 }
 
-.ai-globe-fade {
-  position: absolute;
-  inset: auto 0 0;
-  height: 45%;
-  background: linear-gradient(transparent, var(--bg));
+/* Phones: keep the label inside the globe's width. */
+@media (max-width: 600px) {
+  .ai-pin-coords {
+    display: none;
+  }
 }
 
 /* 05 Try an agent */
@@ -3909,23 +4264,6 @@ a.home-voice:focus-visible .home-voice-card {
 .ai-try {
   padding-inline: clamp(16px, 3cqi, 40px);
   scroll-margin-top: 80px;
-}
-
-.ai-logos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(12px, 2.4cqi, 32px);
-  margin-bottom: 24px;
-}
-
-.ai-logo-slot {
-  padding: 8px 14px;
-  border-radius: 5px;
-  border: 1px dashed var(--border-strong);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--subtle);
 }
 
 .ai-demo {
@@ -3962,97 +4300,403 @@ a.home-voice:focus-visible .home-voice-card {
   height: 40px;
   border-radius: 8px;
   background: var(--text);
+  color: var(--bg);
   display: grid;
   place-items: center;
 }
 
-.ai-demo-picker {
+/* Problem tabs: one per scenario, named by the problem it solves. */
+.ai-scenario-tabs {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 6px 32px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
   margin-bottom: 16px;
 }
 
-.ai-demo-option {
+.ai-scenario-tab {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 12px;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid transparent;
-  background: transparent;
+  border: 1px solid var(--border);
+  background: var(--bg);
   color: var(--text);
   text-align: left;
   font: inherit;
   cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
   transition:
+    opacity 0.5s ease-out calc(600ms + var(--i) * 90ms),
+    transform 0.6s var(--ease-soft) calc(600ms + var(--i) * 90ms),
     background 0.2s ease,
     border-color 0.2s ease;
 }
 
-.ai-demo-option:hover {
-  background: var(--surface-2);
+.ai-demo.is-in .ai-scenario-tab {
+  opacity: 1;
+  transform: none;
 }
 
-.ai-demo-option.is-active {
-  border-color: var(--text);
-  background: var(--bg);
+.ai-scenario-tab:hover {
+  border-color: var(--border-strong);
 }
 
-.ai-demo-thread {
-  position: relative;
+.ai-scenario-tab.is-active {
+  border-color: var(--ai);
+  background: color-mix(in srgb, var(--ai) 8%, var(--bg));
+}
+
+.ai-scenario-copy {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 16px 0;
+  gap: 4px;
+  min-width: 0;
 }
 
-.ai-demo-msg {
-  max-width: 80%;
-  padding: 10px 14px;
+.ai-scenario-problem {
+  font-weight: 700;
   font-size: 15px;
-  line-height: 1.5;
-  animation: hero-in 0.35s ease-out both;
+  line-height: 1.3;
 }
 
-.ai-demo-msg.is-user {
-  align-self: flex-end;
-  border-radius: 8px 8px 2px 8px;
-  background: var(--surface-2);
+.ai-scenario-agent {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--subtle);
 }
 
-.ai-demo-msg.is-agent {
-  align-self: flex-start;
-  border-radius: 8px 8px 8px 2px;
-  background: var(--text);
-  color: var(--bg);
-  animation-delay: 0.25s;
-}
-
-.ai-demo-input {
+/* Console: the conversation beside the agent's activity. Panes reserve their
+   height so the page doesn't jump as the demo fills in. */
+.ai-console {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.ai-console-pane {
   display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.ai-console-chat {
+  border-right: 1px solid var(--border);
+}
+
+.ai-console-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+
+.ai-console-clock {
+  color: var(--ai);
+  font-variant-numeric: tabular-nums;
+}
+
+.ai-console-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 16px;
+}
+
+.ai-bubble {
+  max-width: 88%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: left;
+  animation: ai-bubble-in 0.4s var(--ease-soft) both;
+}
+
+.ai-bubble.is-in {
+  align-self: flex-start;
+  background: var(--surface-2);
+  border-bottom-left-radius: 3px;
+}
+
+.ai-bubble.is-out {
+  align-self: flex-end;
+  background: var(--ai);
+  color: var(--ai-on);
+  border-bottom-right-radius: 3px;
+}
+
+.ai-bubble-from {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+@keyframes ai-bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.ai-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: ai-caret 0.8s steps(1) infinite;
+}
+
+@keyframes ai-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* "Working" dots while the agent acts. */
+.ai-typing {
+  align-self: flex-end;
+  display: flex;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ai) 14%, var(--bg));
+}
+
+.ai-typing > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ai);
+  animation: ai-typing 1s ease-in-out infinite;
+}
+
+.ai-typing > span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.ai-typing > span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes ai-typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: none;
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+/* Activity trace: each step spins while running, then ticks (or flags). */
+.ai-activity {
+  list-style: none;
+  margin: 0;
+  padding: 6px 16px;
+}
+
+.ai-activity-step {
+  display: grid;
+  grid-template-columns: 16px 84px minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
-  padding: 6px 6px 6px 18px;
-  border-radius: 8px;
-  background: var(--bg);
-  border: 1px solid var(--border-strong);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  text-align: left;
+  animation: ai-bubble-in 0.35s var(--ease-soft) both;
 }
 
-.ai-demo-prompt {
-  flex: 1;
-  min-width: 0;
-  font-size: 15px;
+.ai-activity-mark {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.ai-activity-step.is-running .ai-activity-mark {
+  border: 2px solid color-mix(in srgb, var(--ai) 25%, transparent);
+  border-top-color: var(--ai);
+  animation: ai-spin 0.7s linear infinite;
+}
+
+.ai-activity-step.is-done .ai-activity-mark {
+  background: var(--positive);
+}
+
+.ai-activity-step.is-flag .ai-activity-mark {
+  background: #d9952f;
+}
+
+/* Tick and exclamation drawn in CSS so they inherit the theme. */
+.ai-activity-step.is-done .ai-activity-mark::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2.5px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--bg);
+  border-width: 0 2px 2px 0;
+  rotate: 45deg;
+}
+
+.ai-activity-step.is-flag .ai-activity-mark::after {
+  content: "!";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--bg);
+}
+
+@keyframes ai-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.ai-activity-system {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ai);
+}
+
+.ai-activity-step.is-running .ai-activity-text {
   color: var(--muted);
 }
 
-.ai-demo-send {
-  flex-shrink: 0;
-  min-height: 44px;
-  padding: 0 18px;
-  font-size: 15px;
+.ai-activity-at {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Outcome: how long it took against doing it by hand. */
+.ai-outcome {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--ai) 7%, var(--bg));
+  text-align: left;
+  animation: ai-bubble-in 0.5s var(--ease-soft) both;
+}
+
+.ai-outcome-time {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.ai-outcome-time strong {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ai);
+}
+
+.ai-outcome-time span {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.ai-outcome-note {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--subtle);
+}
+
+.ai-outcome-replay {
+  margin-left: auto;
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ai-outcome-replay:hover {
+  border-color: var(--text);
+}
+
+@media (max-width: 860px) {
+  .ai-scenario-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ai-console {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ai-console-chat {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ai-console-pane {
+    min-height: 0;
+  }
+
+  .ai-console-thread {
+    min-height: 220px;
+  }
+
+  .ai-console-work {
+    min-height: 340px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ai-scenario-tab .ai-glyph {
+    display: none;
+  }
+
+  .ai-scenario-agent {
+    overflow-wrap: anywhere;
+  }
+
+  .ai-activity-step {
+    grid-template-columns: 16px minmax(0, 1fr) auto;
+  }
+
+  .ai-activity-system {
+    display: none;
+  }
 }
 
 .ai-demo-note {
@@ -4064,46 +4708,279 @@ a.home-voice:focus-visible .home-voice-card {
   color: var(--subtle);
 }
 
-/* 06 Use cases */
+/* 06 Industries: tabs beside a panel of jobs, each paired with its agent. */
 
-.ai-usecase {
-  flex: 1 1 220px;
+.ai-industries {
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.ai-industry-tabs {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  padding: 10px;
+  border-right: 1px solid var(--border);
 }
 
-.ai-usecase-img {
-  height: 220px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: repeating-linear-gradient(135deg, var(--surface-2) 0 1px, var(--surface) 1px 9px);
+.ai-industry-tab {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 0.5s ease-out calc(250ms + var(--i) * 70ms),
+    transform 0.5s var(--ease-soft) calc(250ms + var(--i) * 70ms),
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.ai-industries.is-in .ai-industry-tab {
+  opacity: 1;
+  transform: none;
+}
+
+.ai-industry-tab:hover {
+  color: var(--text);
+}
+
+.ai-industry-tab.is-active {
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: inset 2px 0 0 var(--ai);
+}
+
+.ai-industry-n {
   font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--subtle);
-  transition: border-color 0.2s ease;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ai);
 }
 
-.ai-usecase-img:hover {
-  border-color: var(--text);
+/* The panel remounts per industry, so it cross-fades in each time. */
+.ai-industry-panel {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 3cqi, 36px);
+  animation: ai-panel-in 0.45s var(--ease-soft) both;
 }
 
-.ai-list {
+@keyframes ai-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.ai-industry-head {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.ai-industry-head .ai-card-text {
+  max-width: 520px;
+}
+
+.ai-industry-jobs {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.ai-list li {
-  padding: 8px 0;
+.ai-industry-job {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
   border-top: 1px solid var(--border);
-  font-size: 15px;
-  color: var(--muted);
+  text-align: left;
+  animation: ai-panel-in 0.5s var(--ease-soft) calc(120ms + var(--i) * 110ms) both;
 }
 
-/* 07 FAQ */
+/* Each agent icon lights up as its row lands. */
+.ai-industry-job .ai-glyph {
+  transition: border-color 0.3s ease;
+  animation: ai-glyph-on 0.9s ease-out calc(350ms + var(--i) * 110ms) both;
+}
+
+@keyframes ai-glyph-on {
+  0% {
+    border-color: var(--border);
+    box-shadow: 0 0 0 transparent;
+  }
+  40% {
+    border-color: var(--ai);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--ai) 45%, transparent);
+  }
+  100% {
+    border-color: color-mix(in srgb, var(--ai) 45%, var(--border));
+    box-shadow: 0 0 0 transparent;
+  }
+}
+
+.ai-industry-job-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ai-industry-job-text {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ai-industry-job-systems {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--subtle);
+}
+
+.ai-industry-job-agent {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.ai-industry-tag {
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--ai);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ai);
+}
+
+.ai-industry-try {
+  min-width: 96px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ai);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ai-industry-try:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .ai-industries {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Tabs become a scrollable row above the panel. */
+  .ai-industry-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+
+  .ai-industry-tab {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .ai-industry-tab.is-active {
+    box-shadow: inset 0 -2px 0 var(--ai);
+  }
+
+  .ai-industry-job {
+    grid-template-columns: 40px minmax(0, 1fr);
+    row-gap: 8px;
+  }
+
+  .ai-industry-job-agent,
+  .ai-industry-try {
+    grid-column: 2;
+    text-align: left;
+    min-width: 0;
+  }
+
+  .ai-industry-try.is-empty {
+    display: none;
+  }
+}
+
+/* 07 FAQ: a sticky intro beside the questions, grouped by topic. */
+
+.ai-faq-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr);
+  gap: clamp(32px, 5cqi, 72px);
+  align-items: start;
+}
+
+.ai-faq-aside {
+  position: sticky;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ai-faq-aside > p {
+  margin: 0;
+  max-width: 340px;
+  font-size: 16px;
+}
+
+.ai-faq-contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 6px;
+}
+
+.ai-faq-email {
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 4px;
+}
+
+.ai-faq-email:hover {
+  text-decoration-color: var(--ai);
+}
+
+.ai-faq-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.ai-faq-group-title {
+  margin: 0 0 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ai);
+}
 
 .ai-faq {
   display: flex;
@@ -4113,6 +4990,7 @@ a.home-voice:focus-visible .home-voice-card {
 
 .ai-faq-item {
   border-top: 1px solid var(--border);
+  border-radius: 8px;
   transition: background 0.25s ease;
 }
 
@@ -4126,11 +5004,11 @@ a.home-voice:focus-visible .home-voice-card {
 
 .ai-faq-q button {
   width: 100%;
-  min-height: 64px;
+  min-height: 60px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 18px 22px;
+  gap: 14px;
+  padding: 16px 18px;
   border: 0;
   background: transparent;
   color: var(--text);
@@ -4138,7 +5016,7 @@ a.home-voice:focus-visible .home-voice-card {
   cursor: pointer;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(18px, 1.5cqi, 20px);
+  font-size: clamp(17px, 1.4cqi, 19px);
   letter-spacing: -0.01em;
 }
 
@@ -4146,7 +5024,7 @@ a.home-voice:focus-visible .home-voice-card {
   flex-shrink: 0;
   width: 7px;
   height: 7px;
-  margin: 0 8px 0 4px;
+  margin: 0 6px 0 4px;
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
   transform: translateY(-2px) rotate(45deg);
@@ -4174,13 +5052,58 @@ a.home-voice:focus-visible .home-voice-card {
 
 .ai-faq-body p {
   margin: 0;
-  max-width: 760px;
-  padding: 0 22px 22px 52px;
+  max-width: 680px;
+  padding: 0 18px 18px 45px;
   font-size: 16px;
   color: var(--muted);
 }
 
-/* 08 Closing CTA (always dark, both themes) */
+/* Answers stream in word by word when opened, capped so long ones stay quick. */
+.ai-faq-item.is-open .ai-faq-word {
+  animation: ai-faq-word 0.3s ease-out both;
+  animation-delay: calc(min(var(--w), 40) * 12ms);
+}
+
+@keyframes ai-faq-word {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+
+.ai-faq-link {
+  display: inline-block;
+  margin: -6px 0 18px 45px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ai);
+}
+
+.ai-faq-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .ai-faq-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ai-faq-aside {
+    position: static;
+  }
+
+  .ai-faq-body p {
+    padding-left: 18px;
+  }
+
+  .ai-faq-link {
+    margin-left: 18px;
+  }
+}
+
+/* 08 Closing CTA (always dark, both themes): the hero's grid and circuit
+   return, with the chip's wires plugging into the booking button. */
 
 .ai-cta-section {
   padding: clamp(32px, 4cqi, 56px) clamp(16px, 2cqi, 24px);
@@ -4190,56 +5113,23 @@ a.home-voice:focus-visible .home-voice-card {
   position: relative;
   max-width: 1320px;
   margin: 0 auto;
-  padding: clamp(100px, 12cqi, 170px) 24px clamp(170px, 19cqi, 270px);
+  padding: clamp(72px, 9cqi, 120px) 24px;
   border-radius: 14px;
-  background: #101114;
+  border: 1px solid var(--border);
+  background: #0b0b0e;
+  color: var(--text);
   overflow: hidden;
   text-align: center;
 }
 
-.ai-cta-rays {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 0;
-  height: 100%;
-}
-
-.ai-ray {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 1px;
-  height: 125%;
-  transform-origin: 50% 100%;
-  background: linear-gradient(to top, #a993ff, rgba(169, 147, 255, 0) 70%);
-  scale: 1 0;
-}
-
-.ai-cta.is-in .ai-ray {
-  animation: ai-ray 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--delay, 0ms) both;
-}
-
-.ai-cta-horizon {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: clamp(260px, 40cqi, 560px);
-  aspect-ratio: 2 / 1;
-  translate: -50% 50%;
-  border-radius: 50%;
-  background: #5b3fc4;
-  box-shadow: 0 0 0 1px #a993ff;
-}
-
 .ai-cta-copy {
   position: relative;
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
 }
 
 .ai-cta-title {
@@ -4248,20 +5138,213 @@ a.home-voice:focus-visible .home-voice-card {
   font-size: clamp(36px, 5cqi, 68px);
   line-height: 0.98;
   letter-spacing: -0.04em;
-  color: #f2efe8;
   text-wrap: balance;
 }
 
-.ai-cta-copy p {
+.ai-cta-copy > p {
   margin: 0;
   max-width: 460px;
   font-size: 16px;
-  color: #c2bdb3;
+  color: var(--muted);
   text-wrap: pretty;
+}
+
+/* What happens on the call: three steps that tick in one by one. */
+.ai-call-steps {
+  list-style: none;
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  text-align: left;
+}
+
+.ai-call-step {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  row-gap: 10px;
+  padding: 14px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.5s ease-out calc(700ms + var(--i) * 220ms),
+    transform 0.6s var(--ease-soft) calc(700ms + var(--i) * 220ms);
+}
+
+.ai-call-step-n {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--subtle);
+  transition:
+    border-color 0.4s ease calc(1000ms + var(--i) * 220ms),
+    color 0.4s ease calc(1000ms + var(--i) * 220ms),
+    background 0.4s ease calc(1000ms + var(--i) * 220ms);
+}
+
+.ai-call-step-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.ai-call-step-copy span {
+  color: var(--muted);
+}
+
+.ai-call-step-time {
+  grid-column: 2;
+  justify-self: start;
+  align-self: end;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ai);
+}
+
+.ai-cta.is-in .ai-call-step {
+  opacity: 1;
+  transform: none;
+}
+
+.ai-cta.is-in .ai-call-step-n {
+  border-color: var(--ai);
+  background: color-mix(in srgb, var(--ai) 16%, transparent);
+  color: var(--text);
+}
+
+/* Optional: name the first process, which goes with the booking. */
+.ai-cta-pick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.ai-cta-pick-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+
+.ai-cta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ai-cta-chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.ai-cta-chip:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+.ai-cta-chip.is-on {
+  border-color: var(--ai);
+  background: color-mix(in srgb, var(--ai) 16%, transparent);
+  color: var(--text);
+}
+
+/* The chip, its wires and the button sit on one line. */
+.ai-cta-plug {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.ai-cta-core {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: linear-gradient(160deg, #26272e, #121318);
+  border: 1px solid #4a4c56;
+  box-shadow:
+    0 0 0 5px #0b0b0e,
+    0 0 0 6px #22242a,
+    0 0 30px color-mix(in srgb, var(--ai) 25%, transparent);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  color: #f2f2f4;
+}
+
+.ai-cta-wires {
+  width: 150px;
+  height: 48px;
+  flex: none;
+  overflow: visible;
+}
+
+.ai-cta-wire {
+  stroke: #4a4c56;
+  stroke-width: 1.25;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.9s var(--ease-soft) 1.4s;
+}
+
+.ai-cta.is-in .ai-cta-wire {
+  stroke-dashoffset: 0;
+}
+
+.ai-cta-btn {
+  flex: none;
 }
 
 .ai-cta-copy :focus-visible {
   outline-color: #a993ff;
+}
+
+@media (max-width: 760px) {
+  .ai-call-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ai-cta-core,
+  .ai-cta-wires {
+    display: none;
+  }
+
+  .ai-cta-btn {
+    flex: 1 1 auto;
+  }
 }
 
 /* 09 Refract Software cross-sell (teal: these point to the Software division) */
@@ -4326,62 +5409,158 @@ a.home-voice:focus-visible .home-voice-card {
   }
 }
 
-@keyframes ai-marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes ai-meridian {
-  from {
-    scale: 1 1;
-  }
-  to {
-    scale: -1 1;
-  }
-}
-
 @keyframes ai-ping {
   to {
     opacity: 0.4;
   }
 }
 
-@keyframes ai-ray {
-  from {
-    scale: 1 0;
-  }
-  to {
-    scale: 1 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .ai-trace-pulse,
-  .ai-marquee,
-  .ai-meridian,
+  .ai-earth-route,
   .ai-pin-dot {
     animation: none !important;
-  }
-  .ai-ray {
-    scale: 1 1;
   }
 }
 
 /* ── Nav: Refract AI menu ─────────────────────────────────── */
 
-.nav-ai-trigger {
-  color: var(--ai);
-  font-weight: 600;
+/* One navbar per division: Refract Software in teal (the default accent),
+   Refract AI in purple. Each has a switch across, coloured as the other side. */
+.site-nav.is-ai .site-nav-bar {
+  border-color: color-mix(in srgb, var(--ai) 40%, var(--border-strong));
 }
 
-.nav-ai-trigger:hover,
-.nav-ai-trigger.nav-link-active {
-  color: var(--ai);
-}
-
-.nav-underline.is-ai {
+.site-nav.is-ai .nav-underline {
   background: var(--ai);
+}
+
+.site-nav.is-ai .nav-link:hover,
+.site-nav.is-ai .nav-services-trigger[aria-expanded="true"] {
+  color: var(--ai);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* "AI" beside the logo on the Refract AI navbar. */
+.nav-division-tag {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--ai);
+  color: var(--ai-on);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.nav-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.nav-switch.is-ai {
+  padding-left: 6px;
+  color: var(--ai);
+  border-color: color-mix(in srgb, var(--ai) 45%, transparent);
+  background: color-mix(in srgb, var(--ai) 10%, transparent);
+}
+
+.nav-switch.is-ai:hover {
+  background: color-mix(in srgb, var(--ai) 20%, transparent);
+}
+
+.nav-switch.is-software {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.nav-switch.is-software:hover {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.nav-switch-mark {
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--ai);
+  color: var(--ai-on);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.nav-mobile-switch {
+  padding: 6px 0 2px;
+}
+
+.site-nav-bar .nav-link,
+.site-nav-bar .btn {
+  white-space: nowrap;
+}
+
+/* Tablets: the in-page section links give way so the bar fits; the mobile
+   menu and the page itself still reach those sections. */
+@media (max-width: 1023px) {
+  .nav-section-link {
+    display: none;
+  }
+}
+
+/* Solutions menu: the industries, without the featured column. */
+.nav-ai-mega.nav-solutions-mega {
+  grid-template-columns: minmax(0, 1fr);
+  width: min(820px, 100%);
+}
+
+.nav-solutions-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.nav-solution {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  transition: background 0.15s ease;
+}
+
+.nav-solution:hover {
+  background: var(--surface-2);
+}
+
+.nav-solution-title {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* The Services menu belongs to Refract Software, so it uses the teal accent. */
+.nav-services-mega .nav-ai-all,
+.site-nav.is-software .nav-mobile-ai-panel .nav-ai-all {
+  color: var(--accent);
+}
+
+.nav-services-mega :focus-visible,
+.site-nav.is-software .nav-mobile-ai-panel :focus-visible {
+  outline-color: var(--accent);
 }
 
 .nav-ai-cta {
@@ -4506,27 +5685,6 @@ a.home-voice:focus-visible .home-voice-card {
   color: var(--ai);
 }
 
-.nav-ai-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 12px -20px 0;
-  padding: 14px 32px;
-  border-top: 1px solid var(--border);
-  font-size: 14px;
-  color: var(--muted);
-}
-
-.nav-ai-software {
-  font-weight: 600;
-  color: var(--accent);
-}
-
-.nav-ai-software:hover {
-  color: var(--accent-hover);
-}
-
 .nav-ai-featured {
   display: flex;
   flex-direction: column;
@@ -4613,4 +5771,178 @@ a.home-voice:focus-visible .home-voice-card {
 
 .ai-page > section {
   position: relative;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+
+.footer-socials {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.footer-social {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.footer-social:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+/* Newsletter band between the links and the fine print. */
+.footer-newsletter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  align-items: start;
+  gap: 16px 40px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-newsletter-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+.footer-newsletter-text {
+  margin-top: 4px;
+  max-width: 460px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.footer-newsletter-form {
+  position: relative;
+}
+
+.footer-newsletter-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 5px 5px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  transition: border-color 0.2s ease;
+}
+
+.footer-newsletter-field:focus-within {
+  border-color: var(--text);
+}
+
+.footer-newsletter-field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+}
+
+.footer-newsletter-field input::placeholder {
+  color: var(--subtle);
+}
+
+.footer-newsletter-field:has(input[aria-invalid="true"]) {
+  border-color: var(--danger);
+}
+
+.footer-newsletter-submit {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.footer-newsletter-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.footer-newsletter-submit:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.footer-newsletter-status {
+  min-height: 1.4em;
+  margin-top: 8px;
+  padding-left: 16px;
+  font-size: 13px;
+  color: var(--positive);
+}
+
+.footer-newsletter-status.is-error {
+  color: var(--danger);
+}
+
+/* Honeypot: off-screen rather than display:none, which some bots skip. */
+.footer-newsletter-trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* Fine print: copyright and legal links on one line. */
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--subtle);
+}
+
+.footer-legal-links {
+  display: inline-flex;
+  gap: 16px;
+  margin-left: 20px;
+}
+
+.footer-legal-links a {
+  color: var(--muted);
+}
+
+.footer-legal-links a:hover {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .footer-newsletter {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer-legal-links {
+    display: flex;
+    margin: 8px 0 0;
+  }
 }

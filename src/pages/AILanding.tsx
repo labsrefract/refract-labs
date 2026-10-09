@@ -9,28 +9,37 @@ import {
   useState,
   type CSSProperties,
   type ElementType,
+  type KeyboardEvent,
   type ReactNode,
 } from "react";
 import { Link, useSearchParams } from "react-router";
+import { LuWorkflow } from "react-icons/lu";
+import AgentAnatomy from "../components/AgentAnatomy";
 import AgentGlyph from "../components/AgentGlyph";
-import Reveal from "../components/Reveal";
+import ReachGlobe from "../components/ReachGlobe";
+import ApprovalQueue from "../components/platform/ApprovalQueue";
+import ChannelInbox from "../components/platform/ChannelInbox";
+import LanguageSwap from "../components/platform/LanguageSwap";
+import LiveLog from "../components/platform/LiveLog";
+import PrivacyScan from "../components/platform/PrivacyScan";
+import SystemHub from "../components/platform/SystemHub";
+import VolumeChart from "../components/platform/VolumeChart";
+import { site } from "../content/site";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { useSnapScroll } from "../hooks/useSnapScroll";
 import {
+  agentPath,
   agents,
-  auditLog,
-  channels,
   DEMO_PATH,
-  demoAgents,
-  faqs,
-  languages,
+  demoPathFor,
+  firstProcesses,
+  type FirstProcessId,
+  faqGroups,
+  industries,
+  scenarios,
+  type Scenario,
   softwareLinks,
   steps,
-  systems,
-  tasks,
-  useCases,
-  volumeBars,
-  volumePeak,
 } from "../content/ai";
 
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
@@ -335,8 +344,6 @@ function Hero() {
 /* ── 02 How it works ─────────────────────────────────────── */
 
 function HowItWorks() {
-  const [tab, setTab] = useState(0);
-  const panelId = useId();
   const [windowRef, windowOpen] = useInView<HTMLElement>("0px 0px -30% 0px");
 
   return (
@@ -346,143 +353,33 @@ function HowItWorks() {
       className={`ai-section ai-section-ruled ai-window ${windowOpen ? "is-open" : ""}`.trim()}
     >
       <div className="ai-wrap">
-        <Reveal className="ai-head">
-          <div className="ai-tabs" role="tablist" aria-label="About Refract AI">
-            {["What it is", "How it works"].map((label, i) => (
-              <button
-                key={label}
-                type="button"
-                role="tab"
-                aria-selected={tab === i}
-                aria-controls={panelId}
-                className={tab === i ? "ai-tab is-active" : "ai-tab"}
-                onClick={() => setTab(i)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          <h2 className="ai-h2" style={{ maxWidth: 780 }}>
-            Put AI to work inside the tools you already use
-          </h2>
-        </Reveal>
+        <InView className="ai-head ai-mask-head" rootMargin="0px 0px -30% 0px">
+          <Eyebrow index="01" label="How it works" />
+          <MaskLines className="ai-h2" style={{ maxWidth: 780 }} text="Put AI to work inside the tools you already use" />
+          <p className="ai-muted ai-mask-after" style={{ maxWidth: 560, fontSize: 16 }}>
+            Each agent reads a request, decides within the rules you set, acts in your systems and reports back to your team.
+          </p>
+        </InView>
 
-        <div className="ai-row">
-          <Reveal className="ai-card ai-card-ink ai-chat-card" style={{ flex: "1 1 260px", minHeight: 420 }}>
-            <div className="ai-chat-head">
-              <span>WhatsApp · Support agent</span>
-              <span>09:41</span>
-            </div>
-            <div className="ai-chat-body">
-              <span className="ai-bubble is-in" lang="sw">
-                Nimelipa kupitia M-Pesa lakini oda bado inaonyesha haijalipwa.
-              </span>
-              <span className="ai-bubble is-out" lang="sw">
-                Nimepata malipo yako ya KES 4,500. Oda #10482 sasa imelipiwa. Asante!
-              </span>
-              <span className="ai-chat-meta">resolved in 6s · no hand-off</span>
-            </div>
-            <span className="ai-chat-foot">Try Refract AI on your own data, with a pilot in weeks.</span>
-          </Reveal>
+        <AgentAnatomy />
 
-          <Reveal className="ai-card ai-tab-card" style={{ flex: "2.2 1 440px" }} delay={80}>
-            <div id={panelId} role="tabpanel">
-              {tab === 0 ? (
-                <div className="ai-tab-intro">
-                  <p className="ai-tab-statement">
-                    Refract AI agents read from your systems, take actions with your permissions and report back to your team.
-                  </p>
-                  <p className="ai-muted" style={{ maxWidth: 440, fontSize: 16 }}>
-                    Customers reach them on WhatsApp, SMS and the web. Your staff work with them from the inbox and dashboard
-                    they already use.
-                  </p>
-                </div>
-              ) : (
-                <ol className="ai-steps">
-                  {steps.map((st) => (
-                    <li key={st.n}>
-                      <span className="ai-mono-accent">{st.n}</span>
-                      <span className="ai-step-title">{st.t}</span>
-                      <span className="ai-muted" style={{ fontSize: 15 }}>
-                        {st.d}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              )}
-            </div>
-            <div className="ai-marquees" aria-hidden="true">
-              <div className="ai-marquee">
-                {[...tasks, ...tasks].map((t, i) => (
-                  <span key={i} className="ai-pill">
-                    <span className="ai-diamond is-sm" />
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="ai-marquee is-reverse">
-                {[...systems, ...systems].map((s, i) => (
-                  <span key={i} className="ai-pill is-mono">
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        </div>
+        <ol className="ai-steps ai-start-steps">
+          {steps.map((st) => (
+            <li key={st.n}>
+              <span className="ai-mono-accent">{st.n}</span>
+              <span className="ai-step-title">{st.t}</span>
+              <span className="ai-muted" style={{ fontSize: 15 }}>
+                {st.d}
+              </span>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
 }
 
 /* ── 03 Platform ─────────────────────────────────────────── */
-
-const SCRAMBLE_CHARS = "#%&*+=?@$0123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-
-/**
- * Shows `plain`, then once its card is live masks it left to right, each
- * character flickering through a random glyph before settling on `masked`.
- * `plain` and `masked` must be the same length.
- */
-function Scramble({ plain, masked, delay = 0 }: { plain: string; masked: string; delay?: number }) {
-  const live = useContext(LiveContext);
-  const [done, setDone] = useState(-1);
-
-  useEffect(() => {
-    if (!live) return;
-    if (prefersReducedMotion()) {
-      setDone(plain.length);
-      return;
-    }
-    let tick = 0;
-    const start = window.setTimeout(() => {
-      let n = 0;
-      tick = window.setInterval(() => {
-        n++;
-        setDone(n);
-        if (n >= plain.length) window.clearInterval(tick);
-      }, 55);
-    }, delay);
-    return () => {
-      window.clearTimeout(start);
-      window.clearInterval(tick);
-    };
-  }, [live, plain, delay]);
-
-  const text = Array.from(plain, (ch, i) => {
-    if (i < done) return masked[i];
-    if (i === done && masked[i] !== ch) return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-    return ch;
-  }).join("");
-
-  return <>{text}</>;
-}
-
-const maskedFields = [
-  { k: "name", plain: "Joyce Mbugua", masked: "J•••• M•••••" },
-  { k: "phone", plain: "+254 712 384 412", masked: "+254 7•• ••• 412" },
-  { k: "id", plain: "28417735", masked: "••••••••" },
-];
 
 function Platform() {
   return (
@@ -497,42 +394,24 @@ function Platform() {
           <InView
             col={0}
             rootMargin="0px 0px -30% 0px"
-            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "2 1 420px", minHeight: 400 }}>
+            className="ai-card ai-plat-card ai-rise ai-card-hover"
+            style={{ flex: "2 1 420px", minHeight: 400 }}
+          >
             <h3 className="ai-h3">Every channel your customers use</h3>
             <p className="ai-card-text" style={{ maxWidth: 380 }}>
               WhatsApp, SMS, voice, email and web chat, handled by the same agent with the same context.
             </p>
             <div className="ai-card-foot">
-              {channels.map((ch, i) => (
-                <div key={ch.c} className="ai-channel" style={{ "--i": i } as Vars}>
-                  <span className="ai-mono-subtle">{ch.c}</span>
-                  <span className="ai-ellipsis">{ch.m}</span>
-                  <span className="ai-channel-status">{ch.s}</span>
-                </div>
-              ))}
+              <ChannelInbox />
             </div>
           </InView>
           <InView
             col={1}
             rootMargin="0px 0px -30% 0px"
-            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "1 1 260px", minHeight: 400, justifyContent: "flex-end" }}>
-            <div className="ai-hub" aria-hidden="true">
-              <span className="ai-hub-v" />
-              <span className="ai-hub-h" />
-              <span className="ai-hub-core">AI</span>
-              <span className="ai-hub-node is-top" style={{ "--i": 0 } as Vars}>
-                M-Pesa
-              </span>
-              <span className="ai-hub-node is-right" style={{ "--i": 1 } as Vars}>
-                Core bank
-              </span>
-              <span className="ai-hub-node is-bottom" style={{ "--i": 2 } as Vars}>
-                ERP
-              </span>
-              <span className="ai-hub-node is-left" style={{ "--i": 3 } as Vars}>
-                CRM
-              </span>
-            </div>
+            className="ai-card ai-plat-card ai-rise ai-card-hover"
+            style={{ flex: "1 1 260px", minHeight: 400, justifyContent: "flex-end" }}
+          >
+            <SystemHub />
             <h3 className="ai-h3" style={{ position: "relative" }}>
               One connection for every system
             </h3>
@@ -546,55 +425,33 @@ function Platform() {
           <InView
             col={0}
             rootMargin="0px 0px -30% 0px"
-            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "1 1 220px", minHeight: 360 }}>
+            className="ai-card ai-plat-card ai-rise ai-card-hover"
+            style={{ flex: "1 1 220px", minHeight: 360 }}
+          >
             <h3 className="ai-h3">Data privacy and security</h3>
             <p className="ai-card-text">Run in your cloud or ours. Personal data is masked before it reaches a model.</p>
-            <dl className="ai-masked">
-              {maskedFields.map((f, i) => (
-                <Fragment key={f.k}>
-                  <dt>{f.k}</dt>
-                  <dd>
-                    <Scramble plain={f.plain} masked={f.masked} delay={900 + i * 350} />
-                  </dd>
-                </Fragment>
-              ))}
-              <dt>hosting</dt>
-              <dd className="ai-accent-text ai-masked-host">your cloud</dd>
-            </dl>
+            <PrivacyScan />
           </InView>
           <InView
             col={1}
             rootMargin="0px 0px -30% 0px"
-            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "1 1 220px", minHeight: 360 }}>
+            className="ai-card ai-plat-card ai-rise ai-card-hover"
+            style={{ flex: "1 1 220px", minHeight: 360 }}
+          >
             <h3 className="ai-h3">People approve what matters</h3>
             <p className="ai-card-text">Set limits per action. Above them, the agent asks a person first.</p>
-            <div className="ai-approval">
-              <span className="ai-approval-head">
-                <span>Approval needed</span>
-                <span className="ai-approval-limit">limit 5,000</span>
-              </span>
-              <span style={{ fontSize: 15, fontWeight: 600 }}>Refund KES 12,000 to customer #4471</span>
-              <div style={{ display: "flex", gap: 8 }} aria-hidden="true">
-                <span className="ai-chip-btn is-primary">Approve</span>
-                <span className="ai-chip-btn">Review</span>
-              </div>
-            </div>
+            <ApprovalQueue />
           </InView>
           <InView
             col={2}
             rootMargin="0px 0px -30% 0px"
-            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "1 1 220px", minHeight: 360 }}>
+            className="ai-card ai-plat-card ai-rise ai-card-hover"
+            style={{ flex: "1 1 220px", minHeight: 360 }}
+          >
             <h3 className="ai-h3">Speaks your customers’ languages</h3>
             <p className="ai-card-text">English and Kiswahili by default, with French and more on request.</p>
             <div className="ai-card-foot">
-              {languages.map((l, i) => (
-                <div key={l.c} className="ai-lang" style={{ "--i": i } as Vars}>
-                  <span className="ai-mono-accent" style={{ fontSize: 11, paddingTop: 2 }}>
-                    {l.c}
-                  </span>
-                  <span lang={l.c.toLowerCase()}>{l.t}</span>
-                </div>
-              ))}
+              <LanguageSwap />
             </div>
           </InView>
         </div>
@@ -603,45 +460,26 @@ function Platform() {
           <InView
             col={0}
             rootMargin="0px 0px -30% 0px"
-            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "3 1 380px", minHeight: 340 }}>
+            className="ai-card ai-plat-card ai-rise ai-card-hover"
+            style={{ flex: "3 1 380px", minHeight: 340 }}
+          >
             <h3 className="ai-h3">Scales with your volume</h3>
             <p className="ai-card-text" style={{ maxWidth: 380 }}>
               Handle month-end peaks and quiet weekends without hiring for the busiest day.
             </p>
-            <div className="ai-card-foot" aria-hidden="true">
-              <div className="ai-bars">
-                {volumeBars.map((h, i) => (
-                  <span
-                    key={i}
-                    className={i === volumePeak ? "is-peak" : undefined}
-                    style={{ height: `${h}%`, "--i": i } as Vars}
-                  />
-                ))}
-              </div>
-              <div className="ai-bars-axis">
-                <span>1st</span>
-                <span>15th</span>
-                <span className="ai-accent-text">month-end</span>
-              </div>
+            <div className="ai-card-foot">
+              <VolumeChart />
             </div>
           </InView>
           <InView
             col={1}
             rootMargin="0px 0px -30% 0px"
-            className="ai-card ai-plat-card ai-rise ai-card-ink" style={{ flex: "2 1 300px", minHeight: 340 }}>
+            className="ai-card ai-plat-card ai-rise ai-card-ink"
+            style={{ flex: "2 1 300px", minHeight: 340 }}
+          >
             <h3 className="ai-h3">Every action is logged</h3>
             <p className="ai-card-text ai-ink-muted">A plain-language audit trail your compliance team can read.</p>
-            <div className="ai-log">
-              {auditLog.map((row, i) => (
-                <div key={i} style={{ "--i": i } as Vars}>
-                  <span className="ai-log-time">{row.time}</span>
-                  {"  "}
-                  <span className={row.actor === "policy" ? "ai-log-policy" : "ai-log-actor"}>{row.actor.padEnd(9, " ")}</span>
-                  {row.action}
-                  {row.result ? <span className="ai-log-ok">{row.result}</span> : null}
-                </div>
-              ))}
-            </div>
+            <LiveLog />
           </InView>
         </div>
       </div>
@@ -650,13 +488,6 @@ function Platform() {
 }
 
 /* ── 04 Reach ────────────────────────────────────────────── */
-
-const meridians = [0, 1, 2, 3, 4, 5].map((k) => k / 6);
-const chords = [15, 30, 45, 60, 75, 0].map((deg) => {
-  const r = (deg * Math.PI) / 180;
-  const w = Math.cos(r) * 100;
-  return { top: `${50 - Math.sin(r) * 50}%`, left: `${50 - w / 2}%`, width: `${w}%` };
-});
 
 function Reach() {
   return (
@@ -669,21 +500,12 @@ function Reach() {
           and beyond.
         </p>
       </InView>
-      <InView className="ai-globe-stage ai-rise" aria-hidden="true">
+      {/* The globe starts half below the horizon and rises to a full globe as the section scrolls by. */}
+      <InView className="ai-globe-stage">
         <div className="ai-globe">
-          {meridians.map((ph) => (
-            <span key={ph} className="ai-meridian" style={{ animationDelay: `${-ph * 16}s` }} />
-          ))}
-          {chords.map((c, i) => (
-            <span key={i} className="ai-chord" style={c} />
-          ))}
+          <ReachGlobe />
         </div>
-        <div className="ai-pin">
-          <span className="ai-pin-dot" />
-          <span className="ai-pin-rule" />
-          <span className="ai-pin-label">Nairobi · 1.29°S 36.82°E</span>
-        </div>
-        <div className="ai-globe-fade" />
+        <div className="ai-globe-fade" aria-hidden="true" />
       </InView>
     </section>
   );
@@ -691,109 +513,309 @@ function Reach() {
 
 /* ── 05 Try an agent ─────────────────────────────────────── */
 
+// Demo timeline, in ms from when the console starts: the message lands, each
+// step runs then completes, the reply types out, then the outcome appears.
+const MSG_AT = 250;
+const STEP_AT = 900;
+const STEP_GAP = 750;
+const STEP_RUN = 500;
+const CHAR_MS = 16;
+
+/** Milliseconds since `active` became true, ticking until `end`. Jumps to `end` for reduced motion. */
+function useClock(active: boolean, end: number) {
+  const [ms, setMs] = useState(0);
+  useEffect(() => {
+    if (!active) return;
+    if (prefersReducedMotion()) {
+      setMs(end);
+      return;
+    }
+    const start = performance.now();
+    const id = window.setInterval(() => {
+      const t = performance.now() - start;
+      setMs(Math.min(t, end));
+      if (t >= end) window.clearInterval(id);
+    }, 40);
+    return () => window.clearInterval(id);
+  }, [active, end]);
+  return ms;
+}
+
+/**
+ * Plays one scenario: the conversation on the left, the agent's work on the
+ * right, then the outcome. Starts once the demo panel is in view.
+ */
+function AgentConsole({ scenario, onReplay }: { scenario: Scenario; onReplay: () => void }) {
+  const live = useContext(LiveContext);
+  const agent = agents.find((a) => a.id === scenario.agent) ?? agents[0];
+  const replyAt = STEP_AT + scenario.steps.length * STEP_GAP + 200;
+  const outcomeAt = replyAt + scenario.reply.length * CHAR_MS + 300;
+  const ms = useClock(live, outcomeAt);
+
+  const finished = ms >= outcomeAt;
+  const typed = scenario.reply.slice(0, Math.max(0, Math.floor((ms - replyAt) / CHAR_MS)));
+  const doneSteps = scenario.steps.filter((_, i) => ms >= STEP_AT + i * STEP_GAP + STEP_RUN);
+  const clock = finished ? scenario.took : (doneSteps[doneSteps.length - 1]?.at ?? "0.0s");
+
+  return (
+    <div className="ai-console">
+      <div className="ai-console-pane ai-console-chat">
+        <div className="ai-console-bar">
+          <span>{scenario.channel}</span>
+          <span>{agent.name}</span>
+        </div>
+        <div className="ai-console-thread">
+          {ms >= MSG_AT ? (
+            <div className="ai-bubble is-in">
+              <span className="ai-bubble-from">{scenario.from}</span>
+              {scenario.message}
+            </div>
+          ) : null}
+          {ms >= MSG_AT && ms < replyAt ? (
+            <div className="ai-typing" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+          ) : null}
+          {ms >= replyAt ? (
+            <div className="ai-bubble is-out">
+              <span className="ai-bubble-from">{agent.name}</span>
+              {typed}
+              {finished ? null : <span className="ai-caret" aria-hidden="true" />}
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="ai-console-pane ai-console-work">
+        <div className="ai-console-bar">
+          <span>Agent activity</span>
+          <span className="ai-console-clock">{clock}</span>
+        </div>
+        <ol className="ai-activity">
+          {scenario.steps.map((step, i) => {
+            const startAt = STEP_AT + i * STEP_GAP;
+            if (ms < startAt) return null;
+            const done = ms >= startAt + STEP_RUN;
+            const state = done ? (step.flag ? "is-flag" : "is-done") : "is-running";
+            return (
+              <li key={step.text} className={`ai-activity-step ${state}`}>
+                <span className="ai-activity-mark" aria-hidden="true" />
+                <span className="ai-activity-system">{step.system}</span>
+                <span className="ai-activity-text">{step.text}</span>
+                <span className="ai-activity-at">{done ? step.at : ""}</span>
+              </li>
+            );
+          })}
+        </ol>
+        {finished ? (
+          <div className="ai-outcome" role="status">
+            <div className="ai-outcome-time">
+              <strong>{scenario.took}</strong>
+              <span>vs {scenario.byHand}</span>
+            </div>
+            <span className="ai-outcome-note">{scenario.note}</span>
+            <button type="button" className="ai-outcome-replay" onClick={onReplay}>
+              ↻ Replay
+            </button>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 function TryAgent() {
   const [params] = useSearchParams();
-  const requested = demoAgents.findIndex((a) => a.id === params.get("agent"));
+  const requested = scenarios.findIndex((s) => s.agent === params.get("agent"));
   const [index, setIndex] = useState(requested >= 0 ? requested : 0);
-  const [sent, setSent] = useState(false);
-  const demo = demoAgents[index];
+  const [run, setRun] = useState(0);
+  const baseId = useId();
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const agentParam = params.get("agent");
+  useEffect(() => {
+    const i = scenarios.findIndex((s) => s.agent === agentParam);
+    if (i < 0) return;
+    setIndex(i);
+    setRun((r) => r + 1);
+  }, [agentParam]);
+
+  const select = (i: number) => {
+    setIndex(i);
+    setRun((r) => r + 1);
+  };
+
+  // Arrow keys move between tabs, as in a standard tablist.
+  const onKeyDown = (e: KeyboardEvent) => {
+    const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    if (!step) return;
+    e.preventDefault();
+    const next = (index + step + scenarios.length) % scenarios.length;
+    select(next);
+    tabRefs.current[next]?.focus();
+  };
 
   return (
     <section id="try" className="ai-section ai-section-tight ai-try">
-      <div className="ai-logos">
-        {Array.from({ length: 7 }, (_, i) => (
-          <InView key={i} as="span" col={i} className="ai-logo-slot ai-rise">
-            CLIENT LOGO
-          </InView>
-        ))}
-      </div>
       <InView className="ai-demo ai-rise ai-mask-head">
         <div className="ai-demo-grid" aria-hidden="true" />
         <div className="ai-demo-head">
           <span className="ai-demo-mark">
-            <span className="ai-diamond is-lg" />
+            <LuWorkflow size={22} strokeWidth={1.75} aria-hidden="true" />
           </span>
           <MaskLines className="ai-h2" style={{ fontSize: "clamp(32px,3.8cqi,50px)" }} text="See an agent at work" />
           <p className="ai-muted ai-mask-after" style={{ fontSize: 16 }}>
-            Pick an agent and send it a sample task.
+            Pick a problem and watch an agent handle it, start to finish.
           </p>
         </div>
-        <div className="ai-demo-picker" role="radiogroup" aria-label="Choose an agent">
-          {demoAgents.map((a, i) => (
-            <button
-              key={a.id}
-              type="button"
-              role="radio"
-              aria-checked={i === index}
-              className={i === index ? "ai-demo-option is-active" : "ai-demo-option"}
-              style={{ "--i": i } as Vars}
-              onClick={() => {
-                setIndex(i);
-                setSent(false);
-              }}
-            >
-              <AgentGlyph kind={a.glyph} size={36} className="is-surface" />
-              <span style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <span style={{ fontWeight: 700, fontSize: 16 }}>{a.name}</span>
-                <span className="ai-muted" style={{ fontSize: 14, lineHeight: 1.4 }}>
-                  {a.desc}
+
+        <div className="ai-scenario-tabs" role="tablist" aria-label="Choose a problem" onKeyDown={onKeyDown}>
+          {scenarios.map((s, i) => {
+            const agent = agents.find((a) => a.id === s.agent) ?? agents[0];
+            const active = i === index;
+            return (
+              <button
+                key={s.agent}
+                ref={(el) => {
+                  tabRefs.current[i] = el;
+                }}
+                type="button"
+                role="tab"
+                id={`${baseId}-tab${i}`}
+                aria-selected={active}
+                aria-controls={`${baseId}-panel`}
+                tabIndex={active ? 0 : -1}
+                className={active ? "ai-scenario-tab is-active" : "ai-scenario-tab"}
+                style={{ "--i": i } as Vars}
+                onClick={() => select(i)}
+              >
+                <AgentGlyph kind={agent.glyph} size={34} className="is-surface" />
+                <span className="ai-scenario-copy">
+                  <span className="ai-scenario-problem">{s.problem}</span>
+                  <span className="ai-scenario-agent">{agent.name}</span>
                 </span>
-              </span>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
-        <div aria-live="polite">
-          {sent ? (
-            <div className="ai-demo-thread">
-              <span className="ai-demo-msg is-user">{demo.prompt}</span>
-              <span className="ai-demo-msg is-agent">{demo.reply}</span>
-            </div>
-          ) : null}
+
+        <div role="tabpanel" id={`${baseId}-panel`} aria-labelledby={`${baseId}-tab${index}`}>
+          <AgentConsole key={`${index}-${run}`} scenario={scenarios[index]} onReplay={() => setRun((r) => r + 1)} />
         </div>
-        <div className="ai-demo-input">
-          <span className="ai-demo-prompt">{demo.prompt}</span>
-          <button type="button" className="ai-btn ai-btn-primary ai-demo-send" onClick={() => setSent(true)} disabled={sent}>
-            Send ↑
-          </button>
-        </div>
+
         <p className="ai-demo-note">Sample data only. Live demos run against a sandbox copy of your systems.</p>
       </InView>
     </section>
   );
 }
 
-/* ── 06 Use cases ────────────────────────────────────────── */
+/* ── 06 Industries ───────────────────────────────────────── */
 
-function UseCases() {
+/** Agents that have a scenario in "See an agent at work". */
+const demoable = new Set(scenarios.map((s) => s.agent));
+
+/** Moves to the demo even when the URL already ends in #try, which would not re-trigger the hash scroll. */
+const scrollToDemo = () => {
+  document.getElementById("try")?.scrollIntoView({ block: "start", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+};
+
+function Industries() {
+  const [params] = useSearchParams();
+  const requested = industries.findIndex((ind) => ind.id === params.get("industry"));
+  const [index, setIndex] = useState(requested >= 0 ? requested : 0);
+  // Follow ?industry= when it changes, e.g. from the navbar's Solutions menu.
+  useEffect(() => {
+    if (requested >= 0) setIndex(requested);
+  }, [requested]);
+  const baseId = useId();
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const industry = industries[index];
+
+  // Up/down (or left/right on phones, where the tabs sit in a row) move between industries.
+  const onKeyDown = (e: KeyboardEvent) => {
+    const step = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
+    if (!step) return;
+    e.preventDefault();
+    const next = (index + step + industries.length) % industries.length;
+    setIndex(next);
+    tabRefs.current[next]?.focus();
+  };
+
   return (
-    <section className="ai-section">
+    <section id="industries" className="ai-section">
       <div className="ai-wrap">
         <InView className="ai-head ai-mask-head">
           <Eyebrow index="04" label="Industries" />
-          <MaskLines className="ai-h2" style={{ maxWidth: 620 }} text="A flexible solution for diverse industries" />
+          <MaskLines className="ai-h2" style={{ maxWidth: 620 }} text="Where our agents already fit" />
         </InView>
-        <div className="ai-row" style={{ gap: 24 }}>
-          {useCases.map((u, i) => (
-            <InView key={u.n} col={i} className="ai-usecase ai-rise">
-              <div className="ai-usecase-img">{u.img}</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-                  <span className="ai-mono-accent">{u.n}</span>
-                  <h3 className="ai-h3" style={{ fontSize: 24, margin: 0 }}>
-                    {u.title}
-                  </h3>
-                </div>
-                <ul className="ai-list">
-                  {u.items.map((it, j) => (
-                    <li key={it} style={{ "--i": j } as Vars}>
-                      {it}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </InView>
-          ))}
-        </div>
+
+        <InView className="ai-industries ai-rise">
+          <div className="ai-industry-tabs" role="tablist" aria-label="Industries" aria-orientation="vertical" onKeyDown={onKeyDown}>
+            {industries.map((ind, i) => {
+              const active = i === index;
+              return (
+                <button
+                  key={ind.id}
+                  ref={(el) => {
+                    tabRefs.current[i] = el;
+                  }}
+                  type="button"
+                  role="tab"
+                  id={`${baseId}-tab${i}`}
+                  aria-selected={active}
+                  aria-controls={`${baseId}-panel`}
+                  tabIndex={active ? 0 : -1}
+                  className={active ? "ai-industry-tab is-active" : "ai-industry-tab"}
+                  style={{ "--i": i } as Vars}
+                  onClick={() => setIndex(i)}
+                >
+                  <span className="ai-industry-n">{String(i + 1).padStart(2, "0")}</span>
+                  {ind.title}
+                </button>
+              );
+            })}
+          </div>
+
+          <div
+            key={industry.id}
+            role="tabpanel"
+            id={`${baseId}-panel`}
+            aria-labelledby={`${baseId}-tab${index}`}
+            className="ai-industry-panel"
+          >
+            <div className="ai-industry-head">
+              <h3 className="ai-h3">{industry.title}</h3>
+              <p className="ai-card-text">{industry.line}</p>
+            </div>
+            <ul className="ai-industry-jobs">
+              {industry.jobs.map((job, j) => {
+                const agent = agents.find((a) => a.id === job.agent) ?? agents[0];
+                return (
+                  <li key={job.text} className="ai-industry-job" style={{ "--i": j } as Vars}>
+                    <AgentGlyph kind={agent.glyph} size={40} className="is-surface" />
+                    <span className="ai-industry-job-copy">
+                      <span className="ai-industry-job-text">{job.text}</span>
+                      <span className="ai-industry-job-systems">{job.systems}</span>
+                    </span>
+                    <span className="ai-industry-job-agent">
+                      {agent.name}
+                      {agent.tag ? <span className="ai-industry-tag">{agent.tag}</span> : null}
+                    </span>
+                    {demoable.has(agent.id) ? (
+                      <Link to={agentPath(agent.id)} className="ai-industry-try" onClick={scrollToDemo}>
+                        See it work <span aria-hidden="true">→</span>
+                      </Link>
+                    ) : (
+                      <span className="ai-industry-try is-empty" aria-hidden="true" />
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </InView>
       </div>
     </section>
   );
@@ -801,45 +823,90 @@ function UseCases() {
 
 /* ── 07 FAQ ──────────────────────────────────────────────── */
 
+/** FAQPage structured data, so search engines can show the questions and answers. */
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqGroups.flatMap((g) =>
+    g.items.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  ),
+  // Keeps a "</script>" inside the text from closing the tag early.
+}).replace(/</g, "\\u003c");
+
 function Faq() {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState("0-0");
   const baseId = useId();
 
   return (
-    <section className="ai-section ai-section-tight">
-      <div className="ai-wrap" style={{ maxWidth: 1080 }}>
-        <InView className="ai-mask-head">
-          <MaskLines
-            className="ai-h2"
-            style={{ textAlign: "center", marginBottom: "clamp(32px,4cqi,48px)" }}
-            text="Frequently asked questions"
-          />
+    <section id="faq" className="ai-section ai-section-tight">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
+      <div className="ai-wrap ai-faq-layout">
+        <InView className="ai-faq-aside ai-mask-head">
+          <Eyebrow index="05" label="FAQ" />
+          <MaskLines className="ai-h2" text="Questions, answered" />
+          <p className="ai-muted ai-mask-after">
+            Can’t find what you’re looking for? Ask us directly. We reply within one business day.
+          </p>
+          <div className="ai-faq-contact ai-mask-after">
+            <a href={`mailto:${site.email}`} className="ai-faq-email">
+              {site.email}
+            </a>
+            <Link to={DEMO_PATH} className="ai-btn ai-btn-primary">
+              Book a demo
+            </Link>
+          </div>
         </InView>
-        <div className="ai-faq">
-          {faqs.map((f, i) => {
-            const isOpen = open === i;
-            const answerId = `${baseId}-a${i}`;
-            return (
-              <InView key={f.q} className={isOpen ? "ai-faq-item ai-rise is-open" : "ai-faq-item ai-rise"}>
-                <h3 className="ai-faq-q">
-                  <button
-                    type="button"
-                    aria-expanded={isOpen}
-                    aria-controls={answerId}
-                    onClick={() => setOpen(isOpen ? -1 : i)}
-                  >
-                    <span className="ai-chev" aria-hidden="true" />
-                    {f.q}
-                  </button>
-                </h3>
-                <div id={answerId} className="ai-faq-body" role="region" aria-hidden={!isOpen}>
-                  <div>
-                    <p>{f.a}</p>
-                  </div>
-                </div>
-              </InView>
-            );
-          })}
+
+        <div className="ai-faq-groups">
+          {faqGroups.map((group, g) => (
+            <div key={group.title} className="ai-faq-group">
+              <p className="ai-faq-group-title">{group.title}</p>
+              <div className="ai-faq">
+                {group.items.map((f, i) => {
+                  const id = `${g}-${i}`;
+                  const isOpen = open === id;
+                  const answerId = `${baseId}-a${id}`;
+                  return (
+                    <InView key={f.q} className={isOpen ? "ai-faq-item ai-rise is-open" : "ai-faq-item ai-rise"}>
+                      <h3 className="ai-faq-q">
+                        <button
+                          type="button"
+                          aria-expanded={isOpen}
+                          aria-controls={answerId}
+                          onClick={() => setOpen(isOpen ? "" : id)}
+                        >
+                          <span className="ai-chev" aria-hidden="true" />
+                          {f.q}
+                        </button>
+                      </h3>
+                      <div id={answerId} className="ai-faq-body" role="region" aria-hidden={!isOpen}>
+                        <div>
+                          {/* Words stream in when the answer opens, like an agent's reply. */}
+                          <p>
+                            {f.a.split(" ").map((w, n) => (
+                              <span key={n} className="ai-faq-word" style={{ "--w": n } as Vars}>
+                                {w}{" "}
+                              </span>
+                            ))}
+                          </p>
+                          {f.link ? (
+                            <Link
+                              to={f.link.to}
+                              className="ai-faq-link"
+                              tabIndex={isOpen ? undefined : -1}
+                              onClick={f.link.to.endsWith("#try") ? scrollToDemo : undefined}
+                            >
+                              {f.link.label} <span aria-hidden="true">→</span>
+                            </Link>
+                          ) : null}
+                        </div>
+                      </div>
+                    </InView>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -848,31 +915,84 @@ function Faq() {
 
 /* ── 08 Contact CTA ──────────────────────────────────────── */
 
-const rays = [-72, -62, -52, -42, -32, -22, -12, 0, 12, 22, 32, 42, 52, 62, 72];
+const callSteps = [
+  { title: "Tell us the process", detail: "Which job takes up your team’s time.", time: "5 min" },
+  { title: "Watch it run on your data", detail: "An agent handles it on a sandbox copy.", time: "20 min" },
+  { title: "Leave with a pilot plan", detail: "Scope, timeline and price.", time: "5 min" },
+];
+
+// Three wires from the chip's pins converge on the button, echoing the hero circuit.
+const ctaWires = ["M0 10 H52 L70 18 H150", "M0 24 H150", "M0 38 H52 L70 30 H150"];
 
 function ClosingCta() {
+  const [process, setProcess] = useState<FirstProcessId | null>(null);
+  const chosen = firstProcesses.find((p) => p.id === process && p.id !== "other");
+
   return (
-    <section className="ai-cta-section">
+    <section className="ai-cta-section" data-theme="dark">
       <InView className="ai-cta ai-rise ai-mask-head">
-        <div className="ai-cta-rays" aria-hidden="true">
-          {rays.map((a, i) => (
-            <span
-              key={a}
-              className="ai-ray"
-              style={{ rotate: `${a}deg`, opacity: 1 - Math.abs(a) / 110, "--delay": `${300 + i * 40}ms` } as Vars}
-            />
-          ))}
-        </div>
-        <div className="ai-cta-horizon" aria-hidden="true" />
+        <div className="ai-hero-bg" aria-hidden="true" />
         <div className="ai-cta-copy">
           <MaskLines className="ai-cta-title" text="Talk to us about your first agent" />
           <p className="ai-mask-after">
             Tell us which process takes up your team’s time. We’ll show you an agent doing it, on your data, in a 30-minute
             call.
           </p>
-          <Link to={DEMO_PATH} className="ai-btn ai-btn-paper ai-mask-after">
-            Book a demo <span aria-hidden="true">→</span>
-          </Link>
+
+          <ol className="ai-call-steps">
+            {callSteps.map((step, i) => (
+              <li key={step.title} className="ai-call-step" style={{ "--i": i } as Vars}>
+                <span className="ai-call-step-n" aria-hidden="true">
+                  {i + 1}
+                </span>
+                <span className="ai-call-step-copy">
+                  <strong>{step.title}</strong>
+                  <span>{step.detail}</span>
+                </span>
+                <span className="ai-call-step-time">{step.time}</span>
+              </li>
+            ))}
+          </ol>
+
+          <div className="ai-cta-pick" role="group" aria-label="Your first process (optional)">
+            <span className="ai-cta-pick-label">Your first process</span>
+            <div className="ai-cta-chips">
+              {firstProcesses.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  aria-pressed={process === p.id}
+                  className={process === p.id ? "ai-cta-chip is-on" : "ai-cta-chip"}
+                  onClick={() => setProcess(process === p.id ? null : p.id)}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="ai-cta-plug">
+            <span className="ai-cta-core" aria-hidden="true">
+              AI
+            </span>
+            <svg className="ai-cta-wires" viewBox="0 0 150 48" fill="none" aria-hidden="true">
+              {ctaWires.map((d) => (
+                <path key={d} d={d} pathLength={1} className="ai-cta-wire" />
+              ))}
+              {ctaWires.map((d, i) => (
+                <path
+                  key={`pulse-${d}`}
+                  d={d}
+                  pathLength={1000}
+                  className="ai-trace-pulse"
+                  style={{ "--delay": `${1200 + i * 700}ms` } as Vars}
+                />
+              ))}
+            </svg>
+            <Link to={demoPathFor(chosen?.id)} className="ai-btn ai-btn-paper ai-cta-btn">
+              {chosen ? `Book a demo: ${chosen.label}` : "Book a demo"} <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </div>
       </InView>
     </section>
@@ -930,7 +1050,7 @@ export default function AILanding() {
       <Platform />
       <Reach />
       <TryAgent />
-      <UseCases />
+      <Industries />
       <Faq />
       <ClosingCta />
       <MoreFromLabs />

@@ -6,6 +6,7 @@ import Reveal from "../components/Reveal";
 import { site } from "../content/site";
 import { useSearchParams } from "react-router";
 import { enquiryTypeFromQuery, enquiryTypes } from "../content/services";
+import { processNoteFromQuery } from "../content/ai";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 const faqs = [
@@ -41,7 +42,11 @@ function validate(form: FormState): FieldErrors {
 
 function ContactForm() {
   const [params] = useSearchParams();
-  const [form, setForm] = useState<FormState>(() => ({ ...empty, type: enquiryTypeFromQuery(params.get("type")) }));
+  const [form, setForm] = useState<FormState>(() => ({
+    ...empty,
+    type: enquiryTypeFromQuery(params.get("type")),
+    message: processNoteFromQuery(params.get("process")),
+  }));
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "preview" | "error">("idle");
   const [serverError, setServerError] = useState("");

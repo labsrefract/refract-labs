@@ -21,11 +21,12 @@ export const site = {
     github: "https://github.com/labsrefract",
     x: "https://x.com/refractlabs",
   },
-  /** Top-level links after the Software and AI menus. Process lives in the footer. */
+  /** Refract Software navbar links. Contact is reached through the "Start a project" button. */
   nav: [
+    { label: "Services", to: "/services" },
     { label: "Work", to: "/work" },
+    { label: "Process", to: "/process" },
     { label: "About", to: "/about" },
-    { label: "Contact", to: "/contact" },
   ],
   footerNav: [
     { label: "Work", to: "/work" },
