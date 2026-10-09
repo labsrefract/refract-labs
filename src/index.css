@@ -3490,6 +3490,326 @@ a.home-voice:focus-visible .home-voice-card {
   color: #5dba86;
 }
 
+/* ── /ai scroll motion ───────────────────────────────────────
+   Shared by every section from Platform down. <InView> adds `is-in` once a
+   block is in view. One easing curve for all of it. */
+
+.ai-page {
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Headings (<MaskLines>): each line slides up from behind a mask. Inside an
+   `.ai-mask-head`, the eyebrow fades in first and `.ai-mask-after` text
+   follows the heading. */
+.ai-mask-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Room for descenders, which the mask would otherwise clip. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.ai-mask-word > span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 0.9s var(--ease-soft) calc(150ms + var(--line, 0) * 110ms);
+}
+
+.is-in .ai-mask-word > span {
+  transform: none;
+}
+
+.ai-mask-head .ai-eyebrow {
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}
+
+.ai-mask-head .ai-mask-after {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.7s ease-out 0.5s,
+    transform 0.7s var(--ease-soft) 0.5s;
+}
+
+.ai-mask-head.is-in .ai-eyebrow,
+.ai-mask-head.is-in .ai-mask-after {
+  opacity: 1;
+  transform: none;
+}
+
+/* Blocks (`.ai-rise`) rise, scale up and unclip as they enter the viewport,
+   scrubbed by the scroll itself. Blocks later in a row (--col) start later.
+   The clip ends a little outside the block so focus rings and shadows show. */
+@supports (animation-timeline: view()) {
+  .ai-rise {
+    animation: ai-rise linear both;
+    animation-timeline: view();
+    animation-range: entry calc(var(--col, 0) * 12%) entry calc(75% + var(--col, 0) * 12%);
+  }
+}
+
+@keyframes ai-rise {
+  from {
+    opacity: 0;
+    transform: translateY(64px) scale(0.95);
+    clip-path: inset(8% 4% 0 4% round 10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(-24px round 10px);
+  }
+}
+
+/* Browsers without scroll-driven animations get a plain timed rise instead. */
+@supports not (animation-timeline: view()) {
+  .ai-rise {
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 0.8s var(--ease-soft) calc(var(--col, 0) * 90ms),
+      transform 0.8s var(--ease-soft) calc(var(--col, 0) * 90ms),
+      border-color 0.2s ease,
+      background 0.25s ease;
+  }
+
+  .ai-rise.is-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-rise {
+    animation: none !important;
+  }
+
+  .ai-page *,
+  .ai-page *::before {
+    transition-delay: 0s !important;
+  }
+}
+
+/* 03 Platform: card demos
+   Each card (`.ai-plat-card`) plays its demo once it is in view. */
+
+/* Channels: conversations arrive one by one, then each status lands. */
+.ai-plat-card .ai-channel {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    opacity 0.5s ease-out calc(200ms + var(--i) * 140ms),
+    transform 0.5s var(--ease-soft) calc(200ms + var(--i) * 140ms);
+}
+
+.ai-plat-card .ai-channel-status {
+  opacity: 0;
+  scale: 0.8;
+  transition:
+    opacity 0.3s ease-out calc(650ms + var(--i) * 140ms),
+    scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) calc(650ms + var(--i) * 140ms);
+}
+
+.ai-plat-card.is-in .ai-channel {
+  opacity: 1;
+  transform: none;
+}
+
+.ai-plat-card.is-in .ai-channel-status {
+  opacity: 1;
+  scale: 1;
+}
+
+/* Hub: the core switches on, lines draw out from it, then each system
+   connects in turn, clockwise from the top. */
+.ai-plat-card .ai-hub-core {
+  scale: 0.6;
+  opacity: 0;
+  transition:
+    scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 150ms,
+    opacity 0.3s ease-out 150ms;
+}
+
+.ai-plat-card .ai-hub-v,
+.ai-plat-card .ai-hub-h {
+  transition: transform 0.8s var(--ease-soft) 450ms;
+}
+
+.ai-plat-card .ai-hub-v {
+  transform: scaleY(0);
+}
+
+.ai-plat-card .ai-hub-h {
+  transform: scaleX(0);
+}
+
+.ai-plat-card .ai-hub-node {
+  opacity: 0;
+  scale: 0.85;
+  transition:
+    opacity 0.35s ease-out calc(950ms + var(--i) * 130ms),
+    scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) calc(950ms + var(--i) * 130ms),
+    border-color 0.3s ease calc(950ms + var(--i) * 130ms);
+}
+
+.ai-plat-card.is-in .ai-hub-core,
+.ai-plat-card.is-in .ai-hub-node {
+  opacity: 1;
+  scale: 1;
+}
+
+.ai-plat-card.is-in .ai-hub-v,
+.ai-plat-card.is-in .ai-hub-h {
+  transform: none;
+}
+
+.ai-plat-card.is-in .ai-hub-node {
+  border-color: var(--ai);
+}
+
+/* Privacy: the values scramble into masks (see <Scramble>); hosting lands last. */
+.ai-plat-card .ai-masked-host {
+  opacity: 0;
+  transition: opacity 0.5s ease-out 2.4s;
+}
+
+.ai-plat-card.is-in .ai-masked-host {
+  opacity: 1;
+}
+
+/* Approval: the request slides in, the limit is flagged, Approve calls for a click. */
+.ai-plat-card .ai-approval {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.5s ease-out 250ms,
+    transform 0.6s var(--ease-soft) 250ms;
+}
+
+.ai-plat-card.is-in .ai-approval {
+  opacity: 1;
+  transform: none;
+}
+
+.ai-plat-card.is-in .ai-approval-limit {
+  animation: ai-limit-flag 1.4s ease-out 900ms both;
+}
+
+@keyframes ai-limit-flag {
+  0% {
+    color: var(--subtle);
+  }
+  30% {
+    color: #e8a33d;
+    text-shadow: 0 0 12px rgba(232, 163, 61, 0.6);
+  }
+  100% {
+    color: #d9952f;
+  }
+}
+
+.ai-plat-card.is-in .ai-chip-btn.is-primary {
+  animation: ai-approve-ping 1.6s ease-out 1.6s 2;
+}
+
+@keyframes ai-approve-ping {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ai) 55%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+/* Languages: the same reply arrives in each language in turn. */
+.ai-plat-card .ai-lang {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.5s ease-out calc(250ms + var(--i) * 260ms),
+    transform 0.5s var(--ease-soft) calc(250ms + var(--i) * 260ms);
+}
+
+.ai-plat-card.is-in .ai-lang {
+  opacity: 1;
+  transform: none;
+}
+
+/* Volume: bars grow left to right; the month-end peak lands last. */
+.ai-plat-card .ai-bars > span {
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.7s var(--ease-soft) calc(200ms + var(--i) * 40ms);
+}
+
+.ai-plat-card .ai-bars > span.is-peak {
+  transition-delay: 1.15s;
+}
+
+.ai-plat-card.is-in .ai-bars > span {
+  transform: none;
+}
+
+.ai-plat-card.is-in .ai-bars > span.is-peak {
+  animation: ai-peak-glow 1.2s ease-out 1.5s both;
+}
+
+@keyframes ai-peak-glow {
+  0% {
+    box-shadow: 0 0 0 transparent;
+  }
+  40% {
+    box-shadow: 0 0 18px color-mix(in srgb, var(--ai) 70%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 6px color-mix(in srgb, var(--ai) 30%, transparent);
+  }
+}
+
+/* Audit log: each entry types out, one after another. */
+.ai-plat-card .ai-log > div {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.7s steps(30, end) calc(400ms + var(--i) * 650ms);
+}
+
+.ai-plat-card.is-in .ai-log > div {
+  clip-path: inset(0);
+}
+
+/* Section extras on top of the shared scroll motion. */
+
+/* Use cases: list items cascade in after their card. */
+.ai-usecase .ai-list li {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 0.5s ease-out calc(350ms + var(--i) * 90ms),
+    transform 0.5s var(--ease-soft) calc(350ms + var(--i) * 90ms);
+}
+
+.ai-usecase.is-in .ai-list li {
+  opacity: 1;
+  transform: none;
+}
+
+/* Try an agent: the agent options arrive one by one after the heading. */
+.ai-demo .ai-demo-option {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.5s ease-out calc(600ms + var(--i) * 90ms),
+    transform 0.6s var(--ease-soft) calc(600ms + var(--i) * 90ms),
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.ai-demo.is-in .ai-demo-option {
+  opacity: 1;
+  transform: none;
+}
+
 /* 04 Reach */
 
 .ai-reach {
@@ -3896,7 +4216,7 @@ a.home-voice:focus-visible .home-voice-card {
   scale: 1 0;
 }
 
-.ai-cta.is-revealed .ai-ray {
+.ai-cta.is-in .ai-ray {
   animation: ai-ray 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--delay, 0ms) both;
 }
 

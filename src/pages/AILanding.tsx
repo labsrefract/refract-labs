@@ -1,4 +1,16 @@
-import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
+import {
+  createContext,
+  Fragment,
+  useContext,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ElementType,
+  type ReactNode,
+} from "react";
 import { Link, useSearchParams } from "react-router";
 import AgentGlyph from "../components/AgentGlyph";
 import Reveal from "../components/Reveal";
@@ -33,32 +45,127 @@ function Eyebrow({ index, label }: { index: string; label: string }) {
   );
 }
 
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 /**
- * Adds `is-open` to the element once its top edge is 70% of the way up the
- * viewport. Used for the section that closes over the hero like a car window.
+ * Becomes true, once, when the element enters the viewport shrunk by
+ * `rootMargin`. With reduced motion it is true straight away.
  */
-function useWindowOpen<T extends HTMLElement>() {
+function useInView<T extends HTMLElement>(rootMargin = "0px") {
   const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const open = () => el.classList.add("is-open");
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      open();
+    if (prefersReducedMotion()) {
+      setInView(true);
       return;
     }
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
-        open();
+        setInView(true);
         io.disconnect();
       },
-      { rootMargin: "0px 0px -30% 0px" },
+      { rootMargin },
     );
     io.observe(el);
     return () => io.disconnect();
+  }, [rootMargin]);
+  return [ref, inView] as const;
+}
+
+/** True once the surrounding <InView> block has scrolled far enough into view. */
+const LiveContext = createContext(false);
+
+type InViewTag = "div" | "span" | "section";
+
+/**
+ * Adds `is-in` once the block is in view (so headings inside it unmask and
+ * demos inside it play) and shares that state through LiveContext. Give it
+ * the `ai-rise` class to also rise in step with the scroll; `col` staggers
+ * blocks that sit side by side.
+ */
+function InView({
+  as: Tag = "div",
+  col = 0,
+  rootMargin = "0px 0px -25% 0px",
+  className = "",
+  style,
+  children,
+  "aria-hidden": ariaHidden,
+}: {
+  as?: InViewTag;
+  col?: number;
+  rootMargin?: string;
+  className?: string;
+  style?: CSSProperties;
+  children: ReactNode;
+  "aria-hidden"?: boolean | "true";
+}) {
+  const [ref, inView] = useInView<HTMLElement>(rootMargin);
+  const Comp = Tag as ElementType;
+  return (
+    <Comp
+      ref={ref}
+      className={`${className} ${inView ? "is-in" : ""}`.trim()}
+      style={{ ...style, "--col": col } as Vars}
+      aria-hidden={ariaHidden}
+    >
+      <LiveContext.Provider value={inView}>{children}</LiveContext.Provider>
+    </Comp>
+  );
+}
+
+/**
+ * Heading whose lines slide up from behind a mask once an ancestor has
+ * `is-in`. Words are grouped into lines by where they wrap, so each line
+ * moves as one.
+ */
+function MaskLines({
+  text,
+  className = "",
+  style,
+}: {
+  text: string;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const words = text.split(" ");
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const assign = () => {
+      let top: number | null = null;
+      let line = -1;
+      el.querySelectorAll<HTMLElement>(".ai-mask-word").forEach((w) => {
+        if (w.offsetTop !== top) {
+          top = w.offsetTop;
+          line++;
+        }
+        w.style.setProperty("--line", String(line));
+      });
+    };
+    assign();
+    const ro = new ResizeObserver(assign);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
-  return ref;
+
+  return (
+    <h2 ref={ref} className={`ai-mask-lines ${className}`.trim()} style={style}>
+      {words.map((w, i) => (
+        <Fragment key={i}>
+          <span className="ai-mask-word">
+            <span>{w}</span>
+          </span>
+          {i < words.length - 1 ? " " : null}
+        </Fragment>
+      ))}
+    </h2>
+  );
 }
 
 /* ── 01 Hero ─────────────────────────────────────────────── */
@@ -230,10 +337,14 @@ function Hero() {
 function HowItWorks() {
   const [tab, setTab] = useState(0);
   const panelId = useId();
-  const windowRef = useWindowOpen<HTMLElement>();
+  const [windowRef, windowOpen] = useInView<HTMLElement>("0px 0px -30% 0px");
 
   return (
-    <section ref={windowRef} id="how-it-works" className="ai-section ai-section-ruled ai-window">
+    <section
+      ref={windowRef}
+      id="how-it-works"
+      className={`ai-section ai-section-ruled ai-window ${windowOpen ? "is-open" : ""}`.trim()}
+    >
       <div className="ai-wrap">
         <Reveal className="ai-head">
           <div className="ai-tabs" role="tablist" aria-label="About Refract AI">
@@ -326,46 +437,101 @@ function HowItWorks() {
 
 /* ── 03 Platform ─────────────────────────────────────────── */
 
+const SCRAMBLE_CHARS = "#%&*+=?@$0123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+
+/**
+ * Shows `plain`, then once its card is live masks it left to right, each
+ * character flickering through a random glyph before settling on `masked`.
+ * `plain` and `masked` must be the same length.
+ */
+function Scramble({ plain, masked, delay = 0 }: { plain: string; masked: string; delay?: number }) {
+  const live = useContext(LiveContext);
+  const [done, setDone] = useState(-1);
+
+  useEffect(() => {
+    if (!live) return;
+    if (prefersReducedMotion()) {
+      setDone(plain.length);
+      return;
+    }
+    let tick = 0;
+    const start = window.setTimeout(() => {
+      let n = 0;
+      tick = window.setInterval(() => {
+        n++;
+        setDone(n);
+        if (n >= plain.length) window.clearInterval(tick);
+      }, 55);
+    }, delay);
+    return () => {
+      window.clearTimeout(start);
+      window.clearInterval(tick);
+    };
+  }, [live, plain, delay]);
+
+  const text = Array.from(plain, (ch, i) => {
+    if (i < done) return masked[i];
+    if (i === done && masked[i] !== ch) return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+    return ch;
+  }).join("");
+
+  return <>{text}</>;
+}
+
+const maskedFields = [
+  { k: "name", plain: "Joyce Mbugua", masked: "J•••• M•••••" },
+  { k: "phone", plain: "+254 712 384 412", masked: "+254 7•• ••• 412" },
+  { k: "id", plain: "28417735", masked: "••••••••" },
+];
+
 function Platform() {
   return (
-    <section className="ai-section ai-section-tight">
+    <section className="ai-section ai-section-tight ai-platform">
       <div className="ai-wrap ai-stack">
-        <Reveal className="ai-head" style={{ marginBottom: "clamp(20px,3cqi,40px)" }}>
+        <InView className="ai-head ai-mask-head" style={{ marginBottom: "clamp(20px,3cqi,40px)" }}>
           <Eyebrow index="02" label="Platform" />
-          <h2 className="ai-h2" style={{ maxWidth: 680 }}>
-            Everything your agents need to do real work
-          </h2>
-        </Reveal>
+          <MaskLines className="ai-h2" style={{ maxWidth: 680 }} text="Everything your agents need to do real work" />
+        </InView>
 
         <div className="ai-row">
-          <Reveal className="ai-card ai-card-hover" style={{ flex: "2 1 420px", minHeight: 400 }}>
+          <InView
+            col={0}
+            rootMargin="0px 0px -30% 0px"
+            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "2 1 420px", minHeight: 400 }}>
             <h3 className="ai-h3">Every channel your customers use</h3>
             <p className="ai-card-text" style={{ maxWidth: 380 }}>
               WhatsApp, SMS, voice, email and web chat, handled by the same agent with the same context.
             </p>
             <div className="ai-card-foot">
-              {channels.map((ch) => (
-                <div key={ch.c} className="ai-channel">
+              {channels.map((ch, i) => (
+                <div key={ch.c} className="ai-channel" style={{ "--i": i } as Vars}>
                   <span className="ai-mono-subtle">{ch.c}</span>
                   <span className="ai-ellipsis">{ch.m}</span>
                   <span className="ai-channel-status">{ch.s}</span>
                 </div>
               ))}
             </div>
-          </Reveal>
-          <Reveal
-            className="ai-card ai-card-hover"
-            style={{ flex: "1 1 260px", minHeight: 400, justifyContent: "flex-end" }}
-            delay={80}
-          >
+          </InView>
+          <InView
+            col={1}
+            rootMargin="0px 0px -30% 0px"
+            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "1 1 260px", minHeight: 400, justifyContent: "flex-end" }}>
             <div className="ai-hub" aria-hidden="true">
               <span className="ai-hub-v" />
               <span className="ai-hub-h" />
               <span className="ai-hub-core">AI</span>
-              <span className="ai-hub-node is-top">M-Pesa</span>
-              <span className="ai-hub-node is-bottom">ERP</span>
-              <span className="ai-hub-node is-left">CRM</span>
-              <span className="ai-hub-node is-right">Core bank</span>
+              <span className="ai-hub-node is-top" style={{ "--i": 0 } as Vars}>
+                M-Pesa
+              </span>
+              <span className="ai-hub-node is-right" style={{ "--i": 1 } as Vars}>
+                Core bank
+              </span>
+              <span className="ai-hub-node is-bottom" style={{ "--i": 2 } as Vars}>
+                ERP
+              </span>
+              <span className="ai-hub-node is-left" style={{ "--i": 3 } as Vars}>
+                CRM
+              </span>
             </div>
             <h3 className="ai-h3" style={{ position: "relative" }}>
               One connection for every system
@@ -373,31 +539,39 @@ function Platform() {
             <p className="ai-card-text" style={{ position: "relative" }}>
               Payments, banking, CRM and ERP connectors, managed in one place.
             </p>
-          </Reveal>
+          </InView>
         </div>
 
         <div className="ai-row">
-          <Reveal className="ai-card ai-card-hover" style={{ flex: "1 1 220px", minHeight: 360 }}>
+          <InView
+            col={0}
+            rootMargin="0px 0px -30% 0px"
+            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "1 1 220px", minHeight: 360 }}>
             <h3 className="ai-h3">Data privacy and security</h3>
             <p className="ai-card-text">Run in your cloud or ours. Personal data is masked before it reaches a model.</p>
             <dl className="ai-masked">
-              <dt>name</dt>
-              <dd>J•••• M••••</dd>
-              <dt>phone</dt>
-              <dd>+254 7•• ••• 412</dd>
-              <dt>id</dt>
-              <dd>•••••••</dd>
+              {maskedFields.map((f, i) => (
+                <Fragment key={f.k}>
+                  <dt>{f.k}</dt>
+                  <dd>
+                    <Scramble plain={f.plain} masked={f.masked} delay={900 + i * 350} />
+                  </dd>
+                </Fragment>
+              ))}
               <dt>hosting</dt>
-              <dd className="ai-accent-text">your cloud</dd>
+              <dd className="ai-accent-text ai-masked-host">your cloud</dd>
             </dl>
-          </Reveal>
-          <Reveal className="ai-card ai-card-hover" style={{ flex: "1 1 220px", minHeight: 360 }} delay={80}>
+          </InView>
+          <InView
+            col={1}
+            rootMargin="0px 0px -30% 0px"
+            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "1 1 220px", minHeight: 360 }}>
             <h3 className="ai-h3">People approve what matters</h3>
             <p className="ai-card-text">Set limits per action. Above them, the agent asks a person first.</p>
             <div className="ai-approval">
               <span className="ai-approval-head">
                 <span>Approval needed</span>
-                <span>limit 5,000</span>
+                <span className="ai-approval-limit">limit 5,000</span>
               </span>
               <span style={{ fontSize: 15, fontWeight: 600 }}>Refund KES 12,000 to customer #4471</span>
               <div style={{ display: "flex", gap: 8 }} aria-hidden="true">
@@ -405,13 +579,16 @@ function Platform() {
                 <span className="ai-chip-btn">Review</span>
               </div>
             </div>
-          </Reveal>
-          <Reveal className="ai-card ai-card-hover" style={{ flex: "1 1 220px", minHeight: 360 }} delay={160}>
+          </InView>
+          <InView
+            col={2}
+            rootMargin="0px 0px -30% 0px"
+            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "1 1 220px", minHeight: 360 }}>
             <h3 className="ai-h3">Speaks your customers’ languages</h3>
             <p className="ai-card-text">English and Kiswahili by default, with French and more on request.</p>
             <div className="ai-card-foot">
-              {languages.map((l) => (
-                <div key={l.c} className="ai-lang">
+              {languages.map((l, i) => (
+                <div key={l.c} className="ai-lang" style={{ "--i": i } as Vars}>
                   <span className="ai-mono-accent" style={{ fontSize: 11, paddingTop: 2 }}>
                     {l.c}
                   </span>
@@ -419,11 +596,14 @@ function Platform() {
                 </div>
               ))}
             </div>
-          </Reveal>
+          </InView>
         </div>
 
         <div className="ai-row">
-          <Reveal className="ai-card ai-card-hover" style={{ flex: "3 1 380px", minHeight: 340 }}>
+          <InView
+            col={0}
+            rootMargin="0px 0px -30% 0px"
+            className="ai-card ai-plat-card ai-rise ai-card-hover" style={{ flex: "3 1 380px", minHeight: 340 }}>
             <h3 className="ai-h3">Scales with your volume</h3>
             <p className="ai-card-text" style={{ maxWidth: 380 }}>
               Handle month-end peaks and quiet weekends without hiring for the busiest day.
@@ -431,7 +611,11 @@ function Platform() {
             <div className="ai-card-foot" aria-hidden="true">
               <div className="ai-bars">
                 {volumeBars.map((h, i) => (
-                  <span key={i} className={i === volumePeak ? "is-peak" : undefined} style={{ height: `${h}%` }} />
+                  <span
+                    key={i}
+                    className={i === volumePeak ? "is-peak" : undefined}
+                    style={{ height: `${h}%`, "--i": i } as Vars}
+                  />
                 ))}
               </div>
               <div className="ai-bars-axis">
@@ -440,13 +624,16 @@ function Platform() {
                 <span className="ai-accent-text">month-end</span>
               </div>
             </div>
-          </Reveal>
-          <Reveal className="ai-card ai-card-ink" style={{ flex: "2 1 300px", minHeight: 340 }} delay={80}>
+          </InView>
+          <InView
+            col={1}
+            rootMargin="0px 0px -30% 0px"
+            className="ai-card ai-plat-card ai-rise ai-card-ink" style={{ flex: "2 1 300px", minHeight: 340 }}>
             <h3 className="ai-h3">Every action is logged</h3>
             <p className="ai-card-text ai-ink-muted">A plain-language audit trail your compliance team can read.</p>
             <div className="ai-log">
               {auditLog.map((row, i) => (
-                <div key={i}>
+                <div key={i} style={{ "--i": i } as Vars}>
                   <span className="ai-log-time">{row.time}</span>
                   {"  "}
                   <span className={row.actor === "policy" ? "ai-log-policy" : "ai-log-actor"}>{row.actor.padEnd(9, " ")}</span>
@@ -455,7 +642,7 @@ function Platform() {
                 </div>
               ))}
             </div>
-          </Reveal>
+          </InView>
         </div>
       </div>
     </section>
@@ -474,15 +661,15 @@ const chords = [15, 30, 45, 60, 75, 0].map((deg) => {
 function Reach() {
   return (
     <section className="ai-section ai-reach">
-      <Reveal className="ai-head ai-reach-copy">
+      <InView className="ai-head ai-reach-copy ai-mask-head">
         <Eyebrow index="03" label="Nairobi to anywhere" />
-        <h2 className="ai-h2">Built in Nairobi, ready wherever you operate</h2>
-        <p className="ai-muted" style={{ maxWidth: 520, fontSize: 16 }}>
+        <MaskLines className="ai-h2" text="Built in Nairobi, ready wherever you operate" />
+        <p className="ai-muted ai-mask-after" style={{ maxWidth: 520, fontSize: 16 }}>
           Designed around African payment rails, languages and regulation, and just as at home with teams in Europe, the Gulf
           and beyond.
         </p>
-      </Reveal>
-      <div className="ai-globe-stage" aria-hidden="true">
+      </InView>
+      <InView className="ai-globe-stage ai-rise" aria-hidden="true">
         <div className="ai-globe">
           {meridians.map((ph) => (
             <span key={ph} className="ai-meridian" style={{ animationDelay: `${-ph * 16}s` }} />
@@ -497,7 +684,7 @@ function Reach() {
           <span className="ai-pin-label">Nairobi · 1.29°S 36.82°E</span>
         </div>
         <div className="ai-globe-fade" />
-      </div>
+      </InView>
     </section>
   );
 }
@@ -513,23 +700,21 @@ function TryAgent() {
 
   return (
     <section id="try" className="ai-section ai-section-tight ai-try">
-      <Reveal className="ai-logos">
+      <div className="ai-logos">
         {Array.from({ length: 7 }, (_, i) => (
-          <span key={i} className="ai-logo-slot">
+          <InView key={i} as="span" col={i} className="ai-logo-slot ai-rise">
             CLIENT LOGO
-          </span>
+          </InView>
         ))}
-      </Reveal>
-      <Reveal className="ai-demo">
+      </div>
+      <InView className="ai-demo ai-rise ai-mask-head">
         <div className="ai-demo-grid" aria-hidden="true" />
         <div className="ai-demo-head">
           <span className="ai-demo-mark">
             <span className="ai-diamond is-lg" />
           </span>
-          <h2 className="ai-h2" style={{ fontSize: "clamp(32px,3.8cqi,50px)" }}>
-            See an agent at work
-          </h2>
-          <p className="ai-muted" style={{ fontSize: 16 }}>
+          <MaskLines className="ai-h2" style={{ fontSize: "clamp(32px,3.8cqi,50px)" }} text="See an agent at work" />
+          <p className="ai-muted ai-mask-after" style={{ fontSize: 16 }}>
             Pick an agent and send it a sample task.
           </p>
         </div>
@@ -541,6 +726,7 @@ function TryAgent() {
               role="radio"
               aria-checked={i === index}
               className={i === index ? "ai-demo-option is-active" : "ai-demo-option"}
+              style={{ "--i": i } as Vars}
               onClick={() => {
                 setIndex(i);
                 setSent(false);
@@ -571,7 +757,7 @@ function TryAgent() {
           </button>
         </div>
         <p className="ai-demo-note">Sample data only. Live demos run against a sandbox copy of your systems.</p>
-      </Reveal>
+      </InView>
     </section>
   );
 }
@@ -582,15 +768,13 @@ function UseCases() {
   return (
     <section className="ai-section">
       <div className="ai-wrap">
-        <Reveal className="ai-head">
+        <InView className="ai-head ai-mask-head">
           <Eyebrow index="04" label="Industries" />
-          <h2 className="ai-h2" style={{ maxWidth: 620 }}>
-            A flexible solution for diverse industries
-          </h2>
-        </Reveal>
+          <MaskLines className="ai-h2" style={{ maxWidth: 620 }} text="A flexible solution for diverse industries" />
+        </InView>
         <div className="ai-row" style={{ gap: 24 }}>
           {useCases.map((u, i) => (
-            <Reveal key={u.n} className="ai-usecase" delay={i * 80}>
+            <InView key={u.n} col={i} className="ai-usecase ai-rise">
               <div className="ai-usecase-img">{u.img}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
@@ -600,12 +784,14 @@ function UseCases() {
                   </h3>
                 </div>
                 <ul className="ai-list">
-                  {u.items.map((it) => (
-                    <li key={it}>{it}</li>
+                  {u.items.map((it, j) => (
+                    <li key={it} style={{ "--i": j } as Vars}>
+                      {it}
+                    </li>
                   ))}
                 </ul>
               </div>
-            </Reveal>
+            </InView>
           ))}
         </div>
       </div>
@@ -622,17 +808,19 @@ function Faq() {
   return (
     <section className="ai-section ai-section-tight">
       <div className="ai-wrap" style={{ maxWidth: 1080 }}>
-        <Reveal>
-          <h2 className="ai-h2" style={{ textAlign: "center", marginBottom: "clamp(32px,4cqi,48px)" }}>
-            Frequently asked questions
-          </h2>
-        </Reveal>
-        <Reveal className="ai-faq">
+        <InView className="ai-mask-head">
+          <MaskLines
+            className="ai-h2"
+            style={{ textAlign: "center", marginBottom: "clamp(32px,4cqi,48px)" }}
+            text="Frequently asked questions"
+          />
+        </InView>
+        <div className="ai-faq">
           {faqs.map((f, i) => {
             const isOpen = open === i;
             const answerId = `${baseId}-a${i}`;
             return (
-              <div key={f.q} className={isOpen ? "ai-faq-item is-open" : "ai-faq-item"}>
+              <InView key={f.q} className={isOpen ? "ai-faq-item ai-rise is-open" : "ai-faq-item ai-rise"}>
                 <h3 className="ai-faq-q">
                   <button
                     type="button"
@@ -649,10 +837,10 @@ function Faq() {
                     <p>{f.a}</p>
                   </div>
                 </div>
-              </div>
+              </InView>
             );
           })}
-        </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -665,28 +853,28 @@ const rays = [-72, -62, -52, -42, -32, -22, -12, 0, 12, 22, 32, 42, 52, 62, 72];
 function ClosingCta() {
   return (
     <section className="ai-cta-section">
-      <Reveal className="ai-cta">
+      <InView className="ai-cta ai-rise ai-mask-head">
         <div className="ai-cta-rays" aria-hidden="true">
           {rays.map((a, i) => (
             <span
               key={a}
               className="ai-ray"
-              style={{ rotate: `${a}deg`, opacity: 1 - Math.abs(a) / 110, "--delay": `${i * 40}ms` } as Vars}
+              style={{ rotate: `${a}deg`, opacity: 1 - Math.abs(a) / 110, "--delay": `${300 + i * 40}ms` } as Vars}
             />
           ))}
         </div>
         <div className="ai-cta-horizon" aria-hidden="true" />
         <div className="ai-cta-copy">
-          <h2 className="ai-cta-title">Talk to us about your first agent</h2>
-          <p>
+          <MaskLines className="ai-cta-title" text="Talk to us about your first agent" />
+          <p className="ai-mask-after">
             Tell us which process takes up your team’s time. We’ll show you an agent doing it, on your data, in a 30-minute
             call.
           </p>
-          <Link to={DEMO_PATH} className="ai-btn ai-btn-paper">
+          <Link to={DEMO_PATH} className="ai-btn ai-btn-paper ai-mask-after">
             Book a demo <span aria-hidden="true">→</span>
           </Link>
         </div>
-      </Reveal>
+      </InView>
     </section>
   );
 }
@@ -697,14 +885,16 @@ function MoreFromLabs() {
   return (
     <section className="ai-section ai-section-tight">
       <div className="ai-wrap">
-        <Reveal>
-          <h2 className="ai-h2" style={{ textAlign: "center", fontSize: "clamp(30px,3.6cqi,48px)", marginBottom: "clamp(32px,4cqi,48px)" }}>
-            Explore more from Refract Labs
-          </h2>
-        </Reveal>
+        <InView className="ai-mask-head">
+          <MaskLines
+            className="ai-h2"
+            style={{ textAlign: "center", fontSize: "clamp(30px,3.6cqi,48px)", marginBottom: "clamp(32px,4cqi,48px)" }}
+            text="Explore more from Refract Labs"
+          />
+        </InView>
         <div className="ai-row">
           {softwareLinks.map((s, i) => (
-            <Reveal key={s.t} className="ai-software" delay={i * 80}>
+            <InView key={s.t} col={i} className="ai-software ai-rise">
               <Link to={s.to} className="ai-software-card">
                 <AgentGlyph kind={s.glyph} className="is-teal" />
                 <span className="ai-software-kicker">Refract Software</span>
@@ -716,7 +906,7 @@ function MoreFromLabs() {
                 </span>
                 <span className="ai-software-more">Learn more →</span>
               </Link>
-            </Reveal>
+            </InView>
           ))}
         </div>
       </div>
