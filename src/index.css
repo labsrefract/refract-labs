@@ -769,12 +769,25 @@ svg {
 }
 
 @media (min-width: 768px) {
+  /* Full width over the hero; shrinks to a content-sized pill once scrolled. */
   .site-nav-bar {
     --nav-h: 4rem;
     width: max-content;
+    min-width: 100%;
     max-width: 100%;
     padding: 0.32rem 0.45rem 0.32rem 0.32rem;
     gap: 2.25rem;
+    transition: min-width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .site-nav.is-scrolled .site-nav-bar {
+    min-width: 0;
+  }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .site-nav-bar {
+    transition: none;
   }
 }
 
@@ -2678,7 +2691,8 @@ a.home-voice:focus-visible .home-voice-card {
 .ai-glyph {
   position: relative;
   flex-shrink: 0;
-  display: block;
+  display: grid;
+  place-items: center;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: var(--bg);
@@ -2692,19 +2706,6 @@ a.home-voice:focus-visible .home-voice-card {
 .ai-glyph.is-teal {
   color: var(--accent);
   margin-bottom: 32px;
-}
-
-.ai-glyph-art {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 20px;
-  height: 20px;
-  margin: -10px 0 0 -10px;
-}
-
-.ai-glyph-art > span {
-  box-sizing: border-box;
 }
 
 /* Cards */
@@ -2752,62 +2753,75 @@ a.home-voice:focus-visible .home-voice-card {
 /* 01 Hero (always dark, whatever the site theme) */
 
 .ai-hero {
-  --t0: 0ms;
   position: relative;
-  min-height: max(100svh, 760px);
-  padding: clamp(150px, 15cqi, 200px) clamp(20px, 4cqi, 48px) 360px;
-  text-align: center;
   overflow: hidden;
   background: #0b0b0e;
   color: var(--text);
 }
 
-.ai-hero-glow {
+/* Radius of the reveal circle. Registered so it can be animated; it defaults
+   to fully open, so the hero still shows if the animation never runs. */
+@property --ai-reveal {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 2400px;
+}
+
+.ai-hero-stage {
+  /* Height of the circuit (1200×440, scaled to fit) and the chip's distance
+     from its bottom edge, so the reveal is centred on the chip. */
+  --circuit-h: calc(min(1200px, 100cqi) * 440 / 1200);
+  --chip-y: calc(100% - var(--circuit-h) * 222 / 440);
+  position: relative;
+  padding: clamp(132px, 10cqi, 148px) clamp(20px, 4cqi, 48px) calc(var(--circuit-h) + 16px);
+  text-align: center;
+  mask-image: radial-gradient(
+    circle at 50% var(--chip-y),
+    #000 calc(var(--ai-reveal) - 260px),
+    transparent var(--ai-reveal)
+  );
+  animation: ai-reveal 2.8s cubic-bezier(0.4, 0, 0.6, 1) 100ms backwards;
+}
+
+/* 1250px is just enough to clear the hero's far corners from the chip, so the
+   whole run is spent crossing the visible hero. */
+@keyframes ai-reveal {
+  from {
+    --ai-reveal: 0px;
+  }
+  to {
+    --ai-reveal: 1250px;
+  }
+}
+
+/* Backdrop: a fine engineering grid that fades toward the edges, a soft
+   neutral light from above, and a little film grain to keep it from looking
+   flat. No coloured glows. */
+.ai-hero-bg {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    radial-gradient(40% 55% at 0% 45%, color-mix(in srgb, var(--ai) 14%, transparent), transparent 70%),
-    radial-gradient(35% 50% at 100% 70%, color-mix(in srgb, var(--ai) 12%, transparent), transparent 70%),
-    radial-gradient(30% 40% at 92% 0%, color-mix(in srgb, var(--ai) 22%, transparent), transparent 70%);
+  background: radial-gradient(60% 45% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%);
 }
 
-/* The light streak: a sharp core over a blurred haze, rising to the top right.
-   It starts just above the title's top edge so it never crosses the headline. */
-.ai-streak {
+.ai-hero-bg::before {
+  content: "";
   position: absolute;
-  left: 61%;
-  top: clamp(190px, calc(15cqi + 40px), 240px);
-  width: 0;
-  height: 0;
-  rotate: -37deg;
-  pointer-events: none;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
+  mask-image: radial-gradient(70% 75% at 50% 45%, #000 20%, transparent 80%);
 }
 
-.ai-streak-core,
-.ai-streak-haze {
+.ai-hero-bg::after {
+  content: "";
   position: absolute;
-  left: 0;
-  transform-origin: 0 50%;
-  animation: ai-draw 1.1s cubic-bezier(0.3, 0.7, 0.2, 1) calc(var(--t0) + 300ms) backwards;
-}
-
-.ai-streak-core {
-  top: -1.5px;
-  width: 60cqi;
-  height: 3px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, transparent, var(--ai) 25%, #fff 55%, var(--ai) 80%, transparent);
-  box-shadow: 0 0 12px 2px color-mix(in srgb, var(--ai) 70%, transparent);
-}
-
-.ai-streak-haze {
-  top: -40px;
-  width: 64cqi;
-  height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ai) 45%, transparent) 50%, transparent);
-  filter: blur(28px);
+  inset: 0;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .ai-hero-copy {
@@ -2818,26 +2832,6 @@ a.home-voice:focus-visible .home-voice-card {
   flex-direction: column;
   align-items: center;
   gap: 22px;
-}
-
-.ai-hero-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border: 1px solid #2a2c33;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.ai-hero-pill-icon {
-  width: 0;
-  height: 0;
-  border-left: 7px solid var(--ai);
-  border-top: 4.5px solid transparent;
-  border-bottom: 4.5px solid transparent;
 }
 
 .ai-hero-title {
@@ -2917,7 +2911,7 @@ a.home-voice:focus-visible .home-voice-card {
   stroke: #33353d;
   stroke-width: 1.25;
   stroke-dasharray: 1000;
-  animation: ai-wire-draw 0.9s cubic-bezier(0.4, 0, 0.2, 1) calc(var(--t0) + 450ms) backwards;
+  animation: ai-wire-draw 1.2s cubic-bezier(0.4, 0, 0.2, 1) 400ms backwards;
 }
 
 @keyframes ai-wire-draw {
@@ -2928,7 +2922,7 @@ a.home-voice:focus-visible .home-voice-card {
 
 .ai-wire-ends,
 .ai-wire-pad {
-  animation: ai-fade-in 0.4s ease-out calc(var(--t0) + 1200ms) backwards;
+  animation: ai-fade-in 0.4s ease-out 1500ms backwards;
 }
 
 @keyframes ai-fade-in {
@@ -3028,8 +3022,8 @@ a.home-voice:focus-visible .home-voice-card {
     0 0 40px color-mix(in srgb, var(--ai) 22%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   animation:
-    ai-pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--t0) + 150ms) backwards,
-    ai-chip-breathe 3.2s ease-in-out calc(var(--t0) + 1400ms) infinite;
+    ai-pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 150ms backwards,
+    ai-chip-breathe 3.2s ease-in-out 1800ms infinite;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 2.2cqi;
@@ -3049,8 +3043,8 @@ a.home-voice:focus-visible .home-voice-card {
 }
 
 @media (max-width: 767px) {
-  .ai-hero {
-    min-height: 0;
+  .ai-hero-stage {
+    --circuit-h: calc(760px * 440 / 1200);
     padding-bottom: 300px;
   }
 
@@ -3058,14 +3052,46 @@ a.home-voice:focus-visible .home-voice-card {
   .ai-circuit {
     width: 760px;
   }
-
-  .ai-streak {
-    left: 70%;
-    top: 160px;
-  }
 }
 
 /* 02 How it works */
+
+/* Car-window entrance: the section starts as the hero's dark colour, a blank
+   page rises from the bottom like a window closing, then the content fades in. */
+.ai-window {
+  isolation: isolate;
+  overflow: hidden;
+  background: #0b0b0e;
+}
+
+.ai-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg);
+  border-top: 1px solid var(--border-strong);
+  box-shadow: 0 -24px 48px -12px rgba(0, 0, 0, 0.45);
+  transform: translateY(101%);
+  transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.ai-window > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease-out 0.9s,
+    transform 0.7s ease-out 0.9s;
+}
+
+.ai-window.is-open::before {
+  transform: none;
+}
+
+.ai-window.is-open > * {
+  opacity: 1;
+  transform: none;
+}
 
 .ai-tabs {
   display: flex;
@@ -3962,12 +3988,6 @@ a.home-voice:focus-visible .home-voice-card {
   color: var(--accent);
 }
 
-@keyframes ai-draw {
-  from {
-    scale: 0 1;
-  }
-}
-
 @keyframes ai-trace-in {
   from {
     left: -28px;
@@ -4018,8 +4038,6 @@ a.home-voice:focus-visible .home-voice-card {
 
 @media (prefers-reduced-motion: reduce) {
   .ai-trace-pulse,
-  .ai-streak-core,
-  .ai-streak-haze,
   .ai-marquee,
   .ai-meridian,
   .ai-pin-dot {
@@ -4271,77 +4289,8 @@ a.home-voice:focus-visible .home-voice-card {
   }
 }
 
-/* ── /ai section skeletons (see useSectionSkeletons) ──────── */
+/* ── /ai page ─────────────────────────────────────────────── */
 
 .ai-page > section {
   position: relative;
-}
-
-.ai-sk-pending > :not(.ai-sk-layer) {
-  opacity: 0;
-}
-
-/* Hold reveals at their start state until the skeleton clears, so they still rise in. */
-.ai-page .ai-sk-pending .reveal,
-.ai-page .ai-sk-pending .reveal.is-revealed {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: none;
-}
-
-.ai-sk-done > :not(.ai-sk-layer) {
-  animation: ai-sk-fade 0.32s ease-out;
-}
-
-/* Hold the hero's start-up sequence until its skeleton clears. */
-.ai-sk .ai-hero {
-  --t0: 850ms;
-}
-
-.ai-sk-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  overflow: hidden;
-  pointer-events: none;
-  transition: opacity 0.32s ease;
-}
-
-.ai-sk-layer.is-leaving {
-  opacity: 0;
-}
-
-.ai-sk-box,
-.ai-sk-bar {
-  position: absolute;
-}
-
-.ai-sk-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
-
-.ai-sk-bar {
-  background: linear-gradient(90deg, var(--surface-2) 30%, var(--border) 50%, var(--surface-2) 70%);
-  background-size: 300% 100%;
-  animation: ai-shimmer 1.3s linear infinite;
-}
-
-@keyframes ai-sk-fade {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes ai-shimmer {
-  from {
-    background-position: 100% 0;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
-
-.ai-sk-pending .ai-ray {
-  animation: none !important;
 }

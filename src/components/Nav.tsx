@@ -42,6 +42,7 @@ export default function Nav() {
   const [menu, setMenu] = useState<Menu | null>(null);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileAIOpen, setMobileAIOpen] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
   const { theme, toggle } = useTheme();
   const location = useLocation();
   const panelId = useId();
@@ -66,6 +67,13 @@ export default function Nav() {
     setMenu(null);
     setMobileServicesOpen(false);
   }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useLayoutEffect(() => {
     function measure() {
@@ -240,7 +248,7 @@ export default function Nav() {
   );
 
   return (
-    <nav className={menu ? "site-nav is-mega" : "site-nav"} aria-label="Primary" onMouseLeave={closeMenuSoon}>
+    <nav className={`site-nav${menu ? " is-mega" : ""}${scrolled ? " is-scrolled" : ""}`} aria-label="Primary" onMouseLeave={closeMenuSoon}>
       <div className="site-nav-bar">
         <Logo />
 
