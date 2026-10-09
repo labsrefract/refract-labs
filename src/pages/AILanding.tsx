@@ -1,9 +1,8 @@
-import { useId, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { Link, useSearchParams } from "react-router";
 import AgentGlyph from "../components/AgentGlyph";
 import Reveal from "../components/Reveal";
 import { usePageMeta } from "../hooks/usePageMeta";
-import { useSectionSkeletons } from "../hooks/useSectionSkeletons";
 import { useSnapScroll } from "../hooks/useSnapScroll";
 import {
   agents,
@@ -32,6 +31,34 @@ function Eyebrow({ index, label }: { index: string; label: string }) {
       {label}
     </span>
   );
+}
+
+/**
+ * Adds `is-open` to the element once its top edge is 70% of the way up the
+ * viewport. Used for the section that closes over the hero like a car window.
+ */
+function useWindowOpen<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const open = () => el.classList.add("is-open");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      open();
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        open();
+        io.disconnect();
+      },
+      { rootMargin: "0px 0px -30% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
 }
 
 /* ── 01 Hero ─────────────────────────────────────────────── */
@@ -108,8 +135,7 @@ const tileWires = wires.flatMap((w, i) => (w.tile ? [{ tile: w.tile, i }] : []))
 const pct = (v: number, of: number) => `${(v / of) * 100}%`;
 
 // Pulses start once the wires have drawn in, staggered so the wires take turns.
-// --t0 holds everything back while the page skeleton is showing.
-const pulseDelay = (i: number) => `calc(var(--t0) + ${1700 + ((i * 5) % wires.length) * 300}ms)`;
+const pulseDelay = (i: number) => `${2200 + ((i * 5) % wires.length) * 300}ms`;
 
 function HeroCircuit() {
   return (
@@ -151,12 +177,12 @@ function HeroCircuit() {
               left: pct(tile.x, BOX.w),
               top: pct(tile.y, BOX.h),
               width: pct(TILE, BOX.w),
-              "--in": `calc(var(--t0) + ${1250 + n * 70}ms)`,
+              "--in": `${1500 + n * 70}ms`,
               "--delay": pulseDelay(i),
             } as Vars
           }
         >
-          <AgentGlyph kind={agents[n].glyph} size={26} />
+          <AgentGlyph kind={agents[n].glyph} size={48} />
         </span>
       ))}
 
@@ -173,33 +199,28 @@ function HeroCircuit() {
 function Hero() {
   return (
     <section className="ai-hero" data-theme="dark">
-      <div className="ai-hero-glow" aria-hidden="true" />
-      <div className="ai-streak" aria-hidden="true">
-        <span className="ai-streak-haze" />
-        <span className="ai-streak-core" />
-      </div>
+      {/* Everything inside the stage is revealed by a circle that grows out of the chip. */}
+      <div className="ai-hero-stage">
+        <div className="ai-hero-bg" aria-hidden="true" />
 
-      <div className="ai-hero-copy hero-in hero-in-1">
-        <span className="ai-hero-pill">
-          <span className="ai-hero-pill-icon" />
-          Refract AI agents
-        </span>
-        <h1 className="ai-hero-title">AI agents that run your operations</h1>
-        <p className="ai-hero-lead">
-          Ready-to-deploy agents for customer support, collections and back-office work, connected to M-Pesa, WhatsApp and the
-          systems you already run.
-        </p>
-        <div className="ai-hero-actions">
-          <Link to={DEMO_PATH} className="ai-btn ai-btn-primary">
-            Book a demo
-          </Link>
-          <a href="#try" className="ai-btn ai-btn-ghost">
-            Explore agents
-          </a>
+        <div className="ai-hero-copy">
+          <h1 className="ai-hero-title">AI agents that run your operations</h1>
+          <p className="ai-hero-lead">
+            Ready-to-deploy agents for customer support, collections and back-office work, connected to M-Pesa, WhatsApp and the
+            systems you already run.
+          </p>
+          <div className="ai-hero-actions">
+            <Link to={DEMO_PATH} className="ai-btn ai-btn-primary">
+              Book a demo
+            </Link>
+            <a href="#try" className="ai-btn ai-btn-ghost">
+              Explore agents
+            </a>
+          </div>
         </div>
-      </div>
 
-      <HeroCircuit />
+        <HeroCircuit />
+      </div>
     </section>
   );
 }
@@ -209,9 +230,10 @@ function Hero() {
 function HowItWorks() {
   const [tab, setTab] = useState(0);
   const panelId = useId();
+  const windowRef = useWindowOpen<HTMLElement>();
 
   return (
-    <section id="how-it-works" className="ai-section ai-section-ruled">
+    <section ref={windowRef} id="how-it-works" className="ai-section ai-section-ruled ai-window">
       <div className="ai-wrap">
         <Reveal className="ai-head">
           <div className="ai-tabs" role="tablist" aria-label="About Refract AI">
@@ -709,7 +731,6 @@ export default function AILanding() {
     "/ai",
   );
   const pageRef = useRef<HTMLDivElement>(null);
-  useSectionSkeletons(pageRef);
   useSnapScroll(pageRef);
 
   return (
