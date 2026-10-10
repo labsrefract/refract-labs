@@ -7008,26 +7008,26 @@ a.home-voice:focus-visible .home-voice-card {
 .offer-heading p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--muted); }
 .offer-mosaic { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; max-width: 1160px; margin: auto; padding: 7px; border: 1px solid #ffffff0a; border-radius: 22px; background: #202023; }
 .offer-column { display: grid; gap: 8px; min-width: 0; }
-.offer-column-left { grid-template-rows: 260px 310px 103px; }
-.offer-column-middle { grid-template-rows: 340px 341px; }
-.offer-column-right { grid-template-rows: 110px 335px 228px; }
+.offer-column-left { grid-template-rows: minmax(330px,auto) minmax(350px,auto) 103px; }
+.offer-column-middle { grid-template-rows: minmax(390px,auto) minmax(401px,auto); }
+.offer-column-right { grid-template-rows: 110px minmax(390px,auto) minmax(283px,auto); }
 .offer-tile, .offer-empty-tile, .offer-all-tile { position: relative; overflow: hidden; border: 1px solid #ffffff06; border-radius: 15px; background: #121215; }
 .offer-tile { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding: 22px 20px; text-align: center; transition: border-color .2s ease,background-color .2s ease; }
 .offer-tile:hover, .offer-all-tile:hover { border-color: var(--accent); background-color: #17191e; }
-.offer-tile-art { flex: 1; min-height: 70px; position: relative; width: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+.offer-tile-art { flex: 1 0 140px; min-height: 140px; position: relative; width: 100%; display: flex; flex-direction: column; gap: 14px; align-items: center; justify-content: center; margin-bottom: 22px; overflow: hidden; isolation: isolate; }
 .offer-art-icon { position: relative; display: grid; place-items: center; width: 68px; height: 68px; border: 1px solid #ffffff12; border-radius: 20px; background: linear-gradient(145deg,#303139,#17171b); box-shadow: 0 8px 20px #0005,inset 0 1px 0 #ffffff0c; color: #b2b2b9; transition: color .2s ease; }
 .offer-art-icon svg { width: 33px; height: 33px; }
 .offer-tile:hover .offer-art-icon { color: var(--accent); }
-.offer-art-orbit { position: absolute; width: 160px; height: 160px; border: 1px solid #ffffff05; border-radius: 50%; }
+.offer-art-orbit { position: absolute; z-index: -1; top: 50%; left: 50%; translate: -50% -50%; width: 160px; height: 160px; border: 1px solid #ffffff05; border-radius: 50%; }
 .offer-art-orbit-inner { width: 115px; height: 115px; }
-.offer-art-caption { position: absolute; top: 0; font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: .14em; color: #8f8d96; }
+.offer-art-caption { position: relative; order: -1; font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: .14em; color: #8f8d96; }
 .offer-tile-content { position: relative; }
 .offer-tile-content h3, .offer-all-tile h3 { margin: 0 0 9px; font-family: var(--font-display); font-size: 23px; font-weight: 500; line-height: 1.12; letter-spacing: -.025em; }
-.offer-tile-content p, .offer-all-tile p { margin: 0; color: #aaa8b1; font-size: 12px; line-height: 1.5; text-wrap: pretty; }
+.offer-tile-content p, .offer-all-tile p { margin: 0; color: #aaa8b1; font-size: 14px; line-height: 1.5; text-wrap: pretty; }
 .offer-tile-arrow { position: absolute; width: 14px; height: 14px; top: 14px; right: 14px; color: #77757f; }
 .offer-empty-tile { background: linear-gradient(160deg,#1b1b1e,#111114); }
-.offer-tile-design .offer-art-icon { width: 48px; height: 48px; border-radius: 50%; }
-.offer-tile-design .offer-art-icon svg { width: 24px; height: 24px; }
+.offer-tile-design .offer-art-icon { width: 68px; height: 68px; border-radius: 50%; }
+.offer-tile-design .offer-art-icon svg { width: 33px; height: 33px; }
 .offer-tile-design .offer-art-caption { display: none; }
 .offer-tile-strategy-advisory .offer-art-icon { transform: rotate(-10deg); }
 .offer-tile-software-development .offer-art-orbit { width: 235px; height: 235px; }
@@ -7036,19 +7036,19 @@ a.home-voice:focus-visible .home-voice-card {
 .offer-all-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 22px; text-align: center; transition: border-color .2s ease,background-color .2s ease; }
 .offer-all-tile > svg { width: 40px; height: 40px; margin-bottom: 20px; color: #b2b2b9; stroke-width: 1.25; }
 @media (max-width: 1023px) { .offer-panel { padding: 56px 28px 36px; } .offer-tile { padding: 18px 14px; } .offer-tile-content h3 { font-size: 21px; } }
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .offer-section { padding: 12px 14px 44px; }
-  .offer-panel { padding: 44px 16px 20px; border-radius: 22px; }
+  .offer-panel { padding: 44px 10px 16px; border-radius: 22px; }
   .offer-heading { margin-bottom: 30px; }
   .offer-heading p { font-size: 14px; }
   .offer-mosaic { grid-template-columns: 1fr; }
   .offer-column { display: contents; }
   .offer-empty-tile { display: none; }
-  .offer-tile { min-height: 235px; padding: 24px; }
-  .offer-tile-art { min-height: 90px; }
+  .offer-tile { min-height: 310px; height: auto; padding: 26px 22px; }
+  .offer-tile-art { flex: 0 0 140px; min-height: 140px; }
   .offer-tile-content { max-width: 360px; }
   .offer-tile-content h3 { font-size: 24px; }
-  .offer-tile-content p { font-size: 13px; }
+  .offer-tile-content p { font-size: 14px; }
   .offer-all-tile { min-height: 170px; }
 }
 @media (prefers-reduced-motion: reduce) { .offer-tile, .offer-all-tile, .offer-art-icon { transition: none; } }
