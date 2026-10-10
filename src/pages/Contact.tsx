@@ -1,8 +1,9 @@
-import { useState, type FormEvent } from "react";
-import PageHeader from "../components/PageHeader";
+import { useState, type FormEvent, type CSSProperties } from "react";
+import { Link } from "react-router";
+import { FiArrowUpRight, FiMail, FiMapPin, FiClock, FiMessageSquare, FiCalendar } from "react-icons/fi";
 import { Button } from "../components/Button";
 import CallScheduler from "../components/CallScheduler";
-import Reveal from "../components/Reveal";
+import Reveal from "../components/ScrollReveal";
 import { site } from "../content/site";
 import { useSearchParams } from "react-router";
 import { enquiryTypeFromQuery, enquiryTypes } from "../content/services";
@@ -237,55 +238,46 @@ export default function Contact() {
   );
 
   return (
-    <>
-      <PageHeader
-        eyebrow="Get in touch"
-        title={
-          <>
-            Have a project
-            <br />
-            in mind?
-          </>
-        }
-        subtitle="Write to us, or pick a time for a 30-minute discovery call. We reply within one business day."
-      />
-
-      <section style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="contact-page">
-          <Reveal className="contact-direct">
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-            <span aria-hidden="true"> · </span>
-            {site.location}
-            <span aria-hidden="true"> · </span>
-            Typical reply 1 day
-            <span aria-hidden="true"> · </span>
-            <a href="#call">Book a call</a>
+    <article className="contact-studio software-scroll-content">
+      <header className="contact-studio-header">
+        <Reveal className="ai-mask-head" rise={false}>
+          <span className="projects-eyebrow">LET'S TALK</span>
+          <h1><span className="ai-mask-word"><span>Good work starts</span></span><br /><span className="ai-mask-word" style={{ "--line": 1 } as CSSProperties}><span>with a conversation.</span></span></h1>
+          <p className="ai-mask-after">Tell us what you have in mind. A new product, a better website, or a problem that needs untangling. We will help you find a practical next step.</p>
+          <div className="contact-studio-choices ai-mask-after"><a href="#write">Write to us <FiArrowUpRight aria-hidden="true" /></a><a href="#call">Book a discovery call <FiArrowUpRight aria-hidden="true" /></a></div>
+        </Reveal>
+      </header>
+      <div className="contact-page">
+        <Reveal className="contact-studio-direct" rise={false}>
+          <a href={`mailto:${site.email}`}><FiMail aria-hidden="true" /><span><small>A DIRECT LINE</small>{site.email}</span><FiArrowUpRight aria-hidden="true" /></a>
+          <div><FiMapPin aria-hidden="true" /><span><small>BASED IN</small>{site.location}</span></div>
+          <div><FiClock aria-hidden="true" /><span><small>OUR REPLY</small>Within one business day</span></div>
+        </Reveal>
+        <section className="contact-studio-chapter" id="write" aria-labelledby="contact-write-title">
+          <Reveal className="contact-studio-intro ai-mask-head" rise={false}>
+            <span className="contact-studio-icon"><FiMessageSquare aria-hidden="true" /></span>
+            <span className="projects-eyebrow">01 / SEND A MESSAGE</span>
+            <h2 id="contact-write-title"><span className="ai-mask-word"><span>What's on your mind?</span></span></h2>
+            <p className="ai-mask-after">Tell us what you are building, what you need help with, and where you want to go. A rough idea is a good place to start.</p>
+            <p className="contact-studio-note">Your enquiry goes straight to the team doing the work.</p>
           </Reveal>
-
-          <Reveal className="contact-chapter" id="write">
-            <h2 className="contact-chapter-title">Write</h2>
-            <p className="contact-chapter-lead">Tell us what you are building. We will come back with how we would approach it.</p>
-            <ContactForm />
+          <div className="contact-studio-form-panel"><ContactForm /><p className="contact-studio-privacy">We use your details to respond to your enquiry. Read our <Link to="/privacy">privacy policy</Link>.</p></div>
+        </section>
+        <section className="contact-studio-chapter" id="call" aria-labelledby="contact-call-title">
+          <Reveal className="contact-studio-intro ai-mask-head" rise={false}>
+            <span className="contact-studio-icon"><FiCalendar aria-hidden="true" /></span>
+            <span className="projects-eyebrow">02 / MEET THE TEAM</span>
+            <h2 id="contact-call-title"><span className="ai-mask-word"><span>Talk it through.</span></span></h2>
+            <p className="ai-mask-after">A free, 30-minute discovery call to understand your goals and see how we can help.</p>
+            <ul className="contact-studio-call-notes"><li>Weekdays, Nairobi time (EAT).</li><li>Choose a day and time that suits you.</li><li>This is a request. We will confirm the slot by email.</li></ul>
           </Reveal>
-
-          <Reveal className="contact-chapter" id="call">
-            <h2 className="contact-chapter-title">Book a call</h2>
-            <p className="contact-chapter-lead">
-              30 minutes, weekdays, Nairobi time. This is a request — we will confirm the slot by email.
-            </p>
-            <CallScheduler />
-          </Reveal>
-
-          <div className="contact-faq">
-            {faqs.map((item, i) => (
-              <Reveal key={item.q} delay={i * 50} className="contact-faq-item">
-                <h2>{item.q}</h2>
-                <p>{item.a}</p>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
+          <div className="contact-studio-form-panel"><CallScheduler /></div>
+        </section>
+        <section className="contact-studio-faq" aria-labelledby="contact-faq-title">
+          <Reveal className="ai-mask-head" rise={false}><span className="projects-eyebrow">BEFORE WE TALK</span><h2 id="contact-faq-title"><span className="ai-mask-word"><span>A few useful answers.</span></span></h2></Reveal>
+          <div className="contact-faq">{faqs.map((item, index) => <Reveal key={item.q} className="contact-faq-item" rise={false} delay={index * 80}><h3>{item.q}</h3><p>{item.a}</p></Reveal>)}</div>
+        </section>
+      </div>
+    </article>
   );
 }
