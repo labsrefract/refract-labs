@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import LegalPage from "../components/LegalPage";
-import Reveal from "../components/Reveal";
+import Reveal from "../components/ScrollReveal";
 import { site } from "../content/site";
 
 export default function Privacy() {
@@ -11,7 +11,7 @@ export default function Privacy() {
       path="/privacy"
       subtitle="This policy covers websites, products, and services we operate. Software we build for a client under a separate agreement is covered by that agreement."
     >
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Scope</h2>
         <div className="legal-copy-body">
           <p>
@@ -25,7 +25,7 @@ export default function Privacy() {
           </p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Who we are</h2>
         <p>
           Refract Labs is a software studio in {site.location}. We are the data controller for personal information collected
@@ -33,7 +33,7 @@ export default function Privacy() {
           <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Information we collect</h2>
         <div className="legal-copy-body">
           <p>
@@ -49,7 +49,7 @@ export default function Privacy() {
           </p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>How we collect it</h2>
         <p>
           We collect information you give us (forms, email, calls, accounts), information created by your use of our sites
@@ -57,7 +57,7 @@ export default function Privacy() {
           information from service providers who help us run those services. We do not buy marketing lists.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Why we use it</h2>
         <div className="legal-copy-body">
           <p>
@@ -73,7 +73,7 @@ export default function Privacy() {
           </p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Who we share it with</h2>
         <div className="legal-copy-body">
           <p>
@@ -85,7 +85,7 @@ export default function Privacy() {
           <p>We do not sell your information to advertisers or data brokers.</p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Transfers outside Kenya</h2>
         <p>
           Some providers operate outside Kenya. When we use them, personal information may be processed in other countries.
@@ -94,7 +94,7 @@ export default function Privacy() {
           product.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>How long we keep it</h2>
         <p>
           We keep information only as long as needed for the purpose we collected it, including to reply, run a product
@@ -103,7 +103,7 @@ export default function Privacy() {
           that is no longer needed, subject to what the law requires us to keep.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Security</h2>
         <p>
           We use reasonable technical and organisational measures to protect personal information, including encrypted
@@ -112,7 +112,7 @@ export default function Privacy() {
           <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Your rights</h2>
         <p>
           Under the Kenya Data Protection Act you may ask what we hold, ask for a copy, ask us to correct it, object to
@@ -121,7 +121,7 @@ export default function Privacy() {
           verify who you are before we act.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Complaints</h2>
         <p>
           If you are not satisfied with how we handle a request, you may complain to the Office of the Data Protection
@@ -132,7 +132,7 @@ export default function Privacy() {
           . We would rather hear from you first at <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Marketing</h2>
         <p>
           We may send you information about our work or products if you have asked for it or if the law allows. You can opt
@@ -140,27 +140,27 @@ export default function Privacy() {
           account, or purchase are not marketing and we may still send those.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Cookies</h2>
         <p>
           We use cookies and similar technologies as described in the <Link to="/cookies">cookie policy</Link>.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Children</h2>
         <p>
           Our sites and products are aimed at people who can enter a business relationship. We do not knowingly collect
           personal information from children. If you believe we have, contact us and we will delete it.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Third-party sites</h2>
         <p>
           Our sites and products may link to services we do not operate. Their privacy practices apply once you leave. We
           are not responsible for those services.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Changes</h2>
         <p>
           We may update this policy. The date at the bottom of the page is the version in force. Material changes will be
@@ -168,7 +168,7 @@ export default function Privacy() {
           something more.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Also see</h2>
         <p>
           Use of our sites and products is also covered by the <Link to="/terms">terms of service</Link>. Questions:{" "}

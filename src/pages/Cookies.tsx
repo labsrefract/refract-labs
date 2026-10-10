@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import LegalPage from "../components/LegalPage";
-import Reveal from "../components/Reveal";
+import Reveal from "../components/ScrollReveal";
 import { site } from "../content/site";
 
 export default function Cookies() {
@@ -11,7 +11,7 @@ export default function Cookies() {
       path="/cookies"
       subtitle="This policy explains cookies, local storage, and similar technologies on websites and products we operate."
     >
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>What these are</h2>
         <p>
           Cookies are small files stored on your device. We also use similar tools such as local storage and pixels. They
@@ -19,7 +19,7 @@ export default function Cookies() {
           (first-party). Some may be set by providers who help us operate (third-party).
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Types we may use</h2>
         <div className="legal-copy-body">
           <p>
@@ -33,7 +33,7 @@ export default function Cookies() {
           </p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>What we use today</h2>
         <div className="legal-copy-body">
           <p>
@@ -47,7 +47,7 @@ export default function Cookies() {
           </p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Products we operate</h2>
         <p>
           A product we operate may set additional cookies or local storage to keep you signed in, remember settings, prevent
@@ -55,14 +55,14 @@ export default function Cookies() {
           update to this page.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>What we may add</h2>
         <p>
           We may introduce analytics or other tools later so we can improve the services. If we do, we will update this
           page. Where the law requires consent before a non-essential cookie is set, we will ask.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>How you can control them</h2>
         <div className="legal-copy-body">
           <p>
@@ -77,13 +77,13 @@ export default function Cookies() {
           </p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Changes</h2>
         <p>
           We may update this policy when our technology changes. The date at the bottom of the page is the version in force.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Related</h2>
         <p>
           Personal information is covered in the <Link to="/privacy">privacy policy</Link>. Using our sites and products is
