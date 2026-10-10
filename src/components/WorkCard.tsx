@@ -5,10 +5,12 @@ export default function WorkCard({
   project,
   heading: Heading = "h3",
   layout = "card",
+  showDescription = false,
 }: {
   project: CaseStudy;
   heading?: "h2" | "h3";
   layout?: "card" | "tile";
+  showDescription?: boolean;
 }) {
   if (layout === "tile") {
     return (
@@ -23,6 +25,7 @@ export default function WorkCard({
             {project.sector}
           </span>
           <Heading className="text-base mt-1">{project.name}</Heading>
+          {showDescription && <p className="projects-tile-description">{project.summary}</p>}
         </div>
       </Link>
     );

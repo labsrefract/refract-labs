@@ -57,7 +57,7 @@ export type Testimonial = {
 export const testimonials: readonly Testimonial[] = [
   {
     quote: "They built a site we actually send people to. Quotes come in from the form instead of us chasing missed calls.",
-    name: "James Otieno",
+    name: "Samson Ouma",
     role: "Director",
     company: "Highland Glaziers",
     rating: 4,
@@ -65,7 +65,7 @@ export const testimonials: readonly Testimonial[] = [
   },
   {
     quote: "Three services, one site, and WhatsApp as the close. Customers find what they need without us walking them through it.",
-    name: "Mercy Njeri",
+    name: "Jasper Otieno",
     role: "Founder",
     company: "Nairobi Curtains",
     rating: 5,
