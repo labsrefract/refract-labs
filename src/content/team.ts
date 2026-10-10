@@ -39,6 +39,7 @@ export const founders: readonly Founder[] = [
     role: "Co-founder & Customer Success",
     bio: "Leads what happens after we start. The named person on the work: updates, questions, and keeping production from becoming an open tab.",
     initials: "HA",
+    photo: "/team/hosana.png",
     linkedin: "https://www.linkedin.com/in/hosanacodes",
     github: "https://github.com/hosanacodes",
   },
