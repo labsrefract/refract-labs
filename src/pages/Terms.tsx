@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import LegalPage from "../components/LegalPage";
-import Reveal from "../components/Reveal";
+import Reveal from "../components/ScrollReveal";
 import { site } from "../content/site";
 
 export default function Terms() {
@@ -11,7 +11,7 @@ export default function Terms() {
       path="/terms"
       subtitle="These terms cover sites and products we operate. A signed engagement or product agreement, if you have one, controls if it conflicts."
     >
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Agreement</h2>
         <p>
           By using a website, product, or service operated by Refract Labs, you agree to these terms and to our{" "}
@@ -19,7 +19,7 @@ export default function Terms() {
           use them.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Scope</h2>
         <div className="legal-copy-body">
           <p>
@@ -33,7 +33,7 @@ export default function Terms() {
           </p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Eligibility</h2>
         <p>
           You must be able to form a binding contract under the laws of Kenya (or your place of residence, if stricter). You
@@ -41,7 +41,7 @@ export default function Terms() {
           authority to bind it.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Accounts</h2>
         <p>
           Some products may require an account. You are responsible for the accuracy of the details you give us, for keeping
@@ -50,7 +50,7 @@ export default function Terms() {
           the service or other users.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Enquiries and studio work</h2>
         <p>
           Sending a contact form, booking request, or email is a request to talk, not a confirmed booking and not an
@@ -59,7 +59,7 @@ export default function Terms() {
           signed agreement.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Products we operate</h2>
         <p>
           We may offer products on their own domains, linked from our studio site. Access, features, uptime, and support for
@@ -67,7 +67,7 @@ export default function Terms() {
           with reasonable notice where we can. We do not guarantee that a product will meet a particular business outcome.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Fees</h2>
         <p>
           Studio sites are free to browse. Paid products, if any, are billed as stated at purchase or in that product’s
@@ -75,7 +75,7 @@ export default function Terms() {
           the law requires otherwise, fees are non-refundable once the relevant period or deliverable has been provided.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Acceptable use</h2>
         <p>
           You may not misuse our sites or products: no unauthorised access, no interference with security or availability, no
@@ -83,7 +83,7 @@ export default function Terms() {
           use that would make us break the law. We may investigate and take down material or access that violates this.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Intellectual property</h2>
         <div className="legal-copy-body">
           <p>
@@ -97,7 +97,7 @@ export default function Terms() {
           </p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Your content</h2>
         <p>
           You keep ownership of material you submit to us (messages, account data, files you upload to a product). You grant
@@ -105,7 +105,7 @@ export default function Terms() {
           have the right to submit it and that it is lawful. We may remove content that breaks these terms.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Third parties</h2>
         <p>
           Our sites and products may link to or rely on third-party services (including client sites, social networks, hosting,
@@ -113,7 +113,7 @@ export default function Terms() {
           their availability or content.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Availability</h2>
         <p>
           We aim to keep sites and products available, but we do not warrant uninterrupted or error-free operation. We may
@@ -121,7 +121,7 @@ export default function Terms() {
           commitment unless a signed agreement says so.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Disclaimers</h2>
         <p>
           Sites and products are provided as-is and as-available, to the fullest extent permitted by Kenya law. We disclaim
@@ -129,7 +129,7 @@ export default function Terms() {
           sites is general. It is not professional, legal, or financial advice, and it is not an offer we must accept.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Liability</h2>
         <div className="legal-copy-body">
           <p>
@@ -145,14 +145,14 @@ export default function Terms() {
           </p>
         </div>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Indemnity</h2>
         <p>
           You will indemnify Refract Labs against claims, losses, and reasonable costs arising from your misuse of our sites
           or products, your content, or your breach of these terms, except to the extent we caused the harm.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Suspension and termination</h2>
         <p>
           You may stop using our sites at any time. You may close a product account as that product allows. We may suspend or
@@ -160,14 +160,14 @@ export default function Terms() {
           reasons. Sections that should survive (including IP, liability, indemnity, and governing law) remain in force.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Governing law</h2>
         <p>
           These terms are governed by the laws of Kenya. Courts in Nairobi have exclusive jurisdiction, unless a later signed
           engagement or product agreement says otherwise, or Kenya law requires a different forum.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>General</h2>
         <p>
           If a part of these terms cannot be enforced, the rest remains in force. Our failure to enforce a right is not a
@@ -176,14 +176,14 @@ export default function Terms() {
           a specific service, are the whole agreement for that service.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Changes</h2>
         <p>
           We may update these terms. The date at the bottom of the page is the version in force. Continued use after a change
           means you accept the new terms, except where the law requires us to obtain consent or give specific notice.
         </p>
       </Reveal>
-      <Reveal as="section">
+      <Reveal as="section" rise={false}>
         <h2>Contact</h2>
         <p>
           Write to <a href={`mailto:${site.email}`}>{site.email}</a>.

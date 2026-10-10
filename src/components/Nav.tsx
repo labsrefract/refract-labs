@@ -1,8 +1,18 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import { useTheme } from "../context/theme";
-import { categoryPath, serviceCategories, servicePath } from "../content/services";
+import { AI_PATH, DEMO_PATH, agentPath, agents, featuredAgent, industries } from "../content/ai";
+import { categoryPath, serviceCategories } from "../content/services";
 import { site } from "../content/site";
+import { useDivision } from "../hooks/useDivision";
+import AgentGlyph from "./AgentGlyph";
 import { ButtonLink } from "./Button";
 import { Logo } from "./Logo";
 
@@ -31,33 +41,60 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
-const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
-const restNav = site.nav.filter((item) => item.label !== "Services");
+/** Dropdowns: Services on the Software navbar, Agents and Solutions on the AI one. */
+type Menu = "services" | "agents" | "solutions";
 
+/** In-page sections of the AI landing page linked from its navbar. */
+const aiSections = [
+  { label: "How it works", to: `${AI_PATH}#how-it-works` },
+  { label: "FAQ", to: `${AI_PATH}#faq` },
+];
+const industryPath = (id: string) => `${AI_PATH}?industry=${id}#industries`;
+
+const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
+/**
+ * The navbar follows the division you are in: Refract Software (teal) or
+ * Refract AI (purple). Each shows only its own links, plus one switch across
+ * to the other division.
+ */
 export default function Nav() {
+  const division = useDivision();
+  const isAI = division === "ai";
   const [open, setOpen] = useState(false);
-  const [megaOpen, setMegaOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [menu, setMenu] = useState<Menu | null>(null);
+  const [mobileMenu, setMobileMenu] = useState<Menu | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const { theme, toggle } = useTheme();
   const location = useLocation();
   const panelId = useId();
   const megaId = useId();
-  const mobileServicesId = useId();
+  const mobileMenuId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const megaRef = useRef<HTMLDivElement>(null);
+  const agentsBtnRef = useRef<HTMLButtonElement>(null);
+  const solutionsBtnRef = useRef<HTMLButtonElement>(null);
   const servicesBtnRef = useRef<HTMLButtonElement>(null);
   const hoverTimer = useRef<number>(0);
   const themeLabel = theme === "light" ? "Switch to dark mode" : "Switch to light mode";
   const linksRef = useRef<HTMLDivElement>(null);
   const [underline, setUnderline] = useState({ left: 0, width: 0, opacity: 0 });
+  const triggerRef = (m: Menu) => (m === "agents" ? agentsBtnRef : m === "solutions" ? solutionsBtnRef : servicesBtnRef);
   const servicesActive = location.pathname === "/services" || location.pathname.startsWith("/services/");
 
   useEffect(() => {
     setOpen(false);
-    setMegaOpen(false);
-    setMobileServicesOpen(false);
-  }, [location.pathname, location.hash]);
+    setMenu(null);
+    setMobileMenu(null);
+  }, [location.pathname, location.search, location.hash]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useLayoutEffect(() => {
     function measure() {
@@ -81,7 +118,7 @@ export default function Nav() {
     window.addEventListener("resize", measure);
     void document.fonts?.ready.then(measure);
     return () => window.removeEventListener("resize", measure);
-  }, [location.pathname, megaOpen]);
+  }, [location.pathname, menu, division]);
 
   useEffect(() => {
     if (!open) return;
@@ -117,22 +154,29 @@ export default function Nav() {
       document.removeEventListener("keydown", onKey);
       toggleRef.current?.focus();
     };
-  }, [open, mobileServicesOpen]);
+  }, [open, mobileMenu]);
 
   useEffect(() => {
-    if (!megaOpen) return;
+    if (!menu) return;
+    const trigger = triggerRef(menu);
 
     function onDoc(e: MouseEvent) {
       const target = e.target;
       if (!(target instanceof Node)) return;
-      if (megaRef.current?.contains(target) || servicesBtnRef.current?.contains(target)) return;
-      setMegaOpen(false);
+      if (
+        megaRef.current?.contains(target) ||
+        agentsBtnRef.current?.contains(target) ||
+        solutionsBtnRef.current?.contains(target) ||
+        servicesBtnRef.current?.contains(target)
+      )
+        return;
+      setMenu(null);
     }
 
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        setMegaOpen(false);
-        servicesBtnRef.current?.focus();
+        setMenu(null);
+        trigger.current?.focus();
       }
     }
 
@@ -142,89 +186,212 @@ export default function Nav() {
       document.removeEventListener("mousedown", onDoc);
       document.removeEventListener("keydown", onKey);
     };
-  }, [megaOpen]);
+  }, [menu]);
 
-  function openMega() {
+  function openMenu(next: Menu) {
     window.clearTimeout(hoverTimer.current);
-    setMegaOpen(true);
+    setMenu(next);
   }
 
-  function closeMegaSoon() {
+  function closeMenuSoon() {
     window.clearTimeout(hoverTimer.current);
-    hoverTimer.current = window.setTimeout(() => setMegaOpen(false), 140);
+    hoverTimer.current = window.setTimeout(() => setMenu(null), 140);
   }
 
-  function onServicesKey(e: ReactKeyboardEvent<HTMLButtonElement>) {
-    if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      setMegaOpen(true);
-      requestAnimationFrame(() => {
-        megaRef.current?.querySelector<HTMLElement>("a")?.focus();
-      });
-    }
+  function onTriggerKey(next: Menu) {
+    return (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+      if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setMenu(next);
+        requestAnimationFrame(() => {
+          megaRef.current?.querySelector<HTMLElement>("a")?.focus();
+        });
+      }
+    };
   }
 
-  const mega = (
-    <div
-      id={megaId}
-      ref={megaRef}
-      className="nav-mega"
-      aria-label="Services"
-    >
-      {serviceCategories.map((category) => (
-        <div key={category.id} className="nav-mega-col">
-          <Link to={categoryPath(category.id)} className="nav-mega-heading">
-            {category.title}
+  /**
+   * Links to a section of the current page don't change the URL when it
+   * already matches, so the router won't scroll; scroll to the section here.
+   */
+  function sameUrlScroll(to: string) {
+    return () => {
+      setOpen(false);
+      setMenu(null);
+      if (location.pathname + location.search + location.hash !== to) return;
+      const id = to.split("#")[1];
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      document.getElementById(id)?.scrollIntoView({ block: "start", behavior: reduced ? "auto" : "smooth" });
+    };
+  }
+
+  const agentsMega = (
+    <div id={megaId} ref={megaRef} className="nav-ai-mega" aria-label="Agents">
+      <div className="nav-ai-catalogue">
+        <div className="nav-ai-head">
+          <span className="nav-ai-kicker">Agent catalogue</span>
+          <Link to={AI_PATH} className="nav-ai-all">
+            All agents →
           </Link>
-          <ul className="nav-mega-list">
-            {category.services.map((service) => (
-              <li key={service.id}>
-                <Link to={servicePath(category.id, service.id)} className="nav-mega-link">
-                  {service.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
-      ))}
+        <ul className="nav-ai-grid">
+          {agents.map((agent) => (
+            <li key={agent.id}>
+              <Link to={agentPath(agent.id)} className="nav-ai-agent" onClick={sameUrlScroll(agentPath(agent.id))}>
+                <AgentGlyph kind={agent.glyph} />
+                <span className="nav-ai-agent-text">
+                  <span className="nav-ai-agent-name">
+                    {agent.name}
+                    {agent.tag ? <span className="nav-ai-tag">{agent.tag}</span> : null}
+                  </span>
+                  <span className="nav-ai-agent-desc">{agent.desc}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="nav-ai-featured">
+        <span className="nav-ai-featured-kicker">Featured agent</span>
+        <span className="nav-ai-featured-title">{featuredAgent.title}</span>
+        <span className="nav-ai-featured-desc">{featuredAgent.desc}</span>
+        <Link to={DEMO_PATH} className="nav-ai-featured-cta">
+          Book a demo
+        </Link>
+      </div>
+    </div>
+  );
+
+  const solutionsMega = (
+    <div id={megaId} ref={megaRef} className="nav-ai-mega nav-solutions-mega" aria-label="Solutions">
+      <div className="nav-ai-catalogue">
+        <div className="nav-ai-head">
+          <span className="nav-ai-kicker">Solutions by industry</span>
+          <Link to={`${AI_PATH}#industries`} className="nav-ai-all" onClick={sameUrlScroll(`${AI_PATH}#industries`)}>
+            All industries →
+          </Link>
+        </div>
+        <ul className="nav-solutions-grid">
+          {industries.map((ind) => (
+            <li key={ind.id}>
+              <Link to={industryPath(ind.id)} className="nav-solution" onClick={sameUrlScroll(industryPath(ind.id))}>
+                <span className="nav-solution-title">{ind.title}</span>
+                <span className="nav-ai-agent-desc">{ind.line}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+
+  // Services menu: the five categories, not every service.
+  const servicesMega = (
+    <div id={megaId} ref={megaRef} className="nav-ai-mega nav-solutions-mega nav-services-mega" aria-label="Services">
+      <div className="nav-ai-catalogue">
+        <div className="nav-ai-head">
+          <span className="nav-ai-kicker">Refract Software services</span>
+          <Link to="/services" className="nav-ai-all">
+            All services →
+          </Link>
+        </div>
+        <ul className="nav-solutions-grid">
+          {serviceCategories.map((category) => (
+            <li key={category.id}>
+              <Link to={categoryPath(category.id)} className="nav-solution">
+                <span className="nav-solution-title">{category.title}</span>
+                <span className="nav-ai-agent-desc">{category.kicker}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+
+  // The switch across to the other division, coloured as that division.
+  const divisionSwitch = isAI ? (
+    <Link to="/" className="nav-switch is-software">
+      Refract Software <span aria-hidden="true">→</span>
+    </Link>
+  ) : (
+    <Link to={AI_PATH} className="nav-switch is-ai">
+      <span className="nav-switch-mark" aria-hidden="true">
+        AI
+      </span>
+      Refract AI <span aria-hidden="true">→</span>
+    </Link>
+  );
+
+  const menuTrigger = (m: Menu, label: string, active = false) => (
+    <div className="nav-services" onMouseEnter={() => openMenu(m)}>
+      <button
+        ref={triggerRef(m)}
+        type="button"
+        className={active ? "nav-link nav-link-active nav-services-trigger" : "nav-link nav-services-trigger"}
+        aria-expanded={menu === m}
+        aria-haspopup="true"
+        aria-controls={menu === m ? megaId : undefined}
+        onClick={() => setMenu(menu === m ? null : m)}
+        onKeyDown={onTriggerKey(m)}
+      >
+        {label}
+        <Chevron open={menu === m} />
+      </button>
     </div>
   );
 
   return (
     <nav
-      className={megaOpen ? "site-nav is-mega" : "site-nav"}
-      aria-label="Primary"
-      onMouseLeave={closeMegaSoon}
+      className={`site-nav is-${division}${menu ? " is-mega" : ""}${scrolled ? " is-scrolled" : ""}`}
+      aria-label={isAI ? "Refract AI" : "Refract Software"}
+      onMouseLeave={closeMenuSoon}
     >
       <div className="site-nav-bar">
-        <Logo />
+        <div className="nav-brand">
+          <Logo />
+          {isAI ? (
+            <Link to={AI_PATH} className="nav-division-tag" aria-label="Refract AI home">
+              AI
+            </Link>
+          ) : null}
+        </div>
 
-        <div className="hidden md:flex items-center gap-7 pr-1">
-          <div ref={linksRef} className="nav-links flex items-center gap-7">
-            <div className="nav-services" onMouseEnter={openMega}>
-              <button
-                ref={servicesBtnRef}
-                type="button"
-                className={servicesActive ? "nav-link nav-link-active nav-services-trigger" : "nav-link nav-services-trigger"}
-                aria-expanded={megaOpen}
-                aria-haspopup="true"
-                aria-controls={megaId}
-                onClick={() => setMegaOpen(true)}
-                onKeyDown={onServicesKey}
-              >
-                Services
-                <Chevron open={megaOpen} />
-              </button>
-            </div>
-            {restNav.map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}
-              >
-                {l.label}
-              </NavLink>
-            ))}
+        {/* Desktop: logo left, main links centred, actions right. */}
+        <div className="hidden md:flex nav-center">
+          <div ref={linksRef} className="nav-links flex items-center gap-6">
+            {isAI ? (
+              <>
+                {menuTrigger("agents", "Agents")}
+                {menuTrigger("solutions", "Solutions")}
+                {aiSections.map((s) => (
+                  <Link
+                    key={s.to}
+                    to={s.to}
+                    className="nav-link nav-section-link"
+                    onMouseEnter={closeMenuSoon}
+                    onClick={sameUrlScroll(s.to)}
+                  >
+                    {s.label}
+                  </Link>
+                ))}
+              </>
+            ) : (
+              site.nav.map((l) =>
+                l.to === "/services" ? (
+                  <div key={l.to}>{menuTrigger("services", l.label, servicesActive)}</div>
+                ) : (
+                  <NavLink
+                    key={l.to}
+                    to={l.to}
+                    onMouseEnter={closeMenuSoon}
+                    className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}
+                  >
+                    {l.label}
+                  </NavLink>
+                ),
+              )
+            )}
             <span
               className="nav-underline"
               aria-hidden="true"
@@ -235,12 +402,22 @@ export default function Nav() {
               }}
             />
           </div>
+        </div>
+
+        <div className="hidden md:flex items-center gap-4 pr-1 nav-actions">
+          {divisionSwitch}
           <button type="button" onClick={toggle} aria-label={themeLabel} className="site-nav-icon">
             {theme === "light" ? <MoonIcon /> : <SunIcon />}
           </button>
-          <ButtonLink to="/contact" className="!py-2.5 !px-4 !text-sm !rounded-full">
-            Start a project
-          </ButtonLink>
+          {isAI ? (
+            <Link to={DEMO_PATH} className="btn nav-ai-cta !py-2.5 !px-4 !text-sm !rounded-full">
+              Book a demo
+            </Link>
+          ) : (
+            <ButtonLink to="/contact" className="!py-2.5 !px-4 !text-sm !rounded-full">
+              Start a project
+            </ButtonLink>
+          )}
         </div>
 
         <div className="md:hidden flex items-center gap-2 pr-0.5">
@@ -268,53 +445,123 @@ export default function Nav() {
         </div>
       </div>
 
-      {megaOpen ? (
-        <div className="hidden md:block nav-mega-wrap" onMouseEnter={openMega}>
-          {mega}
+      {menu ? (
+        <div className="hidden md:block nav-mega-wrap" onMouseEnter={() => openMenu(menu)}>
+          {menu === "agents" ? agentsMega : menu === "solutions" ? solutionsMega : servicesMega}
         </div>
       ) : null}
 
       {open ? (
         <div id={panelId} ref={panelRef} className="site-nav-panel md:hidden">
-          <div className="nav-mobile-services">
-            <button
-              type="button"
-              className={servicesActive ? "nav-link nav-link-active text-base nav-mobile-services-trigger" : "nav-link text-base nav-mobile-services-trigger"}
-              aria-expanded={mobileServicesOpen}
-              aria-controls={mobileServicesId}
-              onClick={() => setMobileServicesOpen((value) => !value)}
-            >
-              Services
-              <Chevron open={mobileServicesOpen} />
-            </button>
-            {mobileServicesOpen ? (
-              <div id={mobileServicesId} className="nav-mobile-services-panel">
-                {serviceCategories.map((category) => (
-                  <Link
-                    key={category.id}
-                    to={categoryPath(category.id)}
-                    className="nav-link nav-mobile-cat"
-                    onClick={() => setOpen(false)}
+          {isAI ? (
+            <>
+              {(["agents", "solutions"] as const).map((m) => (
+                <div key={m} className="nav-mobile-services">
+                  <button
+                    type="button"
+                    className="nav-link text-base nav-mobile-services-trigger"
+                    aria-expanded={mobileMenu === m}
+                    aria-controls={mobileMenu === m ? mobileMenuId : undefined}
+                    onClick={() => setMobileMenu(mobileMenu === m ? null : m)}
                   >
-                    {category.title}
-                  </Link>
-                ))}
-              </div>
-            ) : null}
-          </div>
-          {restNav.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              className={({ isActive }) => (isActive ? "nav-link nav-link-active text-base" : "nav-link text-base")}
-              onClick={() => setOpen(false)}
-            >
-              {l.label}
-            </NavLink>
-          ))}
-          <ButtonLink to="/contact" className="!rounded-full mt-1" onClick={() => setOpen(false)}>
-            Start a project
-          </ButtonLink>
+                    {m === "agents" ? "Agents" : "Solutions"}
+                    <Chevron open={mobileMenu === m} />
+                  </button>
+                  {mobileMenu === m ? (
+                    <div id={mobileMenuId} className="nav-mobile-ai-panel">
+                      {m === "agents"
+                        ? agents.map((agent) => (
+                            <Link
+                              key={agent.id}
+                              to={agentPath(agent.id)}
+                              className="nav-ai-agent"
+                              onClick={sameUrlScroll(agentPath(agent.id))}
+                            >
+                              <AgentGlyph kind={agent.glyph} size={36} />
+                              <span className="nav-ai-agent-text">
+                                <span className="nav-ai-agent-name is-sm">{agent.name}</span>
+                                <span className="nav-ai-agent-desc">{agent.desc}</span>
+                              </span>
+                            </Link>
+                          ))
+                        : industries.map((ind) => (
+                            <Link
+                              key={ind.id}
+                              to={industryPath(ind.id)}
+                              className="nav-link nav-mobile-cat"
+                              onClick={sameUrlScroll(industryPath(ind.id))}
+                            >
+                              {ind.title}
+                            </Link>
+                          ))}
+                    </div>
+                  ) : null}
+                </div>
+              ))}
+              {aiSections.map((s) => (
+                <Link key={s.to} to={s.to} className="nav-link text-base" onClick={sameUrlScroll(s.to)}>
+                  {s.label}
+                </Link>
+              ))}
+            </>
+          ) : (
+            site.nav.map((l) =>
+              l.to === "/services" ? (
+                <div key={l.to} className="nav-mobile-services">
+                  <button
+                    type="button"
+                    className={
+                      servicesActive
+                        ? "nav-link nav-link-active text-base nav-mobile-services-trigger"
+                        : "nav-link text-base nav-mobile-services-trigger"
+                    }
+                    aria-expanded={mobileMenu === "services"}
+                    aria-controls={mobileMenu === "services" ? mobileMenuId : undefined}
+                    onClick={() => setMobileMenu(mobileMenu === "services" ? null : "services")}
+                  >
+                    {l.label}
+                    <Chevron open={mobileMenu === "services"} />
+                  </button>
+                  {mobileMenu === "services" ? (
+                    <div id={mobileMenuId} className="nav-mobile-ai-panel">
+                      {serviceCategories.map((category) => (
+                        <Link
+                          key={category.id}
+                          to={categoryPath(category.id)}
+                          className="nav-link nav-mobile-cat"
+                          onClick={() => setOpen(false)}
+                        >
+                          {category.title}
+                        </Link>
+                      ))}
+                      <Link to="/services" className="nav-ai-all" onClick={() => setOpen(false)}>
+                        All services →
+                      </Link>
+                    </div>
+                  ) : null}
+                </div>
+              ) : (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  className={({ isActive }) => (isActive ? "nav-link nav-link-active text-base" : "nav-link text-base")}
+                  onClick={() => setOpen(false)}
+                >
+                  {l.label}
+                </NavLink>
+              ),
+            )
+          )}
+          <div className="nav-mobile-switch">{divisionSwitch}</div>
+          {isAI ? (
+            <Link to={DEMO_PATH} className="btn nav-ai-cta !rounded-full mt-1" onClick={() => setOpen(false)}>
+              Book a demo
+            </Link>
+          ) : (
+            <ButtonLink to="/contact" className="!rounded-full mt-1" onClick={() => setOpen(false)}>
+              Start a project
+            </ButtonLink>
+          )}
         </div>
       ) : null}
     </nav>

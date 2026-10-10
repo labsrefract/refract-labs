@@ -21,8 +21,14 @@ export const site = {
     github: "https://github.com/labsrefract",
     x: "https://x.com/refractlabs",
   },
+  /** Refract Software navbar links. Contact is reached through the "Start a project" button. */
   nav: [
     { label: "Services", to: "/services" },
+    { label: "Work", to: "/work" },
+    { label: "Process", to: "/process" },
+    { label: "About", to: "/about" },
+  ],
+  footerNav: [
     { label: "Work", to: "/work" },
     { label: "Process", to: "/process" },
     { label: "About", to: "/about" },

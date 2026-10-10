@@ -6,6 +6,7 @@ import type { IncomingMessage } from 'node:http'
 
 import siteConfiguration from './.figma/make/site.json'
 import { enquiryEmail, validateEnquiry } from './api/enquiry.js'
+import { addSubscriber, validateSubscribe } from './api/newsletter.js'
 
 // Vite config — https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -26,6 +27,7 @@ export default defineConfig(({ mode }) => {
       figmaReactRefreshBoundaryFallback(),
       figmaMakeKitPlugin({ storiesGlob: '/src/**/*.stories.{ts,tsx,js,jsx}' }),
       contactDevApi(mode),
+      subscribeDevApi(mode),
     ],
     resolve: {
       alias: {
@@ -460,6 +462,55 @@ function contactDevApi(mode: string): Plugin {
         res.statusCode = 200
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify({ ok: true }))
+      })
+    },
+  }
+}
+
+/** Local stand-in for /api/subscribe so the footer signup can be exercised in `vite dev`. */
+function subscribeDevApi(mode: string): Plugin {
+  const env = loadEnv(mode, process.cwd(), '')
+
+  return {
+    name: 'subscribe-dev-api',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.url?.split('?')[0] !== '/api/subscribe') return next()
+        const reply = (status: number, body: object) => {
+          res.statusCode = status
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify(body))
+        }
+        if (req.method !== 'POST') return reply(405, { error: 'Method not allowed.' })
+
+        let body: Record<string, unknown>
+        try {
+          body = await readJsonBody(req)
+        } catch {
+          return reply(400, { error: 'Could not read that request.' })
+        }
+
+        const { email, spam, error } = validateSubscribe(body)
+        if (error) return reply(422, { error })
+        if (spam) return reply(200, { ok: true })
+
+        const apiKey = env.RESEND_API_KEY
+        if (!apiKey) {
+          console.info('[subscribe] Local preview — contact not created:', email)
+          return reply(200, { ok: true, preview: true })
+        }
+
+        try {
+          const result = await addSubscriber({ apiKey, email, segmentId: env.RESEND_NEWSLETTER_SEGMENT_ID })
+          if (!result.ok) {
+            console.error('[subscribe] Resend contacts error', result.status, result.detail)
+            return reply(502, { error: "We couldn't sign you up just now. Please try again." })
+          }
+        } catch {
+          return reply(502, { error: "We couldn't sign you up just now. Please try again." })
+        }
+        return reply(200, { ok: true })
       })
     },
   }
