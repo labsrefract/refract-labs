@@ -6941,7 +6941,7 @@ a.home-voice:focus-visible .home-voice-card {
   20%, 96.666% { opacity: .22; transform: scale(.94); border-color: var(--border); background-color: var(--surface); box-shadow: none; }
 }
 @media (max-width: 1100px) { .reference-carousel-window { --service-width: 270px; --service-step: 288px; } .reference-carousel-group .reference-feature-card { padding: 22px; } }
-@media (max-width: 760px) { .reference-carousel-window { top: 55px; --service-width: 250px; --service-step: 268px; } .reference-carousel-track { padding-left: 12px; } }
+@media (max-width: 760px) { .reference-hero-art { container-type: inline-size; margin-inline: -28px; } .reference-carousel-window { top: 55px; --service-width: calc(100cqw - 32px); --service-step: calc(var(--service-width) + 18px); -webkit-mask-image: none; mask-image: none; } .reference-carousel-track { padding-left: 16px; } }
 @media (prefers-reduced-motion: reduce) {
   .reference-carousel-window { overflow-x: auto; mask-image: none; }
   .reference-carousel-track, .reference-carousel-group .reference-feature-card { animation: none; opacity: 1; transform: none; }
@@ -6971,7 +6971,7 @@ a.home-voice:focus-visible .home-voice-card {
 .reference-card-category { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border-strong); align-items: center; font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0; text-transform: none; }
 .reference-card-category svg { width: 18px; height: 18px; }
 @media (max-width: 1100px) { .reference-carousel-group .reference-feature-card { padding: 22px; } .reference-feature-card h2 { font-size: 22px; } }
-@media (max-width: 760px) { .reference-hero-art { height: 465px; } .reference-carousel-window { top: 28px; } .reference-card-top { margin-bottom: 20px; } }
+@media (max-width: 760px) { .reference-hero-art { height: 465px; } .reference-carousel-window { top: 28px; } .reference-carousel-group .reference-feature-card { min-height: 400px; } .reference-card-top { margin-bottom: 20px; } }
 /* Software hero typography follows the Refract AI hero. */
 .sw-hero-shell { container-type: inline-size; }
 .reference-hero-label { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .12em; color: #8f8d96; background: none; padding: 0; margin-bottom: 22px; }
