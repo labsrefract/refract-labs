@@ -7639,3 +7639,52 @@ a.home-voice:focus-visible .home-voice-card {
   .projects-section .home-work-grid .work-tile,.projects-section .home-work-grid .work-tile .work-shot { transition: none; transform: none; }
   .projects-section .home-work-grid .work-tile:hover,.projects-section .home-work-grid .work-tile:hover .work-shot { transform: none; }
 }
+
+/* Footer typography follows the Software site; original layout is retained. */
+.refract-footer .eyebrow {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  text-transform: none;
+  color: var(--text);
+}
+.refract-footer .nav-link {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+.refract-footer .text-sm {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.refract-footer .footer-newsletter-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px,2.4vw,28px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.035em;
+  background: linear-gradient(180deg,var(--text) 30%,var(--subtle));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.refract-footer .footer-newsletter-text {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.65;
+}
+.refract-footer .footer-legal {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.refract-footer .footer-brand-lockup { display: flex; align-items: center; gap: 16px; }
+.refract-footer .footer-company-name { display: inline-block; font-family: var(--font-display); font-size: clamp(26px,3vw,32px); font-weight: 600; line-height: 1.1; letter-spacing: -.035em; background: linear-gradient(180deg,var(--text) 30%,var(--subtle)); background-clip: text; -webkit-background-clip: text; color: transparent; }
+.refract-footer .footer-brand-text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.refract-footer .footer-company-tagline { font-family: var(--font-body); font-size: 11px; font-weight: 400; line-height: 1.5; letter-spacing: .01em; color: var(--muted); }

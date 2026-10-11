@@ -33,12 +33,12 @@ function Socials() {
 
 export default function Footer() {
   return (
-    <footer style={{ borderTop: "1px solid var(--border)", background: "var(--bg)" }}>
+    <footer className="refract-footer" style={{ borderTop: "1px solid var(--border)", background: "var(--bg)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-14 pb-8">
         {/* Brand and link columns */}
         <div className="grid grid-cols-2 lg:grid-cols-6 gap-x-8 gap-y-10">
           <div className="col-span-2">
-            <Logo size="footer" />
+            <div className="footer-brand-lockup"><Logo size="footer" /><span className="footer-brand-text"><span className="footer-company-name">{site.name}</span><span className="footer-company-tagline">{site.tagline}</span></span></div>
             <p className="mt-4 text-sm max-w-xs" style={{ color: "var(--muted)" }}>
               A software and AI studio in Nairobi, building custom software and AI agents for businesses.
             </p>
