@@ -1,6 +1,6 @@
 import { useEffect, type RefObject } from "react";
 
-const DURATION = 700;
+const DURATION = 1100;
 const INTERACTIVE = "a, button, input, textarea, select, [contenteditable]";
 
 /**

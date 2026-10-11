@@ -7688,3 +7688,25 @@ a.home-voice:focus-visible .home-voice-card {
 .refract-footer .footer-company-name { display: inline-block; font-family: var(--font-display); font-size: clamp(26px,3vw,32px); font-weight: 600; line-height: 1.1; letter-spacing: -.035em; background: linear-gradient(180deg,var(--text) 30%,var(--subtle)); background-clip: text; -webkit-background-clip: text; color: transparent; }
 .refract-footer .footer-brand-text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .refract-footer .footer-company-tagline { font-family: var(--font-body); font-size: 11px; font-weight: 400; line-height: 1.5; letter-spacing: .01em; color: var(--muted); }
+/* Refract AI reveals keep their motion with a slower, more deliberate pace. */
+@media (prefers-reduced-motion: no-preference) {
+  .ai-page .ai-mask-word > span {
+    transition-duration: 1.25s;
+    transition-delay: calc(220ms + var(--line,0) * 160ms);
+  }
+  .ai-page .ai-mask-head .ai-eyebrow { transition-duration: .85s; }
+  .ai-page .ai-mask-head .ai-mask-after {
+    transition-duration: 1s;
+    transition-delay: .8s;
+  }
+  .ai-page .ai-window .ai-mask-word > span { transition-delay: calc(1200ms + var(--line,0) * 160ms); }
+  .ai-page .ai-window .ai-mask-head :is(.ai-eyebrow,.ai-mask-after) { transition-delay: 1.6s; }
+  @supports (animation-timeline: view()) {
+    .ai-page .ai-rise { animation-range: entry calc(var(--col,0) * 12%) entry calc(100% + var(--col,0) * 12%); }
+  }
+  @supports not (animation-timeline: view()) {
+    .ai-page .ai-rise {
+      transition: opacity 1.2s var(--ease-soft) calc(var(--col,0) * 140ms), transform 1.2s var(--ease-soft) calc(var(--col,0) * 140ms), border-color .2s ease, background .25s ease;
+    }
+  }
+}
