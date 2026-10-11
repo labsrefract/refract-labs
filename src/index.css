@@ -7609,3 +7609,33 @@ a.home-voice:focus-visible .home-voice-card {
   .case-study-next { grid-template-columns: minmax(0,1fr); gap: 24px; }
   .case-study-next img { height: auto; max-height: 280px; object-fit: contain; }
 }
+/* Homepage projects on mobile retain their shapes with clearer image and copy. */
+@media (max-width: 1023px) {
+  .projects-section .home-work-grid { gap: 24px; }
+  .projects-section .home-work-grid > div { min-width: 0; }
+  .projects-section .home-work-grid .work-tile { height: 100%; padding: 12px; background: var(--surface); border-color: var(--border); box-shadow: none; }
+  .projects-section .home-work-grid .work-tile::after { content: none; }
+  .projects-section .home-work-grid .work-tile .work-shot { position: static; width: 100%; height: auto; aspect-ratio: 16 / 11; object-fit: cover; object-position: top center; border: 1px solid var(--border); border-radius: 2.65rem .25rem 1.75rem .25rem; opacity: 1; transform: none; }
+  .projects-section .home-work-grid .work-tile-caption { position: relative; padding: 24px 12px 18px; }
+  .projects-section .home-work-grid .work-tile-caption > span { display: block; padding-right: 26px; font-family: var(--font-mono); font-size: 10px; font-weight: 400; line-height: 1.5; letter-spacing: .08em; }
+  .projects-section .home-work-grid .work-tile-caption :is(h2,h3) { margin: 10px 0 0; font-family: var(--font-display); font-size: 26px; font-weight: 500; line-height: 1.12; letter-spacing: -.025em; color: var(--text); }
+  .projects-section .home-work-grid .projects-tile-description { display: block; margin: 14px 0 0; font-size: 14px; line-height: 1.65; color: var(--muted); }
+  .projects-section .home-work-grid .work-tile-caption::after { content: "↗"; position: absolute; top: 22px; right: 12px; font-size: 20px; color: var(--accent); }
+  .projects-section .home-work-grid .work-tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+}
+@media (max-width: 639px) {
+  .projects-section .home-work-grid { gap: 22px; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .projects-section .home-work-grid .work-tile-caption { padding-inline: 8px; }
+  .projects-section .home-work-grid .work-tile-caption :is(h2,h3) { font-size: 24px; }
+}
+@media (hover: hover) and (pointer: fine) and (max-width: 1023px) {
+  .projects-section .home-work-grid .work-tile:hover { border-color: var(--accent); box-shadow: none; transform: translateY(-3px); }
+  .projects-section .home-work-grid .work-tile:hover .work-shot { transform: scale(1.015); }
+  .projects-section .home-work-grid .work-tile:hover :is(h2,h3) { color: var(--accent); }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 1023px) {
+  .projects-section .home-work-grid .work-tile,.projects-section .home-work-grid .work-tile .work-shot { transition: none; transform: none; }
+  .projects-section .home-work-grid .work-tile:hover,.projects-section .home-work-grid .work-tile:hover .work-shot { transform: none; }
+}
