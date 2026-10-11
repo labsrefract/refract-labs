@@ -51,7 +51,7 @@ function Hero() {
   return (
     <section className="hero sw-hero-framed">
       <div className="sw-hero-shell">
-        <div className="sw-hero-stage" data-theme="dark">
+        <div className="sw-hero-stage">
           <div className="reference-hero-photo" aria-hidden="true" style={{ backgroundImage: `url(${heroWorkspace})` }} />
           <div className="reference-hero-copy">
             <span className="reference-hero-label">{site.tagline}</span>
@@ -177,7 +177,7 @@ function ServiceTile({ category, delay = 0 }: { category: (typeof serviceCategor
 function ServicesTeaser() {
   return (
     <section className="offer-section" aria-labelledby="offer-heading">
-      <div className="offer-panel" data-theme="dark">
+      <div className="offer-panel">
         <Reveal className="offer-heading ai-mask-head" rise={false}>
           <h2 id="offer-heading"><span className="ai-mask-word"><span>What we do.</span></span></h2>
           <p className="ai-mask-after">Software, infrastructure, design, advisory, and support.<br />From the first sketch through production.</p>
