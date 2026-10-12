@@ -154,3 +154,5 @@ src/assets/**/*.jpeg -filter -diff -merge binary
 public/*.png         -filter -diff -merge binary
 public/*.ico         -filter -diff -merge binary
 public/team/**       -filter -diff -merge binary
+
+public/work/**       -filter -diff -merge binary
