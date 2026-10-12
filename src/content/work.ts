@@ -95,7 +95,7 @@ export const caseStudies: CaseStudy[] = [
     result: "One website now presents our services, projects, team, and process, with dedicated AI experiences and clear routes to send an enquiry or request a call. This is an in-house studio project.",
     stack: ["React", "Vite", "TypeScript", "Tailwind CSS"],
     url: "https://www.refractlabs.tech",
-    image: "https://res.cloudinary.com/vcrqvhjf/image/upload/v1791808221/refract_hero.png",
+    image: workShot("v1791808221", "refract_hero.png"),
   },
 ];
 
