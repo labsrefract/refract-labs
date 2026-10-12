@@ -349,7 +349,8 @@ export default function Nav() {
     >
       <div className="site-nav-bar">
         <div className="nav-brand">
-          <Logo />
+          <Logo to={isAI ? `${AI_PATH}#hero` : "/"} label={isAI ? "Refract AI home" : "Refract Labs home"} onClick={isAI ? sameUrlScroll(`${AI_PATH}#hero`) : undefined} />
+          <Link to={isAI ? `${AI_PATH}#hero` : "/"} className="nav-company-name" onClick={isAI ? sameUrlScroll(`${AI_PATH}#hero`) : undefined}>{site.name}</Link>
           {isAI ? (
             <Link to={AI_PATH} className="nav-division-tag" aria-label="Refract AI home">
               AI

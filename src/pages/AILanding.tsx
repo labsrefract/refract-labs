@@ -314,7 +314,7 @@ function HeroCircuit() {
 
 function Hero() {
   return (
-    <section className="ai-hero">
+    <section className="ai-hero" id="hero">
       {/* Everything inside the stage is revealed by a circle that grows out of the chip. */}
       <div className="ai-hero-stage">
         <div className="ai-hero-bg" aria-hidden="true" />

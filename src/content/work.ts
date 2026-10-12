@@ -9,6 +9,8 @@ export type CaseStudy = {
   stack: string[];
   url?: string;
   image?: string;
+  /** Homepage placement is opt-in; new projects stay on the Work page by default. */
+  featuredOnHome?: boolean;
 };
 
 const CLOUDINARY = "https://res.cloudinary.com/vcrqvhjf/image/upload";
@@ -20,6 +22,7 @@ function workShot(version: string, publicId: string) {
 export const caseStudies: CaseStudy[] = [
   {
     slug: "highland-glaziers",
+    featuredOnHome: true,
     name: "Highland Glaziers",
     sector: "Construction",
     summary: "A site for a Kisumu aluminium contractor — services, a project gallery, and a quote path that actually gets used.",
@@ -35,6 +38,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "nairobi-curtains",
+    featuredOnHome: true,
     name: "Nairobi Curtains",
     sector: "Home & interiors",
     summary: "Curtain sales, installation, and laundry on one site — collections, enquiries, and WhatsApp as the close.",
@@ -50,6 +54,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "dispute-resolution-hub",
+    featuredOnHome: true,
     name: "Dispute Resolution Hub",
     sector: "Legal services",
     summary: "A booking product for offices and meeting rooms, with an admin side to run the calendar.",
@@ -65,6 +70,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "lexah-holdings",
+    featuredOnHome: true,
     name: "Lexah Holdings",
     sector: "Manufacturing",
     summary: "A company site for interlocking pavers and composites made from recovered plastic — products, process, and a quote path.",
@@ -77,6 +83,19 @@ export const caseStudies: CaseStudy[] = [
     stack: ["PHP", "JavaScript"],
     url: "https://lexahholdings.co.ke",
     image: workShot("v1788879113", "lexah.png"),
+  },
+  {
+    slug: "refract-labs",
+    featuredOnHome: true,
+    name: "Refract Labs",
+    sector: "Our studio website",
+    summary: "Our own studio website, bringing Software and AI together through one visual identity and two distinct experiences.",
+    challenge: "We needed a clear home for two divisions: custom software services and practical AI agents. Visitors needed to understand what we do, explore our work, and find the right way to start a conversation.",
+    approach: "We built a shared React site with tailored Software and AI pages, responsive project and service layouts, interactive AI demos, individual scroll reveals, and light and dark themes. Enquiry forms and discovery-call requests connect the presentation to a practical next step.",
+    result: "One website now presents our services, projects, team, and process, with dedicated AI experiences and clear routes to send an enquiry or request a call. This is an in-house studio project.",
+    stack: ["React", "Vite", "TypeScript", "Tailwind CSS"],
+    url: "https://www.refractlabs.tech",
+    image: "/work/refract-labs.png",
   },
 ];
 

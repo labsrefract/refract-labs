@@ -13,8 +13,9 @@ import { site } from "../content/site"
 import { testimonials } from "../content/team"
 import { caseStudies } from "../content/work"
 
-const pictured = caseStudies.filter((p) => p.image)
-const unpictured = caseStudies.filter((p) => !p.image)
+const homepageProjects = caseStudies.filter((project) => project.featuredOnHome === true)
+const pictured = homepageProjects.filter((p) => p.image)
+const unpictured = homepageProjects.filter((p) => !p.image)
 
 /** Proof under the hero: three numbers, kept out of the hero itself. */
 const proofStats = [

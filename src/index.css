@@ -7772,3 +7772,19 @@ a.home-voice:focus-visible .home-voice-card {
 [data-theme="light"] .ai-circuit .ai-wire-pad { fill: var(--surface); stroke: var(--border-strong); }
 /* These panels intentionally retain a local dark palette in either theme. */
 [data-theme="dark"] { color-scheme: dark; }
+
+
+/* The studio project follows the four client projects in the existing mosaic. */
+@media (min-width: 1024px) {
+  .projects-section :is(.home-work-grid,.work-index-grid) { grid-auto-rows: 260px; }
+  .projects-section :is(.home-work-grid,.work-index-grid) > div:nth-child(5) { grid-column: 1 / -1; grid-row: 3; }
+  .projects-section :is(.home-work-grid,.work-index-grid) > div:nth-child(5) .work-tile-caption { width: 48%; margin-block: auto; }
+  .projects-section :is(.home-work-grid,.work-index-grid) > div:nth-child(5) .work-shot { left: 52%; top: 24px; width: 46%; height: 220px; }
+  .projects-section :is(.home-work-grid,.work-index-grid) > div:nth-child(5) .work-tile::after { background: linear-gradient(90deg,#1a1c21 20%,#1a1c21ef 43%,transparent 72%); }
+  [data-theme="light"] .projects-section :is(.home-work-grid,.work-index-grid) > div:nth-child(5) .work-tile::after { background: linear-gradient(90deg,var(--surface) 20%,#fffdf8ef 43%,transparent 72%); }
+}
+
+.nav-company-name { display: none; }
+@media (min-width: 1024px) {
+  .nav-company-name { display: inline-block; white-space: nowrap; font-family: var(--font-display); font-size: 21px; font-weight: 600; line-height: 1.1; letter-spacing: -.035em; background: linear-gradient(180deg,var(--text) 30%,var(--subtle)); background-clip: text; -webkit-background-clip: text; color: transparent; }
+}
