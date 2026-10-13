@@ -49,6 +49,13 @@ export function usePageMeta(title: string, description: string, path = "/") {
         'meta[property="og:image:width"],meta[property="og:image:height"]',
       )
       .forEach((element) => element.remove())
+    if (image === seoSite.image) {
+      meta("property", "og:image:width", "1200")
+      meta("property", "og:image:height", "630")
+      meta("property", "og:image:type", "image/jpeg")
+    } else {
+      document.head.querySelector('meta[property="og:image:type"]')?.remove()
+    }
     let canonical = document.head.querySelector('link[rel="canonical"]')
     if (!canonical) {
       canonical = document.createElement("link")

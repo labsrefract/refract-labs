@@ -6,7 +6,7 @@ export const seoSite = {
   title: "Refract Labs | Software Development & AI Agents in Nairobi",
   description:
     "Refract Labs builds custom software, websites and AI agents for businesses. A Nairobi team for design, development, cloud infrastructure and ongoing support.",
-  image: "https://www.refractlabs.tech/og-image.png",
+  image: "https://www.refractlabs.tech/og-image-v2.jpg",
   imageAlt: "Refract Labs: We bend ideas into products. Glass prism with teal and violet accents.",
 }
 export const seoPages = [

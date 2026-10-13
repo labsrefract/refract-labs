@@ -156,3 +156,5 @@ public/*.ico         -filter -diff -merge binary
 public/team/**       -filter -diff -merge binary
 
 public/work/**       -filter -diff -merge binary
+
+public/og-image-v2.jpg -filter -diff -merge binary
