@@ -1,3 +1,5 @@
+import EngagementField from "../components/EngagementField";
+import { engagementFromQuery, engagementMessage, engagementStarter, engagementService } from "../content/engagements";
 import { useState, type FormEvent, type CSSProperties } from "react";
 import { Link } from "react-router";
 import { FiArrowUpRight, FiMail, FiMapPin, FiClock, FiMessageSquare, FiCalendar } from "react-icons/fi";
@@ -43,10 +45,11 @@ function validate(form: FormState): FieldErrors {
 
 function ContactForm() {
   const [params] = useSearchParams();
+  const [engagement, setEngagement] = useState(() => engagementFromQuery(params.get("engagement")));
   const [form, setForm] = useState<FormState>(() => ({
     ...empty,
-    type: enquiryTypeFromQuery(params.get("type")),
-    message: processNoteFromQuery(params.get("process")),
+    type: enquiryTypeFromQuery(params.get("type")) || engagementService(engagement),
+    message: processNoteFromQuery(params.get("process")) || engagementStarter(engagement),
   }));
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "preview" | "error">("idle");
@@ -55,6 +58,15 @@ function ContactForm() {
   function update<K extends Field>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
     setErrors((e) => ({ ...e, [key]: undefined }));
+  }
+
+  function chooseEngagement(value: string) {
+    setForm(current => ({
+      ...current,
+      message: !current.message.trim() || current.message === engagementStarter(engagement) ? engagementStarter(value) : current.message,
+      type: !current.type || current.type === engagementService(engagement) ? engagementService(value) : current.type,
+    }));
+    setEngagement(value);
   }
 
   async function onSubmit(e: FormEvent) {
@@ -75,7 +87,7 @@ function ContactForm() {
           name: form.name.trim(),
           email: form.email.trim(),
           type: form.type,
-          message: form.message.trim(),
+          message: engagementMessage(engagement, form.message.trim()),
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -115,6 +127,7 @@ function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="contact-form">
+      <EngagementField id="contact-engagement" value={engagement} onChange={chooseEngagement} />
       {status === "error" && (
         <p className="alert alert-error" role="alert">
           {serverError}{" "}

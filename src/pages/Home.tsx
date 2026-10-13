@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import heroWorkspace from "../assets/hero-workspace.jpeg"
 import { Link } from "react-router"
 import { FiCode, FiCloud, FiPenTool, FiCompass, FiTool, FiArrowUpRight } from "react-icons/fi"
+import EngagementOptions from "../components/EngagementOptions"
 import SoftwareFAQ from "../components/SoftwareFAQ"
 import PageCTA from "../components/PageCTA"
 import WorkCard from "../components/WorkCard"
@@ -292,6 +293,7 @@ export default function Home() {
       <Hero />
       <div className="software-scroll-content">
       <ServicesTeaser />
+      <EngagementOptions />
       <WorkTeaser />
       <ProcessTeaser />
       {testimonials.length ? <Voices /> : null}

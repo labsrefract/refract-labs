@@ -1,3 +1,5 @@
+import EngagementField from "./EngagementField";
+import { engagementFromQuery, engagementMessage, engagementStarter, engagementService } from "../content/engagements";
 import { useMemo, useState, type FormEvent } from "react";
 import { Button } from "./Button";
 import { formatCallSlot, isValidCallSlot, listCallDays, listCallTimes } from "../lib/callSlots";
@@ -27,10 +29,11 @@ export default function CallScheduler() {
   const [day, setDay] = useState(days[0]?.ymd ?? "");
   const [slot, setSlot] = useState("");
   const [params] = useSearchParams();
+  const [engagement, setEngagement] = useState(() => engagementFromQuery(params.get("engagement")));
   const [form, setForm] = useState<FormState>(() => ({
     ...empty,
-    type: enquiryTypeFromQuery(params.get("type")),
-    message: processNoteFromQuery(params.get("process")),
+    type: enquiryTypeFromQuery(params.get("type")) || engagementService(engagement),
+    message: processNoteFromQuery(params.get("process")) || engagementStarter(engagement),
   }));
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "preview" | "error">("idle");
@@ -48,6 +51,15 @@ export default function CallScheduler() {
     setDay(ymd);
     setSlot("");
     setErrors((e) => ({ ...e, slot: undefined }));
+  }
+
+  function chooseEngagement(value: string) {
+    setForm(current => ({
+      ...current,
+      message: !current.message.trim() || current.message === engagementStarter(engagement) ? engagementStarter(value) : current.message,
+      type: !current.type || current.type === engagementService(engagement) ? engagementService(value) : current.type,
+    }));
+    setEngagement(value);
   }
 
   async function onSubmit(e: FormEvent) {
@@ -68,7 +80,7 @@ export default function CallScheduler() {
           name: form.name.trim(),
           email: form.email.trim(),
           type: form.type,
-          message: form.message.trim(),
+          message: engagementMessage(engagement, form.message.trim()),
           slot,
         }),
       });
@@ -122,6 +134,7 @@ export default function CallScheduler() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="contact-form">
+      <EngagementField id="call-engagement" value={engagement} onChange={chooseEngagement} />
       {status === "error" && (
         <p className="alert alert-error" role="alert">
           {serverError}{" "}
