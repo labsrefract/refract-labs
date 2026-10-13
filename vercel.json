@@ -1,6 +1,52 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/((?!api/|robots.txt|sitemap.xml).*)", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/ai",
+      "destination": "/ai/index.html"
+    },
+    {
+      "source": "/work",
+      "destination": "/work/index.html"
+    },
+    {
+      "source": "/process",
+      "destination": "/process/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms/index.html"
+    },
+    {
+      "source": "/cookies",
+      "destination": "/cookies/index.html"
+    },
+    {
+      "source": "/services/:slug",
+      "destination": "/services/:slug/index.html"
+    },
+    {
+      "source": "/work/:slug",
+      "destination": "/work/:slug/index.html"
+    },
+    {
+      "source": "/((?!api/|robots.txt|sitemap.xml).*)",
+      "destination": "/index.html"
+    }
   ]
 }
