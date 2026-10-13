@@ -7791,3 +7791,15 @@ a.home-voice:focus-visible .home-voice-card {
 @media (min-width: 1024px) {
   .nav-company-name { display: inline-block; white-space: nowrap; font-family: var(--font-display); font-size: 21px; font-weight: 600; line-height: 1.1; letter-spacing: -.035em; background: linear-gradient(180deg,var(--text) 30%,var(--subtle)); background-clip: text; -webkit-background-clip: text; color: transparent; }
 }
+
+/* Software uses the AI FAQ composition with its own teal accent. */
+.software-faq { --ai: var(--accent); padding: clamp(56px,6vw,96px) 24px; background: var(--bg); }
+.software-faq .ai-wrap { max-width: 1160px; }
+.software-faq .ai-h2 .ai-mask-word > span { background: linear-gradient(180deg,var(--text) 30%,var(--subtle)); background-clip: text; -webkit-background-clip: text; color: transparent; }
+.software-faq .ai-faq-body p { line-height: 1.65; }
+.software-faq .ai-faq-contact .btn { border-radius: 8px; }
+.software-faq :is(button,a):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .software-faq :is(.ai-faq-body,.ai-chev) { transition: none; }
+  .software-faq .ai-faq-word { animation: none !important; }
+}

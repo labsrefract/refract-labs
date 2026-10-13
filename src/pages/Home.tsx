@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import heroWorkspace from "../assets/hero-workspace.jpeg"
 import { Link } from "react-router"
 import { FiCode, FiCloud, FiPenTool, FiCompass, FiTool, FiArrowUpRight } from "react-icons/fi"
+import SoftwareFAQ from "../components/SoftwareFAQ"
 import PageCTA from "../components/PageCTA"
 import WorkCard from "../components/WorkCard"
 import Reveal from "../components/ScrollReveal"
@@ -294,6 +295,7 @@ export default function Home() {
       <WorkTeaser />
       <ProcessTeaser />
       {testimonials.length ? <Voices /> : null}
+      <SoftwareFAQ />
       <PageCTA />
       </div>
     </>
