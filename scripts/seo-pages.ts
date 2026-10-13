@@ -50,6 +50,13 @@ export default function seoPagesPlugin(): Plugin {
           "og:site_name": "Refract Labs",
           "og:locale": "en_KE",
           "og:image": image,
+          ...(image === seoSite.image
+            ? {
+                "og:image:width": "1200",
+                "og:image:height": "630",
+                "og:image:type": "image/jpeg",
+              }
+            : {}),
           "og:image:alt":
             image === seoSite.image ? seoSite.imageAlt : page.title,
         }
