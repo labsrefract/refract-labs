@@ -1,3 +1,4 @@
+import seoPagesPlugin from "./scripts/seo-pages"
 import { defineConfig, loadEnv, type HtmlTagDescriptor, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -28,6 +29,7 @@ export default defineConfig(({ mode }) => {
       figmaMakeKitPlugin({ storiesGlob: '/src/**/*.stories.{ts,tsx,js,jsx}' }),
       contactDevApi(mode),
       subscribeDevApi(mode),
+      seoPagesPlugin(),
     ],
     resolve: {
       alias: {

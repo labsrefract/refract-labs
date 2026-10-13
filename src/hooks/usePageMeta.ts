@@ -1,63 +1,76 @@
-import { useEffect } from "react";
-import { site } from "../content/site";
+import { useEffect } from "react"
+import { seoForPath, seoSite } from "../content/seo"
 
 export function usePageMeta(title: string, description: string, path = "/") {
   useEffect(() => {
-    const previousTitle = document.title;
-    document.title = title;
-    const url = `${site.url}${path === "/" ? "" : path}`;
-
-    function setMeta(selector: string, attr: string, value: string) {
-      let el = document.querySelector(selector);
-      if (!el) {
-        el = document.createElement("meta");
-        if (selector.includes("property=")) {
-          el.setAttribute("property", selector.match(/property="([^"]+)"/)![1]);
-        } else {
-          el.setAttribute("name", selector.match(/name="([^"]+)"/)![1]);
-        }
-        document.head.appendChild(el);
+    const page = seoForPath(path)
+    const pageTitle = page?.title ?? title
+    const pageDescription = page?.description ?? description
+    const url = new URL(path, seoSite.url).href
+    const image = new URL(
+      page && "image" in page && page.image ? page.image : seoSite.image,
+      seoSite.url,
+    ).href
+    document.title = pageTitle
+    function meta(kind: "name" | "property", key: string, value: string) {
+      let element = document.head.querySelector(`meta[${kind}="${key}"]`)
+      if (!element) {
+        element = document.createElement("meta")
+        element.setAttribute(kind, key)
+        document.head.appendChild(element)
       }
-      el.setAttribute(attr, value);
-      return el;
+      element.setAttribute("content", value)
     }
-
-    const origin = window.location.origin;
-    const image = new URL(site.ogImage, origin).href;
-
-    const desc = setMeta('meta[name="description"]', "content", description);
-    const ogTitle = setMeta('meta[property="og:title"]', "content", title);
-    const ogDesc = setMeta('meta[property="og:description"]', "content", description);
-    const ogUrl = setMeta('meta[property="og:url"]', "content", url);
-    const ogImage = setMeta('meta[property="og:image"]', "content", image);
-    const ogType = setMeta('meta[property="og:type"]', "content", "website");
-    const ogSite = setMeta('meta[property="og:site_name"]', "content", site.name);
-    const twCard = setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
-    const twTitle = setMeta('meta[name="twitter:title"]', "content", title);
-    const twDesc = setMeta('meta[name="twitter:description"]', "content", description);
-    const twImage = setMeta('meta[name="twitter:image"]', "content", image);
-
-    let canonical = document.querySelector('link[rel="canonical"]');
+    for (const [key, value] of Object.entries({
+      description: pageDescription,
+      robots: path === "/404" ? "noindex, follow" : "index, follow",
+      "twitter:card": "summary_large_image",
+      "twitter:title": pageTitle,
+      "twitter:description": pageDescription,
+      "twitter:image": image,
+      "twitter:image:alt":
+        image === seoSite.image ? seoSite.imageAlt : pageTitle,
+    }))
+      meta("name", key, value)
+    for (const [key, value] of Object.entries({
+      "og:title": pageTitle,
+      "og:description": pageDescription,
+      "og:url": url,
+      "og:image": image,
+      "og:image:alt": image === seoSite.image ? seoSite.imageAlt : pageTitle,
+      "og:type": "website",
+      "og:site_name": "Refract Labs",
+      "og:locale": "en_KE",
+    }))
+      meta("property", key, value)
+    // Project screenshots vary in dimensions; don't reuse the brand image dimensions.
+    document.head
+      .querySelectorAll(
+        'meta[property="og:image:width"],meta[property="og:image:height"]',
+      )
+      .forEach((element) => element.remove())
+    let canonical = document.head.querySelector('link[rel="canonical"]')
     if (!canonical) {
-      canonical = document.createElement("link");
-      canonical.setAttribute("rel", "canonical");
-      document.head.appendChild(canonical);
+      canonical = document.createElement("link")
+      canonical.setAttribute("rel", "canonical")
+      document.head.appendChild(canonical)
     }
-    canonical.setAttribute("href", url);
-
-    return () => {
-      document.title = previousTitle;
-      desc.setAttribute("content", description);
-      ogTitle.setAttribute("content", previousTitle);
-      ogDesc.setAttribute("content", description);
-      ogUrl.setAttribute("content", site.url);
-      ogImage.setAttribute("content", image);
-      ogType.setAttribute("content", "website");
-      ogSite.setAttribute("content", site.name);
-      twCard.setAttribute("content", "summary_large_image");
-      twTitle.setAttribute("content", previousTitle);
-      twDesc.setAttribute("content", description);
-      twImage.setAttribute("content", image);
-    };
-  }, [title, description, path]);
+    canonical.setAttribute("href", url)
+    let structured = document.getElementById("page-schema")
+    if (!structured) {
+      structured = document.createElement("script")
+      structured.id = "page-schema"
+      structured.setAttribute("type", "application/ld+json")
+      document.head.appendChild(structured)
+    }
+    structured.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": url + "#webpage",
+      url,
+      name: pageTitle,
+      description: pageDescription,
+      isPartOf: { "@id": seoSite.url + "/#website" },
+    })
+  }, [title, description, path])
 }
