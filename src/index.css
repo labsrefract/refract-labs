@@ -3585,6 +3585,28 @@ a.home-voice:focus-visible .home-voice-card {
   color: var(--ink-muted);
 }
 
+[data-theme="light"] .ai-card-ink {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+[data-theme="light"] .ai-ink-muted {
+  color: var(--muted);
+}
+
+[data-theme="light"] .ai-log {
+  color: var(--muted);
+}
+
+[data-theme="light"] .ai-log > div {
+  border-top-color: var(--border);
+}
+
+[data-theme="light"] .ai-log-policy {
+  color: var(--text);
+}
+
 .ai-card-foot {
   margin-top: auto;
   padding-top: 28px;
