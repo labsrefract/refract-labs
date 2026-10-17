@@ -6478,13 +6478,8 @@ a.home-voice:focus-visible .home-voice-card {
 }
 
 /* The Services menu belongs to Refract Software, so it uses the teal accent. */
-.nav-services-mega .nav-ai-all,
-.site-nav.is-software .nav-mobile-ai-panel .nav-ai-all {
-  color: var(--accent);
-}
-
-.nav-services-mega :focus-visible,
-.site-nav.is-software .nav-mobile-ai-panel :focus-visible {
+.site-nav.is-software .nav-mobile-ai-panel :focus-visible,
+.nav-services-mega :focus-visible {
   outline-color: var(--accent);
 }
 
