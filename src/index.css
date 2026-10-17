@@ -6934,7 +6934,7 @@ a.home-voice:focus-visible .home-voice-card {
 
 /* Each service holds the spotlight for five seconds, then slides to the next. */
 .reference-carousel-window { --service-width: 310px; --service-step: 328px; position: absolute; inset: 86px 0 auto; overflow: hidden; padding-block: 12px 35px; mask-image: linear-gradient(90deg,transparent,black 7%,black 92%,transparent); }
-.reference-carousel-track { display: flex; width: max-content; padding-left: 24px; animation: reference-service-steps 30s infinite; animation-play-state: paused; }
+.reference-carousel-track { display: flex; width: max-content; padding-left: calc(50% - var(--service-width) / 2); animation: reference-service-steps 30s infinite; animation-play-state: paused; }
 .reference-carousel-track.is-visible { animation-play-state: running; }
 .reference-carousel-group { display: flex; gap: 18px; padding-right: 18px; }
 .reference-carousel-group .reference-feature-card { position: relative; top: auto; left: auto; flex: 0 0 var(--service-width); width: var(--service-width); min-height: 260px; transform: none; opacity: .35; animation: reference-service-spotlight 30s infinite; animation-play-state: paused; box-shadow: 0 12px 24px var(--shadow-lg); }
@@ -6963,7 +6963,7 @@ a.home-voice:focus-visible .home-voice-card {
   20%, 96.666% { opacity: .22; transform: scale(.94); border-color: var(--border); background-color: var(--surface); box-shadow: none; }
 }
 @media (max-width: 1100px) { .reference-carousel-window { --service-width: 270px; --service-step: 288px; } .reference-carousel-group .reference-feature-card { padding: 22px; } }
-@media (max-width: 760px) { .reference-hero-art { container-type: inline-size; margin-inline: -28px; } .reference-carousel-window { top: 55px; --service-width: calc(100cqw - 32px); --service-step: calc(var(--service-width) + 18px); -webkit-mask-image: none; mask-image: none; } .reference-carousel-track { padding-left: 16px; } }
+@media (max-width: 760px) { .reference-hero-art { container-type: inline-size; margin-inline: -28px; } .reference-carousel-window { top: 55px; --service-width: calc(100cqw - 32px); --service-step: calc(var(--service-width) + 18px); -webkit-mask-image: none; mask-image: none; } }
 @media (prefers-reduced-motion: reduce) {
   .reference-carousel-window { overflow-x: auto; mask-image: none; }
   .reference-carousel-track, .reference-carousel-group .reference-feature-card { animation: none; opacity: 1; transform: none; }
