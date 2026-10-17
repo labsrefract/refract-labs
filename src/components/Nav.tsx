@@ -291,9 +291,6 @@ export default function Nav() {
       <div className="nav-ai-catalogue">
         <div className="nav-ai-head">
           <span className="nav-ai-kicker">Refract Software services</span>
-          <Link to="/services" className="nav-ai-all">
-            All services →
-          </Link>
         </div>
         <ul className="nav-solutions-grid">
           {serviceCategories.map((category) => (
@@ -535,9 +532,6 @@ export default function Nav() {
                           {category.title}
                         </Link>
                       ))}
-                      <Link to="/services" className="nav-ai-all" onClick={() => setOpen(false)}>
-                        All services →
-                      </Link>
                     </div>
                   ) : null}
                 </div>

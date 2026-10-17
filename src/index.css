@@ -3585,6 +3585,28 @@ a.home-voice:focus-visible .home-voice-card {
   color: var(--ink-muted);
 }
 
+[data-theme="light"] .ai-card-ink {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+[data-theme="light"] .ai-ink-muted {
+  color: var(--muted);
+}
+
+[data-theme="light"] .ai-log {
+  color: var(--muted);
+}
+
+[data-theme="light"] .ai-log > div {
+  border-top-color: var(--border);
+}
+
+[data-theme="light"] .ai-log-policy {
+  color: var(--text);
+}
+
 .ai-card-foot {
   margin-top: auto;
   padding-top: 28px;
@@ -6456,13 +6478,8 @@ a.home-voice:focus-visible .home-voice-card {
 }
 
 /* The Services menu belongs to Refract Software, so it uses the teal accent. */
-.nav-services-mega .nav-ai-all,
-.site-nav.is-software .nav-mobile-ai-panel .nav-ai-all {
-  color: var(--accent);
-}
-
-.nav-services-mega :focus-visible,
-.site-nav.is-software .nav-mobile-ai-panel :focus-visible {
+.site-nav.is-software .nav-mobile-ai-panel :focus-visible,
+.nav-services-mega :focus-visible {
   outline-color: var(--accent);
 }
 
@@ -6912,7 +6929,7 @@ a.home-voice:focus-visible .home-voice-card {
 
 /* Each service holds the spotlight for five seconds, then slides to the next. */
 .reference-carousel-window { --service-width: 310px; --service-step: 328px; position: absolute; inset: 86px 0 auto; overflow: hidden; padding-block: 12px 35px; mask-image: linear-gradient(90deg,transparent,black 7%,black 92%,transparent); }
-.reference-carousel-track { display: flex; width: max-content; padding-left: 24px; animation: reference-service-steps 30s infinite; animation-play-state: paused; }
+.reference-carousel-track { display: flex; width: max-content; padding-left: calc(50% - var(--service-width) / 2); animation: reference-service-steps 30s infinite; animation-play-state: paused; }
 .reference-carousel-track.is-visible { animation-play-state: running; }
 .reference-carousel-group { display: flex; gap: 18px; padding-right: 18px; }
 .reference-carousel-group .reference-feature-card { position: relative; top: auto; left: auto; flex: 0 0 var(--service-width); width: var(--service-width); min-height: 260px; transform: none; opacity: .35; animation: reference-service-spotlight 30s infinite; animation-play-state: paused; box-shadow: 0 12px 24px var(--shadow-lg); }
@@ -6941,7 +6958,7 @@ a.home-voice:focus-visible .home-voice-card {
   20%, 96.666% { opacity: .22; transform: scale(.94); border-color: var(--border); background-color: var(--surface); box-shadow: none; }
 }
 @media (max-width: 1100px) { .reference-carousel-window { --service-width: 270px; --service-step: 288px; } .reference-carousel-group .reference-feature-card { padding: 22px; } }
-@media (max-width: 760px) { .reference-hero-art { container-type: inline-size; margin-inline: -28px; } .reference-carousel-window { top: 55px; --service-width: calc(100cqw - 32px); --service-step: calc(var(--service-width) + 18px); -webkit-mask-image: none; mask-image: none; } .reference-carousel-track { padding-left: 16px; } }
+@media (max-width: 760px) { .reference-hero-art { container-type: inline-size; margin-inline: -28px; } .reference-carousel-window { top: 55px; --service-width: calc(100cqw - 32px); --service-step: calc(var(--service-width) + 18px); -webkit-mask-image: none; mask-image: none; } }
 @media (prefers-reduced-motion: reduce) {
   .reference-carousel-window { overflow-x: auto; mask-image: none; }
   .reference-carousel-track, .reference-carousel-group .reference-feature-card { animation: none; opacity: 1; transform: none; }
@@ -7018,21 +7035,14 @@ a.home-voice:focus-visible .home-voice-card {
 .offer-art-icon { position: relative; display: grid; place-items: center; width: 68px; height: 68px; border: 1px solid #ffffff12; border-radius: 20px; background: linear-gradient(145deg,#303139,#17171b); box-shadow: 0 8px 20px #0005,inset 0 1px 0 #ffffff0c; color: #b2b2b9; transition: color .2s ease; }
 .offer-art-icon svg { width: 33px; height: 33px; }
 .offer-tile:hover .offer-art-icon { color: var(--accent); }
-.offer-art-orbit { position: absolute; z-index: -1; top: 50%; left: 50%; translate: -50% -50%; width: 160px; height: 160px; border: 1px solid #ffffff05; border-radius: 50%; }
-.offer-art-orbit-inner { width: 115px; height: 115px; }
 .offer-art-caption { position: relative; order: -1; font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: .14em; color: #8f8d96; }
 .offer-tile-content { position: relative; }
 .offer-tile-content h3, .offer-all-tile h3 { margin: 0 0 9px; font-family: var(--font-display); font-size: 23px; font-weight: 500; line-height: 1.12; letter-spacing: -.025em; }
 .offer-tile-content p, .offer-all-tile p { margin: 0; color: #aaa8b1; font-size: 14px; line-height: 1.5; text-wrap: pretty; }
 .offer-tile-arrow { position: absolute; width: 14px; height: 14px; top: 14px; right: 14px; color: #77757f; }
 .offer-empty-tile { background: linear-gradient(160deg,#1b1b1e,#111114); }
-.offer-tile-design .offer-art-icon { width: 68px; height: 68px; border-radius: 50%; }
-.offer-tile-design .offer-art-icon svg { width: 33px; height: 33px; }
 .offer-tile-design .offer-art-caption { display: none; }
 .offer-tile-strategy-advisory .offer-art-icon { transform: rotate(-10deg); }
-.offer-tile-software-development .offer-art-orbit { width: 235px; height: 235px; }
-.offer-tile-software-development .offer-art-orbit-inner { width: 175px; height: 175px; }
-.offer-tile-support-maintenance .offer-art-icon { border-radius: 50%; }
 .offer-all-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 22px; text-align: center; transition: border-color .2s ease,background-color .2s ease; }
 .offer-all-tile > svg { width: 40px; height: 40px; margin-bottom: 20px; color: #b2b2b9; stroke-width: 1.25; }
 @media (max-width: 1023px) { .offer-panel { padding: 56px 28px 36px; } .offer-tile { padding: 18px 14px; } .offer-tile-content h3 { font-size: 21px; } }
@@ -7156,6 +7166,18 @@ a.home-voice:focus-visible .home-voice-card {
 .process-journey-tone-3 { background: var(--ink); border-color: var(--ink-border); }
 .process-journey-tone-3 .process-journey-copy h3 { color: var(--ink-text); }
 .process-journey-tone-3 .process-journey-copy p { color: var(--ink-muted); }
+[data-theme="light"] .process-journey-tone-3 {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+[data-theme="light"] .process-journey-tone-3 .process-journey-copy h3,
+[data-theme="light"] .process-page .process-journey-tone-3 .process-page-step-title {
+  color: var(--text);
+}
+[data-theme="light"] .process-journey-tone-3 .process-journey-copy p,
+[data-theme="light"] .process-page .process-journey-tone-3 .process-page-step-teaser {
+  color: var(--muted);
+}
 .process-journey-arrow { position: absolute; right: 24px; top: 24px; width: 14px; height: 14px; color: var(--subtle); }
 .process-journey-step:nth-child(even) .process-journey-arrow { right: auto; left: 24px; }
 .process-journey-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
@@ -7738,7 +7760,6 @@ a.home-voice:focus-visible .home-voice-card {
 [data-theme="light"] :is(.offer-tile,.offer-all-tile):hover { background: var(--accent-soft); border-color: var(--accent); }
 [data-theme="light"] .offer-empty-tile { background: linear-gradient(150deg,var(--surface),var(--surface-2)); border-color: var(--border); }
 [data-theme="light"] .offer-art-icon { background: linear-gradient(145deg,var(--surface),var(--surface-2)); border-color: var(--border-strong); box-shadow: var(--shadow-sm); color: var(--accent); }
-[data-theme="light"] .offer-art-orbit { border-color: color-mix(in srgb,var(--accent) 12%,transparent); }
 [data-theme="light"] :is(.offer-art-caption,.offer-tile-arrow) { color: var(--subtle); }
 [data-theme="light"] :is(.offer-tile-content,.offer-all-tile) p { color: var(--muted); }
 [data-theme="light"] .offer-all-tile > svg { color: var(--accent); }

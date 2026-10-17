@@ -162,8 +162,6 @@ function ServiceTile({ category, delay = 0 }: { category: (typeof serviceCategor
     <Reveal className="offer-card-reveal" rise={false} delay={delay}>
     <Link to={categoryPath(category.id)} className={`offer-tile offer-tile-${category.id}`}>
       <div className="offer-tile-art" aria-hidden="true">
-        <span className="offer-art-orbit" />
-        <span className="offer-art-orbit offer-art-orbit-inner" />
         <span className="offer-art-icon"><Icon strokeWidth={1.25} /></span>
         <span className="offer-art-caption">{category.kicker}</span>
       </div>

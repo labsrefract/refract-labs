@@ -22,7 +22,7 @@ export default function Work() {
 
       <section className="projects-section work-gallery pb-24 lg:pb-32" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-12">
-          <div className="work-index-grid">
+          <div className="home-work-grid">
             {caseStudies.map((p, i) => (
               <Reveal key={p.slug} delay={i * 70}>
                 <WorkCard project={p} heading="h2" layout="tile" showDescription />
