@@ -7149,6 +7149,18 @@ a.home-voice:focus-visible .home-voice-card {
 .process-journey-tone-3 { background: var(--ink); border-color: var(--ink-border); }
 .process-journey-tone-3 .process-journey-copy h3 { color: var(--ink-text); }
 .process-journey-tone-3 .process-journey-copy p { color: var(--ink-muted); }
+[data-theme="light"] .process-journey-tone-3 {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+[data-theme="light"] .process-journey-tone-3 .process-journey-copy h3,
+[data-theme="light"] .process-page .process-journey-tone-3 .process-page-step-title {
+  color: var(--text);
+}
+[data-theme="light"] .process-journey-tone-3 .process-journey-copy p,
+[data-theme="light"] .process-page .process-journey-tone-3 .process-page-step-teaser {
+  color: var(--muted);
+}
 .process-journey-arrow { position: absolute; right: 24px; top: 24px; width: 14px; height: 14px; color: var(--subtle); }
 .process-journey-step:nth-child(even) .process-journey-arrow { right: auto; left: 24px; }
 .process-journey-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
