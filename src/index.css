@@ -7251,6 +7251,10 @@ a.home-voice:focus-visible .home-voice-card {
 .client-story-reveal { min-width: 0; }
 .client-story { position: relative; isolation: isolate; display: flex; flex-direction: column; min-height: 355px; height: 100%; margin: 0; padding: 26px 24px 0; border-radius: 18px; }
 .client-story::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: color-mix(in srgb,var(--surface-2) 50%,var(--surface)); }
+[data-theme="light"] .client-story::before {
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
 .client-story-body { flex: 1; padding-bottom: 30px; }
 .client-story-quote-mark { display: block; height: 56px; font-family: Georgia,serif; font-size: 90px; font-weight: 700; line-height: 1; color: var(--border-strong); }
 .client-story blockquote { margin: 14px 0 0; font-family: var(--font-body); font-size: 21px; line-height: 1.45; letter-spacing: -.015em; color: var(--text); }
