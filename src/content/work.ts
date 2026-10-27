@@ -14,9 +14,10 @@ export type CaseStudy = {
 };
 
 const CLOUDINARY = "https://res.cloudinary.com/vcrqvhjf/image/upload";
+const CLOUDINARY_DF9 = "https://res.cloudinary.com/df9xd9tih/image/upload";
 
-function workShot(version: string, publicId: string) {
-  return `${CLOUDINARY}/f_auto,q_auto,c_limit,w_1440/${version}/${publicId}`;
+function workShot(version: string, publicId: string, base = CLOUDINARY) {
+  return `${base}/f_auto,q_auto,c_limit,w_1440/${version}/${publicId}`;
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -50,7 +51,7 @@ export const caseStudies: CaseStudy[] = [
       "A public site that can take an enquiry for a new set of curtains, a fitting, or a pickup — and route it to the team the same day.",
     stack: ["React", "Vite"],
     url: "https://www.nairobicurtains.com",
-    image: workShot("v1788879145", "nairobicurtains.png"),
+    image: workShot("v1793113416", "nairobicurtains1_wj8tfa.png", CLOUDINARY_DF9),
   },
   {
     slug: "dispute-resolution-hub",
