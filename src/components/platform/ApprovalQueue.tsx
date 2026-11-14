@@ -58,7 +58,7 @@ export default function ApprovalQueue() {
             <span>Approval needed</span>
             <span className="live-approval-flag">over limit</span>
           </span>
-          <span style={{ fontSize: 15, fontWeight: 600 }}>
+          <span style={{ fontSize: "0.9375rem", fontWeight: 600 }}>
             {current.what} · {kes(current.amount)}
           </span>
           <div style={{ display: "flex", gap: 8 }}>

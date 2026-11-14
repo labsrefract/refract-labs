@@ -355,8 +355,8 @@ function HowItWorks() {
       <div className="ai-wrap">
         <InView className="ai-head ai-mask-head" rootMargin="0px 0px -30% 0px">
           <Eyebrow index="01" label="How it works" />
-          <MaskLines className="ai-h2" style={{ maxWidth: 780 }} text="Put AI to work inside the tools you already use" />
-          <p className="ai-muted ai-mask-after" style={{ maxWidth: 560, fontSize: 16 }}>
+          <MaskLines className="ai-h2" style={{ maxWidth: "48.75rem" }} text="Put AI to work inside the tools you already use" />
+          <p className="ai-muted ai-mask-after" style={{ maxWidth: "35rem", fontSize: "1rem" }}>
             Each agent reads a request, decides within the rules you set, acts in your systems and reports back to your team.
           </p>
         </InView>
@@ -368,7 +368,7 @@ function HowItWorks() {
             <li key={st.n}>
               <span className="ai-mono-accent">{st.n}</span>
               <span className="ai-step-title">{st.t}</span>
-              <span className="ai-muted" style={{ fontSize: 15 }}>
+              <span className="ai-muted" style={{ fontSize: "0.9375rem" }}>
                 {st.d}
               </span>
             </li>
@@ -387,7 +387,7 @@ function Platform() {
       <div className="ai-wrap ai-stack">
         <InView className="ai-head ai-mask-head" style={{ marginBottom: "clamp(20px,3cqi,40px)" }}>
           <Eyebrow index="02" label="Platform" />
-          <MaskLines className="ai-h2" style={{ maxWidth: 680 }} text="Everything your agents need to do real work" />
+          <MaskLines className="ai-h2" style={{ maxWidth: "42.5rem" }} text="Everything your agents need to do real work" />
         </InView>
 
         <div className="ai-row">
@@ -398,7 +398,7 @@ function Platform() {
             style={{ flex: "2 1 420px", minHeight: 400 }}
           >
             <h3 className="ai-h3">Every channel your customers use</h3>
-            <p className="ai-card-text" style={{ maxWidth: 380 }}>
+            <p className="ai-card-text" style={{ maxWidth: "23.75rem" }}>
               WhatsApp, SMS, voice, email and web chat, handled by the same agent with the same context.
             </p>
             <div className="ai-card-foot">
@@ -464,7 +464,7 @@ function Platform() {
             style={{ flex: "3 1 380px", minHeight: 340 }}
           >
             <h3 className="ai-h3">Scales with your volume</h3>
-            <p className="ai-card-text" style={{ maxWidth: 380 }}>
+            <p className="ai-card-text" style={{ maxWidth: "23.75rem" }}>
               Handle month-end peaks and quiet weekends without hiring for the busiest day.
             </p>
             <div className="ai-card-foot">
@@ -495,7 +495,7 @@ function Reach() {
       <InView className="ai-head ai-reach-copy ai-mask-head">
         <Eyebrow index="03" label="Nairobi to anywhere" />
         <MaskLines className="ai-h2" text="Built in Nairobi, ready wherever you operate" />
-        <p className="ai-muted ai-mask-after" style={{ maxWidth: 520, fontSize: 16 }}>
+        <p className="ai-muted ai-mask-after" style={{ maxWidth: "32.5rem", fontSize: "1rem" }}>
           Designed around African payment rails, languages and regulation, and just as at home with teams in Europe, the Gulf
           and beyond.
         </p>
@@ -665,8 +665,8 @@ function TryAgent() {
           <span className="ai-demo-mark">
             <LuWorkflow size={22} strokeWidth={1.75} aria-hidden="true" />
           </span>
-          <MaskLines className="ai-h2" style={{ fontSize: "clamp(32px,3.8cqi,50px)" }} text="See an agent at work" />
-          <p className="ai-muted ai-mask-after" style={{ fontSize: 16 }}>
+          <MaskLines className="ai-h2" style={{ fontSize: "clamp(2rem,3.8cqi,3.125rem)" }} text="See an agent at work" />
+          <p className="ai-muted ai-mask-after" style={{ fontSize: "1rem" }}>
             Pick a problem and watch an agent handle it, start to finish.
           </p>
         </div>
@@ -748,7 +748,7 @@ function Industries() {
       <div className="ai-wrap">
         <InView className="ai-head ai-mask-head">
           <Eyebrow index="04" label="Industries" />
-          <MaskLines className="ai-h2" style={{ maxWidth: 620 }} text="Where our agents already fit" />
+          <MaskLines className="ai-h2" style={{ maxWidth: "38.75rem" }} text="Where our agents already fit" />
         </InView>
 
         <InView className="ai-industries ai-rise">
@@ -1008,7 +1008,7 @@ function MoreFromLabs() {
         <InView className="ai-mask-head">
           <MaskLines
             className="ai-h2"
-            style={{ textAlign: "center", fontSize: "clamp(30px,3.6cqi,48px)", marginBottom: "clamp(32px,4cqi,48px)" }}
+            style={{ textAlign: "center", fontSize: "clamp(1.875rem,3.6cqi,3rem)", marginBottom: "clamp(32px,4cqi,48px)" }}
             text="Explore more from Refract Labs"
           />
         </InView>
@@ -1021,7 +1021,7 @@ function MoreFromLabs() {
                 <span className="ai-h3" style={{ margin: 0 }}>
                   {s.t}
                 </span>
-                <span className="ai-muted" style={{ fontSize: 15 }}>
+                <span className="ai-muted" style={{ fontSize: "0.9375rem" }}>
                   {s.d}
                 </span>
                 <span className="ai-software-more">Learn more →</span>
