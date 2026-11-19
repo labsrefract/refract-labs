@@ -8028,3 +8028,51 @@ a.home-voice:focus-visible .home-voice-card {
   .ai-industry-job .ai-glyph { animation: none; }
   .ai-anatomy-node > svg { transition: none; }
 }
+
+/* ── Homepage "Selected work" ────────────────────────────────
+   Equal cards (two columns) instead of a mosaic, so it no longer echoes the
+   "What we do" bento. Each screenshot is shown whole in a browser frame, and
+   the copy below leads with the result for the client. The card's title link
+   stretches over the card; "Visit site" sits above it as its own link. On
+   phones the first two projects show, then "See all projects". */
+.showcase-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 0; padding: 0; list-style: none; }
+.showcase-item { min-width: 0; }
+.showcase-card { position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); transition: border-color .25s ease, translate .25s ease; }
+.showcase-frame { margin: 14px 14px 0; overflow: hidden; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--bg); }
+.showcase-bar { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-bottom: 1px solid var(--border); background: var(--surface-2); }
+.showcase-dot { width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; background: var(--border-strong); }
+.showcase-url { display: flex; align-items: center; min-width: 0; max-width: 60%; height: 18px; margin-left: 10px; padding: 0 10px; overflow: hidden; border-radius: 9px; background: var(--bg); font-family: var(--font-mono); font-size: 0.625rem; color: var(--subtle); white-space: nowrap; text-overflow: ellipsis; }
+.showcase-shot { display: block; width: 100%; height: auto; aspect-ratio: 1440 / 672; object-fit: cover; object-position: top; transition: transform .6s cubic-bezier(.22,1,.36,1); }
+.showcase-shot-blank { background: linear-gradient(160deg, var(--surface-2), var(--bg)); }
+.showcase-body { display: flex; flex: 1; flex-direction: column; padding: 22px 24px; }
+.showcase-sector { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.showcase-title { margin: 8px 0; font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; line-height: 1.1; letter-spacing: -.03em; }
+.showcase-link { color: var(--text); }
+.showcase-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.showcase-link:focus-visible { outline: none; }
+.showcase-card:has(.showcase-link:focus-visible) { outline: 2px solid var(--accent); outline-offset: 4px; }
+.showcase-body p { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--muted); text-wrap: pretty; }
+.showcase-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 18px; }
+.showcase-read { display: inline-flex; align-items: center; gap: 6px; font-size: 0.875rem; font-weight: 600; color: var(--text); transition: color .2s ease; }
+.showcase-visit { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--border-strong); border-radius: 999px; font-size: 0.8125rem; font-weight: 600; color: var(--muted); transition: color .2s ease, border-color .2s ease; }
+.showcase-visit:hover { border-color: var(--accent); color: var(--accent); }
+.showcase-visit:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+:is(.showcase-read, .showcase-visit) svg { width: 14px; height: 14px; }
+.showcase-more { display: flex; justify-content: center; margin-top: 32px; }
+@media (hover: hover) and (pointer: fine) {
+  .showcase-card:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); translate: 0 -3px; }
+  .showcase-card:hover .showcase-shot { transform: scale(1.02); }
+  .showcase-card:hover .showcase-read { color: var(--accent); }
+}
+@media (max-width: 760px) {
+  .showcase-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .showcase-item:nth-child(n + 3) { display: none; }
+  .showcase-body { padding: 18px 18px 20px; }
+  .showcase-title { font-size: 1.375rem; }
+  .showcase-more { margin-top: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .showcase-card, .showcase-shot, .showcase-read { transition: none; }
+  .showcase-card:hover { translate: none; }
+  .showcase-card:hover .showcase-shot { transform: none; }
+}
