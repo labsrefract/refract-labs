@@ -1,6 +1,7 @@
 import { Children, cloneElement, isValidElement, type ReactNode } from "react";
 import { Link, useLocation } from "react-router";
-import { FiFileText, FiArrowUpRight, FiMail } from "react-icons/fi";
+import { FiArrowUpRight, FiMail } from "react-icons/fi";
+import ServiceArt from "./ServiceArt";
 import Reveal from "./ScrollReveal";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { site } from "../content/site";
@@ -33,7 +34,7 @@ export default function LegalPage({ title, description, path, subtitle, children
     <article className="legal-document software-scroll-content">
       <header className="legal-document-header">
         <Reveal className="ai-mask-head" rise={false}>
-          <span className="legal-document-icon"><FiFileText aria-hidden="true" /></span>
+          <span className="legal-document-icon"><ServiceArt kind="document" /></span>
           <span className="projects-eyebrow">LEGAL & POLICIES</span>
           <h1><span className="ai-mask-word"><span>{title}</span></span></h1>
           <p className="ai-mask-after">{subtitle}</p>

@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router";
-import { FiArrowLeft, FiArrowUpRight, FiTarget, FiLayers, FiCheckCircle } from "react-icons/fi";
+import { FiArrowLeft, FiArrowUpRight } from "react-icons/fi";
+import ServiceArt from "../components/ServiceArt";
 import { caseStudies, getCaseStudy } from "../content/work";
 import Reveal from "../components/ScrollReveal";
 import PageCTA from "../components/PageCTA";
@@ -7,9 +8,9 @@ import { usePageMeta } from "../hooks/usePageMeta";
 import NotFound from "./NotFound";
 
 const beats = [
-  { key: "challenge", label: "The challenge", Icon: FiTarget },
-  { key: "approach", label: "Our approach", Icon: FiLayers },
-  { key: "result", label: "The result", Icon: FiCheckCircle },
+  { key: "challenge", label: "The challenge", art: "target" },
+  { key: "approach", label: "Our approach", art: "workflow" },
+  { key: "result", label: "The result", art: "check" },
 ] as const;
 
 export default function WorkDetail() {
@@ -44,8 +45,8 @@ export default function WorkDetail() {
         </Reveal>}
         <section className="case-study-story" aria-labelledby="case-study-story-title">
           <Reveal className="case-study-story-heading ai-mask-head" rise={false}><span className="projects-eyebrow">BEHIND THE BUILD</span><h2 id="case-study-story-title"><span className="ai-mask-word"><span>From problem</span></span><br /><span className="ai-mask-word"><span>to a working product.</span></span></h2></Reveal>
-          <div className="case-study-beats">{beats.map(({ key, label, Icon }, position) => <Reveal as="section" key={key} className={`case-study-beat case-study-beat-${key} offer-card-reveal`} rise={false}>
-            <div className="case-study-beat-top"><span className="case-study-beat-icon"><Icon aria-hidden="true" /></span><span>{String(position + 1).padStart(2, "0")}</span></div>
+          <div className="case-study-beats">{beats.map(({ key, label, art }, position) => <Reveal as="section" key={key} className={`case-study-beat case-study-beat-${key} offer-card-reveal`} rise={false}>
+            <div className="case-study-beat-top"><span className="case-study-beat-icon"><ServiceArt kind={art} /></span><span>{String(position + 1).padStart(2, "0")}</span></div>
             <h3>{label}</h3><p>{project[key]}</p>
           </Reveal>)}</div>
         </section>

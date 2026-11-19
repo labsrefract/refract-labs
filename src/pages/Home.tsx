@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react"
 import heroWorkspace from "../assets/hero-workspace.jpeg"
 import { Link } from "react-router"
-import { FiCode, FiCloud, FiPenTool, FiCompass, FiTool, FiArrowUpRight } from "react-icons/fi"
+import { FiArrowUpRight } from "react-icons/fi"
 import EngagementOptions from "../components/EngagementOptions"
 import SoftwareFAQ from "../components/SoftwareFAQ"
 import PageCTA from "../components/PageCTA"
 import WorkCard from "../components/WorkCard"
 import Reveal from "../components/ScrollReveal"
 import { ButtonLink } from "../components/Button"
+import ServiceArt, { type ServiceArtKind } from "../components/ServiceArt"
 import { usePageMeta } from "../hooks/usePageMeta"
 import { processSteps } from "../content/process"
 import { categoryPath, serviceCategories } from "../content/services"
@@ -27,16 +28,16 @@ const proofStats = [
   { value: site.expertYears, label: "Combined expert years" },
 ] as const
 
-const serviceIcons = {
-  "software-development": FiCode,
-  "infrastructure-devops": FiCloud,
-  "design": FiPenTool,
-  "strategy-advisory": FiCompass,
-  "support-maintenance": FiTool,
+const serviceArt: Record<(typeof serviceCategories)[number]["id"], ServiceArtKind> = {
+  "software-development": "software",
+  "infrastructure-devops": "infrastructure",
+  "design": "design",
+  "strategy-advisory": "strategy",
+  "support-maintenance": "support",
 }
 
 const heroCards = serviceCategories.map((category) => ({
-  Icon: serviceIcons[category.id],
+  art: serviceArt[category.id],
   label: category.kicker,
   title: category.title,
   copy: category.intro,
@@ -75,7 +76,7 @@ function Hero() {
                     {heroCards.map((card, index) => (
                       <Link key={card.label} to={card.to} className="reference-feature-card" tabIndex={copy === 1 ? -1 : undefined}>
                         <Reveal className="hero-card-entry" rise={false} delay={index * 80}>
-                        <div className="reference-card-top"><span className="reference-card-icon"><card.Icon aria-hidden="true" strokeWidth={1.5} /></span><span className="reference-card-active-status">ACTIVE</span></div>
+                        <div className="reference-card-top"><span className="reference-card-icon"><ServiceArt kind={card.art} /></span><span className="reference-card-active-status">ACTIVE</span></div>
                         <span className="reference-card-kicker">{card.label}</span>
                         <h2>{card.title}</h2>
                         <p>{card.copy}</p>
@@ -156,26 +157,53 @@ const serviceSummaries = {
   "support-maintenance": "Maintenance, testing and dedicated engineers. Named people to keep production healthy after launch.",
 }
 
-function ServiceTile({ category, delay = 0 }: { category: (typeof serviceCategories)[number]; delay?: number }) {
-  const Icon = serviceIcons[category.id]
+/**
+ * One tile of the "What we do" bento. `slot` places it in the grid (a–f) and
+ * decides where its illustration sits; `tone` alternates the surface shade.
+ */
+function BentoTile({
+  slot,
+  tone,
+  to,
+  art,
+  kicker,
+  title,
+  summary,
+  delay = 0,
+}: {
+  slot: "a" | "b" | "c" | "d" | "e" | "f"
+  tone: "raised" | "sunken"
+  to: string
+  art: ServiceArtKind
+  kicker: string
+  title: string
+  summary: string
+  delay?: number
+}) {
   return (
-    <Reveal className="offer-card-reveal" rise={false} delay={delay}>
-    <Link to={categoryPath(category.id)} className={`offer-tile offer-tile-${category.id}`}>
-      <div className="offer-tile-art" aria-hidden="true">
-        <span className="offer-art-icon"><Icon strokeWidth={1.25} /></span>
-        <span className="offer-art-caption">{category.kicker}</span>
-      </div>
-      <div className="offer-tile-content">
-        <h3>{category.title}</h3>
-        <p>{serviceSummaries[category.id]}</p>
-      </div>
-      <FiArrowUpRight className="offer-tile-arrow" aria-hidden="true" />
-    </Link>
+    <Reveal className={`offer-card-reveal offer-slot-${slot}`} rise={false} delay={delay}>
+      <Link to={to} className={`offer-bento-tile offer-bento-${tone}`}>
+        <ServiceArt kind={art} className="offer-bento-art" />
+        <div className="offer-bento-copy">
+          <span className="offer-bento-kicker">{kicker}</span>
+          <h3>{title}</h3>
+          <p>{summary}</p>
+        </div>
+        <FiArrowUpRight className="offer-tile-arrow" aria-hidden="true" />
+      </Link>
     </Reveal>
   )
 }
 
 function ServicesTeaser() {
+  const [software, infrastructure, design, strategy, support] = serviceCategories
+  const tile = (category: (typeof serviceCategories)[number]) => ({
+    to: categoryPath(category.id),
+    art: serviceArt[category.id],
+    kicker: category.kicker,
+    title: category.title,
+    summary: serviceSummaries[category.id],
+  })
   return (
     <section className="offer-section" aria-labelledby="offer-heading">
       <div className="offer-panel">
@@ -183,27 +211,22 @@ function ServicesTeaser() {
           <h2 id="offer-heading"><span className="ai-mask-word"><span>What we do.</span></span></h2>
           <p className="ai-mask-after">Software, infrastructure, design, advisory, and support.<br />From the first sketch through production.</p>
         </Reveal>
-        <div className="offer-mosaic">
-          <div className="offer-column offer-column-left">
-            <ServiceTile category={serviceCategories[2]} />
-            <ServiceTile category={serviceCategories[3]} delay={100} />
-            <div className="offer-empty-tile" aria-hidden="true" />
-          </div>
-          <div className="offer-column offer-column-middle">
-            <ServiceTile category={serviceCategories[0]} delay={140} />
-            <ServiceTile category={serviceCategories[4]} delay={200} />
-          </div>
-          <div className="offer-column offer-column-right">
-            <div className="offer-empty-tile" aria-hidden="true" />
-            <ServiceTile category={serviceCategories[1]} delay={280} />
-            <Reveal className="offer-card-reveal" rise={false} delay={200}>
-            <Link to="/services" className="offer-all-tile">
-              <FiArrowUpRight aria-hidden="true" />
-              <h3>Find your next step.</h3>
-              <p>Explore all our services.</p>
-            </Link>
-            </Reveal>
-          </div>
+        <div className="offer-mosaic offer-bento">
+          <BentoTile slot="a" tone="sunken" {...tile(software)} />
+          <BentoTile slot="b" tone="raised" delay={100} {...tile(infrastructure)} />
+          <BentoTile slot="c" tone="sunken" delay={160} {...tile(design)} />
+          <BentoTile slot="d" tone="sunken" delay={220} {...tile(strategy)} />
+          <BentoTile slot="e" tone="raised" delay={160} {...tile(support)} />
+          <BentoTile
+            slot="f"
+            tone="sunken"
+            delay={260}
+            to="/services"
+            art="next"
+            kicker="All services"
+            title="Find your next step."
+            summary="Not sure where to start? Explore everything we do."
+          />
         </div>
       </div>
     </section>
