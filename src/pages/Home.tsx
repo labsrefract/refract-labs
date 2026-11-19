@@ -5,10 +5,10 @@ import { FiArrowUpRight } from "react-icons/fi"
 import EngagementOptions from "../components/EngagementOptions"
 import SoftwareFAQ from "../components/SoftwareFAQ"
 import PageCTA from "../components/PageCTA"
-import WorkCard from "../components/WorkCard"
 import Reveal from "../components/ScrollReveal"
 import { ButtonLink } from "../components/Button"
 import ServiceArt, { type ServiceArtKind } from "../components/ServiceArt"
+import ShowcaseCard from "../components/ShowcaseCard"
 import { usePageMeta } from "../hooks/usePageMeta"
 import { processSteps } from "../content/process"
 import { categoryPath, serviceCategories } from "../content/services"
@@ -17,8 +17,6 @@ import { testimonials } from "../content/team"
 import { caseStudies } from "../content/work"
 
 const homepageProjects = caseStudies.filter((project) => project.featuredOnHome === true)
-const pictured = homepageProjects.filter((p) => p.image)
-const unpictured = homepageProjects.filter((p) => !p.image)
 
 /** Proof under the hero: three numbers, kept out of the hero itself. */
 const proofStats = [
@@ -118,33 +116,24 @@ function ProofStrip() {
 
 function WorkTeaser() {
   return (
-    <section className="projects-section py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
+    <section className="projects-section home-showcase py-16 lg:py-24" style={{ borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <Reveal className="projects-heading ai-mask-head flex items-end justify-between gap-4 mb-8 flex-wrap" rise={false}>
           <div className="projects-heading-copy"><span className="projects-eyebrow">SELECTED WORK</span><h2 className="text-3xl sm:text-4xl"><span className="ai-mask-word"><span>Ideas we’ve put to work.</span></span></h2></div>
           <p className="projects-intro ai-mask-after">A place to showcase your craft. A simpler way to take bookings. A clearer path to an enquiry. Here’s how we’ve helped businesses put their next idea into practice.</p>
-          <Link to="/work" className="nav-link">All work →</Link>
         </Reveal>
-        <div className="home-work-grid">
-          {pictured.map((project, index) => (
-            <Reveal key={project.slug} delay={index * 70}>
-              <WorkCard project={project} layout="tile" showDescription />
+        <ul className="showcase-grid">
+          {homepageProjects.map((project, index) => (
+            <Reveal as="li" key={project.slug} className="showcase-item" delay={(index % 2) * 90}>
+              <ShowcaseCard project={project} />
             </Reveal>
           ))}
+        </ul>
+        <div className="showcase-more">
+          <ButtonLink to="/work" variant="ghost">
+            See all projects <FiArrowUpRight aria-hidden="true" />
+          </ButtonLink>
         </div>
-        {unpictured.length ? (
-          <div className="mt-4 flex flex-col gap-3">
-            {unpictured.map((project) => (
-              <Reveal key={project.slug}>
-                <Link to={`/work/${project.slug}`} className="home-work-line">
-                  <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--accent)" }}>{project.sector}</span>
-                  <span className="home-work-name">{project.name}</span>
-                  <span className="text-sm" style={{ color: "var(--muted)" }}>{project.summary}</span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        ) : null}
       </div>
     </section>
   )
@@ -273,31 +262,43 @@ function Voices() {
     </section>
   )
 }
+/**
+ * "Our process" on the homepage: a compact four-step timeline (across on
+ * desktop, down on phones). The /process page keeps the fuller zigzag view
+ * with each phase's detail, so this links there rather than repeating it.
+ */
 function ProcessTeaser() {
   return (
-    <section className="process-journey" aria-labelledby="process-journey-heading">
+    <section className="process-journey home-timeline" aria-labelledby="process-journey-heading">
       <div className="process-journey-shell">
         <Reveal className="process-journey-heading ai-mask-head" rise={false}>
           <span className="projects-eyebrow">THE PROCESS</span>
           <h2 id="process-journey-heading"><span className="ai-mask-word"><span>Our process.</span></span></h2>
           <p className="ai-mask-after">Four phases. One team. You see the work as it happens.</p>
         </Reveal>
-        <div className="process-journey-track">
-          <ol className="process-journey-steps">
-            {processSteps.map((step, index) => (
-              <Reveal as="li" key={step.id} className="process-journey-step offer-card-reveal" rise={false} delay={index * 70}>
-                <Link to={`/process#${step.id}`} className={`process-journey-card process-journey-tone-${index}`}>
-                  <span className="process-journey-number">{step.num}</span>
-                  <div className="process-journey-copy"><h3>{step.title}</h3><p>{step.teaser}</p></div>
-                  <FiArrowUpRight className="process-journey-arrow" aria-hidden="true" />
-                </Link>
-              </Reveal>
-            ))}
-          </ol>
+        <ol className="timeline">
+          {processSteps.map((step, index) => (
+            <Reveal as="li" key={step.id} className="timeline-step offer-card-reveal" rise={false} delay={index * 90}>
+              <Link to={`/process#${step.id}`} className="timeline-link">
+                <span className="timeline-node" aria-hidden="true">
+                  <ServiceArt kind={step.art} />
+                </span>
+                <span className="timeline-num">{step.num}</span>
+                <h3>{step.title}</h3>
+                <p>{step.teaser}</p>
+                <p className="timeline-get">
+                  <span>You get</span>
+                  {step.youGet}
+                </p>
+              </Link>
+            </Reveal>
+          ))}
+        </ol>
+        <div className="timeline-more">
+          <ButtonLink to="/process" variant="ghost">
+            A closer look at how we work <FiArrowUpRight aria-hidden="true" />
+          </ButtonLink>
         </div>
-        <Reveal className="process-journey-footer" rise={false}>
-          <Link to="/process">A closer look at how we work <FiArrowUpRight aria-hidden="true" /></Link>
-        </Reveal>
       </div>
     </section>
   )

@@ -1,6 +1,6 @@
 import PageCTA from "../components/PageCTA";
 import Reveal from "../components/ScrollReveal";
-import WorkCard from "../components/WorkCard";
+import ShowcaseCard from "../components/ShowcaseCard";
 import { caseStudies } from "../content/work";
 import { usePageMeta } from "../hooks/usePageMeta";
 
@@ -20,16 +20,15 @@ export default function Work() {
         </Reveal>
       </header>
 
-      <section className="projects-section work-gallery pb-24 lg:pb-32" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-12">
-          <div className="home-work-grid">
-            {caseStudies.map((p, i) => (
-              <Reveal key={p.slug} delay={i * 70}>
-                <WorkCard project={p} heading="h2" layout="tile" showDescription />
-              </Reveal>
-            ))}
-          </div>
-        </div>
+      {/* The same project cards as the homepage, with the tools each one was built with. An odd last card spans the full width. */}
+      <section className="work-showcase" aria-label="Projects">
+        <ul className="showcase-grid">
+          {caseStudies.map((project, index) => (
+            <Reveal as="li" key={project.slug} className="showcase-item" delay={(index % 2) * 90}>
+              <ShowcaseCard project={project} heading="h2" showStack />
+            </Reveal>
+          ))}
+        </ul>
       </section>
 
       <PageCTA

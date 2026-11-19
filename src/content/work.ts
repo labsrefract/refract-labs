@@ -87,7 +87,8 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "refract-labs",
-    featuredOnHome: true,
+    // Our own site stays on /work but is not featured beside client projects on the homepage.
+    featuredOnHome: false,
     name: "Refract Labs",
     sector: "Our studio website",
     summary: "Our own studio website, bringing Software and AI together through one visual identity and two distinct experiences.",
