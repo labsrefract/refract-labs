@@ -262,31 +262,43 @@ function Voices() {
     </section>
   )
 }
+/**
+ * "Our process" on the homepage: a compact four-step timeline (across on
+ * desktop, down on phones). The /process page keeps the fuller zigzag view
+ * with each phase's detail, so this links there rather than repeating it.
+ */
 function ProcessTeaser() {
   return (
-    <section className="process-journey" aria-labelledby="process-journey-heading">
+    <section className="process-journey home-timeline" aria-labelledby="process-journey-heading">
       <div className="process-journey-shell">
         <Reveal className="process-journey-heading ai-mask-head" rise={false}>
           <span className="projects-eyebrow">THE PROCESS</span>
           <h2 id="process-journey-heading"><span className="ai-mask-word"><span>Our process.</span></span></h2>
           <p className="ai-mask-after">Four phases. One team. You see the work as it happens.</p>
         </Reveal>
-        <div className="process-journey-track">
-          <ol className="process-journey-steps">
-            {processSteps.map((step, index) => (
-              <Reveal as="li" key={step.id} className="process-journey-step offer-card-reveal" rise={false} delay={index * 70}>
-                <Link to={`/process#${step.id}`} className={`process-journey-card process-journey-tone-${index}`}>
-                  <span className="process-journey-number">{step.num}</span>
-                  <div className="process-journey-copy"><h3>{step.title}</h3><p>{step.teaser}</p></div>
-                  <FiArrowUpRight className="process-journey-arrow" aria-hidden="true" />
-                </Link>
-              </Reveal>
-            ))}
-          </ol>
+        <ol className="timeline">
+          {processSteps.map((step, index) => (
+            <Reveal as="li" key={step.id} className="timeline-step offer-card-reveal" rise={false} delay={index * 90}>
+              <Link to={`/process#${step.id}`} className="timeline-link">
+                <span className="timeline-node" aria-hidden="true">
+                  <ServiceArt kind={step.art} />
+                </span>
+                <span className="timeline-num">{step.num}</span>
+                <h3>{step.title}</h3>
+                <p>{step.teaser}</p>
+                <p className="timeline-get">
+                  <span>You get</span>
+                  {step.youGet}
+                </p>
+              </Link>
+            </Reveal>
+          ))}
+        </ol>
+        <div className="timeline-more">
+          <ButtonLink to="/process" variant="ghost">
+            A closer look at how we work <FiArrowUpRight aria-hidden="true" />
+          </ButtonLink>
         </div>
-        <Reveal className="process-journey-footer" rise={false}>
-          <Link to="/process">A closer look at how we work <FiArrowUpRight aria-hidden="true" /></Link>
-        </Reveal>
       </div>
     </section>
   )
