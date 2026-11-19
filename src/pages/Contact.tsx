@@ -2,7 +2,8 @@ import EngagementField from "../components/EngagementField";
 import { engagementFromQuery, engagementMessage, engagementStarter, engagementService } from "../content/engagements";
 import { useState, type FormEvent, type CSSProperties } from "react";
 import { Link } from "react-router";
-import { FiArrowUpRight, FiMail, FiMapPin, FiClock, FiMessageSquare, FiCalendar } from "react-icons/fi";
+import { FiArrowUpRight, FiMail, FiMapPin, FiClock } from "react-icons/fi";
+import ServiceArt from "../components/ServiceArt";
 import { Button } from "../components/Button";
 import CallScheduler from "../components/CallScheduler";
 import Reveal from "../components/ScrollReveal";
@@ -268,7 +269,7 @@ export default function Contact() {
         </Reveal>
         <section className="contact-studio-chapter" id="write" aria-labelledby="contact-write-title">
           <Reveal className="contact-studio-intro ai-mask-head" rise={false}>
-            <span className="contact-studio-icon"><FiMessageSquare aria-hidden="true" /></span>
+            <span className="contact-studio-icon"><ServiceArt kind="message" /></span>
             <span className="projects-eyebrow">01 / SEND A MESSAGE</span>
             <h2 id="contact-write-title"><span className="ai-mask-word"><span>What's on your mind?</span></span></h2>
             <p className="ai-mask-after">Tell us what you are building, what you need help with, and where you want to go. A rough idea is a good place to start.</p>
@@ -278,7 +279,7 @@ export default function Contact() {
         </section>
         <section className="contact-studio-chapter" id="call" aria-labelledby="contact-call-title">
           <Reveal className="contact-studio-intro ai-mask-head" rise={false}>
-            <span className="contact-studio-icon"><FiCalendar aria-hidden="true" /></span>
+            <span className="contact-studio-icon"><ServiceArt kind="calendar" /></span>
             <span className="projects-eyebrow">02 / MEET THE TEAM</span>
             <h2 id="contact-call-title"><span className="ai-mask-word"><span>Talk it through.</span></span></h2>
             <p className="ai-mask-after">A free, 30-minute discovery call to understand your goals and see how we can help.</p>

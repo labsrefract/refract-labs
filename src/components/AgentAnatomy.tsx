@@ -1,6 +1,5 @@
 import type { CSSProperties } from "react";
-import type { IconType } from "react-icons";
-import { LuInbox, LuMessageSquareText, LuScanText, LuShieldCheck, LuZap } from "react-icons/lu";
+import ServiceArt, { type ServiceArtKind } from "./ServiceArt";
 import { anatomyRuns, type AnatomyRun } from "../content/ai";
 import { useLoop } from "../hooks/useLoop";
 
@@ -15,15 +14,15 @@ type Stage = {
   key: "message" | "read" | "decide" | "act" | "report";
   label: (run: AnatomyRun) => string;
   sub?: string;
-  Icon: IconType;
+  art: ServiceArtKind;
 };
 
 const stages: Stage[] = [
-  { key: "message", label: (run) => run.channel, Icon: LuMessageSquareText },
-  { key: "read", label: () => "Read", sub: "understands it", Icon: LuScanText },
-  { key: "decide", label: () => "Decide", sub: "within your rules", Icon: LuShieldCheck },
-  { key: "act", label: () => "Act", sub: "in your systems", Icon: LuZap },
-  { key: "report", label: () => "Report", sub: "to your team", Icon: LuInbox },
+  { key: "message", label: (run) => run.channel, art: "message" },
+  { key: "read", label: () => "Read", sub: "understands it", art: "scan" },
+  { key: "decide", label: () => "Decide", sub: "within your rules", art: "shield" },
+  { key: "act", label: () => "Act", sub: "in your systems", art: "bolt" },
+  { key: "report", label: () => "Report", sub: "to your team", art: "inbox" },
 ];
 
 /**
@@ -73,7 +72,7 @@ export default function AgentAnatomy() {
           return (
             <div key={stage.key} className={`ai-anatomy-stage ${state}`}>
               <span className="ai-anatomy-node">
-                <stage.Icon size={20} strokeWidth={1.75} />
+                <ServiceArt kind={stage.art} />
               </span>
               <span className="ai-anatomy-label">
                 {stage.label(run)}

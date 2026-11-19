@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import heroWorkspace from "../assets/hero-workspace.jpeg"
 import { Link } from "react-router"
-import { FiCode, FiCloud, FiPenTool, FiCompass, FiTool, FiArrowUpRight } from "react-icons/fi"
+import { FiArrowUpRight } from "react-icons/fi"
 import EngagementOptions from "../components/EngagementOptions"
 import SoftwareFAQ from "../components/SoftwareFAQ"
 import PageCTA from "../components/PageCTA"
@@ -28,14 +28,6 @@ const proofStats = [
   { value: site.expertYears, label: "Combined expert years" },
 ] as const
 
-const serviceIcons = {
-  "software-development": FiCode,
-  "infrastructure-devops": FiCloud,
-  "design": FiPenTool,
-  "strategy-advisory": FiCompass,
-  "support-maintenance": FiTool,
-}
-
 const serviceArt: Record<(typeof serviceCategories)[number]["id"], ServiceArtKind> = {
   "software-development": "software",
   "infrastructure-devops": "infrastructure",
@@ -45,7 +37,7 @@ const serviceArt: Record<(typeof serviceCategories)[number]["id"], ServiceArtKin
 }
 
 const heroCards = serviceCategories.map((category) => ({
-  Icon: serviceIcons[category.id],
+  art: serviceArt[category.id],
   label: category.kicker,
   title: category.title,
   copy: category.intro,
@@ -84,7 +76,7 @@ function Hero() {
                     {heroCards.map((card, index) => (
                       <Link key={card.label} to={card.to} className="reference-feature-card" tabIndex={copy === 1 ? -1 : undefined}>
                         <Reveal className="hero-card-entry" rise={false} delay={index * 80}>
-                        <div className="reference-card-top"><span className="reference-card-icon"><card.Icon aria-hidden="true" strokeWidth={1.5} /></span><span className="reference-card-active-status">ACTIVE</span></div>
+                        <div className="reference-card-top"><span className="reference-card-icon"><ServiceArt kind={card.art} /></span><span className="reference-card-active-status">ACTIVE</span></div>
                         <span className="reference-card-kicker">{card.label}</span>
                         <h2>{card.title}</h2>
                         <p>{card.copy}</p>

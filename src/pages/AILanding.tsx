@@ -13,10 +13,10 @@ import {
   type ReactNode,
 } from "react";
 import { Link, useSearchParams } from "react-router";
-import { LuWorkflow } from "react-icons/lu";
 import AgentAnatomy from "../components/AgentAnatomy";
 import AgentGlyph from "../components/AgentGlyph";
 import ReachGlobe from "../components/ReachGlobe";
+import ServiceArt from "../components/ServiceArt";
 import ApprovalQueue from "../components/platform/ApprovalQueue";
 import ChannelInbox from "../components/platform/ChannelInbox";
 import LanguageSwap from "../components/platform/LanguageSwap";
@@ -663,7 +663,7 @@ function TryAgent() {
         <div className="ai-demo-grid" aria-hidden="true" />
         <div className="ai-demo-head">
           <span className="ai-demo-mark">
-            <LuWorkflow size={22} strokeWidth={1.75} aria-hidden="true" />
+            <ServiceArt kind="workflow" />
           </span>
           <MaskLines className="ai-h2" style={{ fontSize: "clamp(2rem,3.8cqi,3.125rem)" }} text="See an agent at work" />
           <p className="ai-muted ai-mask-after" style={{ fontSize: "1rem" }}>
