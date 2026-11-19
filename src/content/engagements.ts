@@ -1,39 +1,47 @@
+/** The rows every engagement is compared on, in display order. */
+export const engagementRows = [
+  { key: "bestFor", label: "Best for" },
+  { key: "howItRuns", label: "How it runs" },
+  { key: "commitment", label: "Commitment" },
+  { key: "youGet", label: "You get" },
+] as const
+
 export const engagements = [
   {
     id: "project",
     title: "Build a project",
-    audience: "For a defined outcome",
+    art: "build",
     description:
-      "A new website, application, or a focused improvement. We agree on the scope and a practical path to delivery.",
-    includes: [
-      "Defined deliverables",
-      "Milestones and agreed fees",
-      "Launch and handover",
-    ],
+      "A new website, application, or a focused improvement, delivered against an agreed scope.",
+    bestFor: "A new product, or a clear upgrade to one you have",
+    howItRuns: "Fixed scope, milestones and agreed fees",
+    commitment: "Per project",
+    youGet: "A launched product and a full handover",
+    cta: "Start a project",
   },
   {
     id: "support",
     title: "Ongoing support",
-    audience: "For the work after launch",
+    art: "care",
     description:
-      "Keep your software healthy as your business grows, with a support plan shaped around what you need.",
-    includes: [
-      "Maintenance and fixes",
-      "Updates and testing",
-      "Agreed coverage and response times",
-    ],
+      "Keep your software healthy as your business grows, with a plan shaped around what you need.",
+    bestFor: "Software that is already live",
+    howItRuns: "A monthly plan with agreed coverage and response times",
+    commitment: "3 months minimum",
+    youGet: "Fixes, updates and testing from a named person",
+    cta: "Set up support",
   },
   {
     id: "engineering",
     title: "Dedicated engineering",
-    audience: "For extra team capacity",
+    art: "team",
     description:
-      "Bring engineers alongside your team for development and delivery, with clear responsibilities from the start.",
-    includes: [
-      "Work within your team",
-      "Agreed availability",
-      "Clear ownership of tasks",
-    ],
+      "Engineers who join your team for development and delivery, with clear responsibilities from the start.",
+    bestFor: "Teams that need more capacity",
+    howItRuns: "Named engineers in your stand-ups, repo and tracker",
+    commitment: "3 months minimum",
+    youGet: "Agreed availability and clear ownership of tasks",
+    cta: "Add engineers",
   },
 ] as const
 export function engagementFromQuery(value: string | null) {
