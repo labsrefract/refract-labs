@@ -200,6 +200,31 @@ html {
   font-size: clamp(100%, 1.1713vw, 175%);
 }
 
+/* Clay illustration palette (ServiceArt): matte grey in dark mode, warm
+   off-white in light mode. --clay-led is the one accent a piece may carry:
+   teal on Refract Software, violet on Refract AI. */
+:root {
+  --clay-hi: #77777f;
+  --clay-mid: #3c3c43;
+  --clay-lo: #232328;
+  --clay-edge: #151518;
+  --clay-shadow: #000000b8;
+  --clay-led: var(--accent);
+}
+
+:root[data-theme="light"] {
+  --clay-hi: #ffffff;
+  --clay-mid: #e1ddd5;
+  --clay-lo: #bdb8ae;
+  --clay-edge: #a39e94;
+  --clay-shadow: #4a443a55;
+}
+
+.ai-page,
+.ai-glyph {
+  --clay-led: var(--ai);
+}
+
 .page-shell {
   position: relative;
   background-color: var(--bg);
